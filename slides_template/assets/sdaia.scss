@@ -1,6 +1,41 @@
 /*
-  SDAIA Academy – AI Professionals Bootcamp
-  Quarto reveal.js theme
+  SDAIA Academy - Quarto reveal.js theme
+  CANONICAL. Owned by the `sdaia-slides` plugin bundle; every course repo's
+  slides_template/assets/sdaia.scss is generated from this file by
+  scripts/sync_bundle.py. Edit here, then sync -- never edit a repo's copy.
+
+  This is the merge of the two lines that had drifted apart:
+
+    * the Arabic/RTL line (AI-Productivitiy, intro-to-robotics) contributed the
+      direction-safe authoring -- logical properties, bidi isolation -- and the
+      .card / .flow / .nest / .cycle / .tree component library;
+    * the English/LTR line (Building-Gen-AI-Apps, WRO, time-series) contributed
+      the four-token palette, the .callout-* family, .cardbox, .code-shrink and
+      the .flowrow / .flowconv diagrams.
+
+  Two rules keep it merged:
+
+    1. NO PHYSICAL PROPERTIES. Author with border-inline-*, margin-inline-*,
+       padding-inline-*, inset-inline-*, text-align: start/end. They are
+       identical to the physical ones under LTR and mirror for free under RTL,
+       so ONE stylesheet serves an Arabic deck and an English deck with no
+       per-direction override. The RTL block near the bottom is only for what
+       logical properties cannot express.
+    2. The palette is four tokens, not two. --sdaia-teal / --sdaia-purple are
+       the on-LIGHT values; --sdaia-*-on-dark are the on-dark ones. The older
+       two-token palette used the bright on-dark values everywhere, which fails
+       WCAG on white (#00C9A7 on #ffffff is about 1.9:1).
+
+  Two component families cover each of "titled box" and "process row". They
+  have different markup contracts and both are in use, so both are maintained:
+
+    box   .card     (+ .accent-*, .tight, .card-dark)   <- prefer for new decks
+          .cardbox  (+ .card-title, .teal/.purple/.navy)
+    flow  .flow / .flow-step / .flow-arrow (+ .t/.s)    <- prefer for new decks
+          .flowrow / .flownode (+ .flowtitle/.flownote), .flowconv/.flowcauses
+
+  Nothing here renders differently from how it did before the merge, except the
+  palette fix and the direction mirroring.
 */
 
 /*-- scss:defaults --*/
@@ -116,7 +151,7 @@ $callout-color-success: $sdaia-green;
 
 /* Prefer top-aligned content (better for dense technical slides) */
 .reveal .slides section {
-  text-align: left;
+  text-align: start;
 }
 
 .reveal .slides section h1 {
@@ -133,7 +168,7 @@ $callout-color-success: $sdaia-green;
 
 /* Title slide */
 .reveal .slides section.title-slide {
-  text-align: left;
+  text-align: start;
 }
 
 .reveal .slides section.title-slide h1,
@@ -212,8 +247,8 @@ $callout-color-success: $sdaia-green;
 
 /* Blockquotes */
 .reveal blockquote {
-  border-left: 4px solid var(--sdaia-teal);
-  padding-left: 0.8em;
+  border-inline-start: 4px solid var(--sdaia-teal);
+  padding-inline-start: 0.8em;
   color: var(--text);
   background: rgba(0, 174, 141, 0.06);
   border-radius: 10px;
@@ -317,18 +352,99 @@ $callout-color-success: $sdaia-green;
 
 /* Reusable card box — replaces hand-rolled inline-style boxes.
    Usage:  ::: {.cardbox} ... :::            (coral accent border, default)
-           ::: {.cardbox .teal} ... :::      (teal / .purple / .navy modifiers) */
+   ::: {.cardbox .teal} ... :::      (teal / .purple / .navy modifiers) */
 .reveal .cardbox {
   background: rgba(28, 53, 94, 0.05);
   border: 1px solid var(--sdaia-border);
-  border-left: 4px solid var(--sdaia-coral);
+  border-inline-start: 4px solid var(--sdaia-coral);
   border-radius: 12px;
   padding: 0.5em 0.8em;
+  color: var(--text);
 }
 
-.reveal .cardbox.teal   { border-left-color: var(--sdaia-teal); }
-.reveal .cardbox.purple { border-left-color: var(--sdaia-purple); }
-.reveal .cardbox.navy   { border-left-color: var(--sdaia-navy); }
+/* Panel tabset styling (Plot / Code toggle switch) */
+.reveal .panel-tabset {
+  margin-top: 0.2em;
+}
+
+.reveal .panel-tabset [role="tablist"] {
+  display: flex;
+  gap: 8px;
+  border-bottom: 2px solid var(--sdaia-border);
+  margin-bottom: 0.4em;
+  padding-inline-start: 0;
+  list-style: none;
+}
+
+.reveal .panel-tabset [role="tablist"] li {
+  margin: 0;
+  padding: 0;
+}
+
+.reveal .panel-tabset [role="tablist"] li a {
+  display: inline-block;
+  padding: 0.2em 0.65em;
+  font-size: 0.65em;
+  font-weight: 700;
+  color: var(--muted);
+  border: 1px solid transparent;
+  border-bottom: none;
+  border-radius: 6px 6px 0 0;
+  text-decoration: none;
+  background: transparent;
+  transition: all 0.15s ease-in-out;
+}
+
+.reveal .panel-tabset [role="tablist"] li a:hover {
+  color: var(--sdaia-navy);
+  background: rgba(28, 53, 94, 0.04);
+}
+
+.reveal .panel-tabset [role="tablist"] li a[aria-selected="true"],
+.reveal .panel-tabset [role="tablist"] li a.active {
+  color: var(--sdaia-navy);
+  background: #f7f9fc;
+  border-color: var(--sdaia-border);
+  border-bottom: 2px solid #f7f9fc;
+  margin-bottom: -2px;
+}
+
+.reveal .panel-tabset .tab-content {
+  padding: 0.1em 0;
+}
+
+.reveal .cardbox.teal   { border-inline-start-color: var(--sdaia-teal); }
+.reveal .cardbox.purple { border-inline-start-color: var(--sdaia-purple); }
+.reveal .cardbox.navy   { border-inline-start-color: var(--sdaia-navy); }
+
+.reveal .cardbox h1,
+.reveal .cardbox h2,
+.reveal .cardbox h3,
+.reveal .cardbox h4 {
+  color: var(--sdaia-navy);
+}
+
+/* Card heading that does NOT open a reveal.js sub-slide.
+   A `### Heading` inside a fenced div is turned into a nested <section> by
+   pandoc; reveal.js then treats the card as a vertical sub-slide and dims its
+   contents to near-invisible. Write `[Title]{.card-title}` instead. */
+.reveal .card-title {
+  display: block;
+  font-size: 1.05em;
+  font-weight: 800;
+  line-height: 1.25;
+  color: var(--sdaia-navy);
+  margin-bottom: 0.3em;
+}
+
+.reveal .cardbox p,
+.reveal .cardbox ul,
+.reveal .cardbox ol,
+.reveal .cardbox li,
+.reveal .cardbox span,
+.reveal .cardbox strong {
+  color: var(--text);
+}
 
 .reveal .cardbox h3,
 .reveal .cardbox p,
@@ -350,12 +466,18 @@ $callout-color-success: $sdaia-green;
 
 /* Dark background support (for occasional hero slides) */
 .reveal .slides section.has-dark-background,
-.reveal .slides section.has-dark-background h1,
-.reveal .slides section.has-dark-background h2,
-.reveal .slides section.has-dark-background h3,
-.reveal .slides section.has-dark-background h4,
-.reveal .slides section.has-dark-background p,
-.reveal .slides section.has-dark-background li {
+.reveal .slides section.has-dark-background:not(:has(> section)) h1,
+.reveal .slides section.has-dark-background:not(:has(> section)) h2,
+.reveal .slides section.has-dark-background:not(:has(> section)) h3,
+.reveal .slides section.has-dark-background:not(:has(> section)) h4,
+.reveal .slides section.has-dark-background:not(:has(> section)) p,
+.reveal .slides section.has-dark-background:not(:has(> section)) li,
+.reveal .slides section.has-dark-background > section.title-slide h1,
+.reveal .slides section.has-dark-background > section.title-slide h2,
+.reveal .slides section.has-dark-background > section.title-slide h3,
+.reveal .slides section.has-dark-background > section.title-slide h4,
+.reveal .slides section.has-dark-background > section.title-slide p,
+.reveal .slides section.has-dark-background > section.title-slide li {
   color: #ffffff;
 }
 
@@ -383,36 +505,64 @@ $callout-color-success: $sdaia-green;
 }
 
 /* Force dark mode styles for slides with brand backgrounds */
-.reveal .slides section.sdaia-dark,
-.reveal .slides section.sdaia-dark h1,
-.reveal .slides section.sdaia-dark h2,
-.reveal .slides section.sdaia-dark h3,
-.reveal .slides section.sdaia-dark h4,
-.reveal .slides section.sdaia-dark p,
-.reveal .slides section.sdaia-dark li {
+.reveal .slides section.sdaia-dark:not(:has(> section)),
+.reveal .slides section.sdaia-dark:not(:has(> section)) h1,
+.reveal .slides section.sdaia-dark:not(:has(> section)) h2,
+.reveal .slides section.sdaia-dark:not(:has(> section)) h3,
+.reveal .slides section.sdaia-dark:not(:has(> section)) h4,
+.reveal .slides section.sdaia-dark:not(:has(> section)) p,
+.reveal .slides section.sdaia-dark:not(:has(> section)) li,
+.reveal .slides section.sdaia-dark:not(:has(> section)) span,
+.reveal .slides section.sdaia-dark:not(:has(> section)) strong,
+.reveal .slides section.sdaia-dark > section.title-slide,
+.reveal .slides section.sdaia-dark > section.title-slide h1,
+.reveal .slides section.sdaia-dark > section.title-slide h2,
+.reveal .slides section.sdaia-dark > section.title-slide h3,
+.reveal .slides section.sdaia-dark > section.title-slide h4,
+.reveal .slides section.sdaia-dark > section.title-slide p,
+.reveal .slides section.sdaia-dark > section.title-slide li,
+.reveal .slides section.sdaia-dark > section.title-slide span,
+.reveal .slides section.sdaia-dark > section.title-slide strong {
   color: #ffffff !important;
 }
 
-.reveal .slides section.sdaia-dark h2 {
-  border-bottom-color: rgba(255, 255, 255, 0.5);
+.reveal .slides section.sdaia-dark:not(:has(> section)) h2,
+.reveal .slides section.sdaia-dark > section.title-slide h2 {
+  border-bottom-color: rgba(255, 255, 255, 0.5) !important;
 }
 
-.reveal .slides section.sdaia-dark .muted {
-  color: rgba(255, 255, 255, 0.8);
+.reveal .slides section.sdaia-dark:not(:has(> section)) .muted,
+.reveal .slides section.sdaia-dark > section.title-slide .muted {
+  color: rgba(255, 255, 255, 0.8) !important;
 }
 
 /* On dark sections, accents switch to the brightened on-dark variants */
-.reveal .slides section.sdaia-dark .accent {
-  color: var(--sdaia-coral-on-dark);
+.reveal .slides section.sdaia-dark:not(:has(> section)) .accent,
+.reveal .slides section.sdaia-dark > section.title-slide .accent {
+  color: var(--sdaia-coral-on-dark) !important;
 }
 
-.reveal .slides section.sdaia-dark .cardbox {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.18);
-  border-left-color: var(--sdaia-coral-on-dark);
+.reveal .slides section.sdaia-dark:not(:has(> section)) .cardbox,
+.reveal .slides section.sdaia-dark > section.title-slide .cardbox {
+  background: rgba(255, 255, 255, 0.08) !important;
+  border-color: rgba(255, 255, 255, 0.18) !important;
+  border-inline-start-color: var(--sdaia-coral-on-dark) !important;
+
+  h1, h2, h3, h4, p, li, span, strong {
+    color: #ffffff !important;
+  }
+
+  /* The .teal / .purple / .navy modifiers have to be restated here: the rule
+     above sets border-inline-start-color with !important, so on a dark slide every
+     cardbox came out coral no matter which modifier it carried. Navy is
+     invisible against a navy gradient, so it borrows the light rule instead. */
+  &.teal   { border-inline-start-color: var(--sdaia-teal-on-dark) !important; }
+  &.purple { border-inline-start-color: var(--sdaia-purple-on-dark) !important; }
+  &.navy   { border-inline-start-color: rgba(255, 255, 255, 0.55) !important; }
 }
 
-.reveal .slides section.sdaia-dark .callout {
+.reveal .slides section.sdaia-dark:not(:has(> section)) .callout,
+.reveal .slides section.sdaia-dark > section.title-slide .callout {
   background-color: rgba(255, 255, 255, 0.05) !important;
   border-color: rgba(255, 255, 255, 0.15) !important;
 
@@ -440,59 +590,820 @@ $callout-color-success: $sdaia-green;
     opacity: 0.9;
   }
 
-  &.callout-note { border-left-color: var(--sdaia-purple-on-dark) !important; }
-  &.callout-tip { border-left-color: var(--sdaia-teal-on-dark) !important; }
-  &.callout-important { border-left-color: var(--sdaia-coral-on-dark) !important; }
-  &.callout-warning { border-left-color: var(--sdaia-coral-on-dark) !important; }
-  &.callout-caution { border-left-color: var(--sdaia-yellow) !important; }
-  &.callout-info { border-left-color: var(--sdaia-cyan) !important; }
+  &.callout-note { border-inline-start-color: var(--sdaia-purple-on-dark) !important; }
+  &.callout-tip { border-inline-start-color: var(--sdaia-teal-on-dark) !important; }
+  &.callout-important { border-inline-start-color: var(--sdaia-coral-on-dark) !important; }
+  &.callout-warning { border-inline-start-color: var(--sdaia-coral-on-dark) !important; }
+  &.callout-caution { border-inline-start-color: var(--sdaia-yellow) !important; }
+  &.callout-info { border-inline-start-color: var(--sdaia-cyan) !important; }
+}
+
+/* Explicit light theme enforcement for standard child slides in an sdaia-dark stack */
+.reveal .slides section.sdaia-dark > section.slide.level2:not(.sdaia-dark):not(.has-dark-background) {
+  color: var(--text) !important;
+
+  h1, h2, h3, h4 {
+    color: var(--sdaia-navy) !important;
+  }
+
+  h2 {
+    border-bottom-color: rgba(0, 174, 141, 0.35) !important;
+  }
+
+  p, li, span {
+    color: var(--text) !important;
+  }
+
+  strong {
+    color: inherit !important;
+  }
+
+  .muted {
+    color: var(--muted) !important;
+  }
+
+  .accent {
+    color: var(--sdaia-orange) !important;
+  }
+
+  .cardbox {
+    background: rgba(28, 53, 94, 0.05) !important;
+    border: 1px solid var(--sdaia-border) !important;
+    border-inline-start: 4px solid var(--sdaia-coral) !important;
+
+    &.teal { border-inline-start-color: var(--sdaia-teal) !important; }
+    &.purple { border-inline-start-color: var(--sdaia-purple) !important; }
+    &.navy { border-inline-start-color: var(--sdaia-navy) !important; }
+
+    h1, h2, h3, h4 {
+      color: var(--sdaia-navy) !important;
+    }
+    p, li, span, strong {
+      color: var(--text) !important;
+    }
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Flow diagrams, laid out in HTML rather than Graphviz.
+
+   Graphviz renders with its own fonts and its own idea of spacing, so a DOT
+   flow lands on the slide as a foreign object next to the deck's typography.
+   These classes draw the same flows with the deck's own type and palette.
+
+     ::: {.flowrow}                     left-to-right chain, arrows inserted
+     [$y_t$]{.flownode .navy}           between consecutive nodes
+     [STL]{.flownode .teal}
+     :::
+
+     ::: {.flowconv}                    several causes converging on one
+     ::: {.flowcauses}                  consequence
+     [cause]{.flownode .coral}
+     :::
+     [consequence]{.flownode .navy}
+     :::
+
+   A node may carry `[Heading]{.flowtitle}` and `[aside]{.flownote}`.
+   Accents: .navy (default), .teal, .coral, .purple.
+
+   Pandoc wraps loose spans in a <p>, which would otherwise sit between the
+   flex container and its nodes; `display: contents` lifts the nodes back out.
+   --------------------------------------------------------------------------- */
+.reveal .flowrow > p,
+.reveal .flowconv > p,
+.reveal .flowcauses > p {
+  display: contents;
+}
+
+.reveal .flownode {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  background: rgba(28, 53, 94, 0.05);
+  border: 1px solid var(--sdaia-border);
+  border-top: 4px solid var(--sdaia-navy);
+  border-radius: 10px;
+  padding: 0.35em 0.7em;
+  line-height: 1.3;
+  color: var(--text);
+  text-align: center;
+}
+
+.reveal .flownode.teal   { border-top-color: var(--sdaia-teal); }
+.reveal .flownode.coral  { border-top-color: var(--sdaia-coral); }
+.reveal .flownode.purple { border-top-color: var(--sdaia-purple); }
+
+.reveal .flowtitle {
+  display: block;
+  font-weight: 800;
+  color: var(--sdaia-navy);
+}
+
+.reveal .flownote {
+  display: block;
+  font-size: 0.74em;
+  color: var(--muted);
+}
+
+.reveal .flownode code:not(pre code) {
+  font-size: 0.72em;
+}
+
+/* Chain: nodes side by side, an arrow between each pair. */
+.reveal .flowrow {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  margin: 0.6em 0;
+}
+
+.reveal .flowrow .flownode {
+  flex: 1 1 0;
+}
+
+.reveal .flowrow .flownode + .flownode {
+  margin-inline-start: 2.3em;
+}
+
+.reveal .flowrow .flownode + .flownode::before {
+  content: "→";
+  position: absolute;
+  inset-inline-start: -1.6em;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  font-weight: 700;
+}
+
+/* Convergence: a stack of causes, one arrow, one consequence. */
+.reveal .flowconv {
+  display: flex;
+  align-items: center;
+  margin: 0.5em 0;
+}
+
+.reveal .flowconv > .flowcauses {
+  flex: 1 1 52%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4em;
+}
+
+/* Causes and consequence are the same component, so they take the same
+   alignment; a centred box beside left-aligned ones reads as a mistake. */
+.reveal .flowconv .flownode {
+  align-items: flex-start;
+  text-align: start;
+}
+
+.reveal .flowconv > p > .flownode {
+  flex: 1 1 48%;
+  margin-inline-start: 2.8em;
+}
+
+.reveal .flowconv > p > .flownode::before {
+  content: "→";
+  position: absolute;
+  inset-inline-start: -1.8em;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  font-weight: 700;
+}
+
+/* On a dark slide the nodes have to invert with everything else. */
+.reveal .slides section.sdaia-dark:not(:has(> section)) .flownode,
+.reveal .slides section.has-dark-background:not(:has(> section)) .flownode {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+
+  &.navy   { border-top-color: rgba(255, 255, 255, 0.55); }
+  &.teal   { border-top-color: var(--sdaia-teal-on-dark); }
+  &.coral  { border-top-color: var(--sdaia-coral-on-dark); }
+  &.purple { border-top-color: var(--sdaia-purple-on-dark); }
+
+  .flowtitle { color: #ffffff; }
+  .flownote  { color: rgba(255, 255, 255, 0.8); }
+}
+
+/* The slide counter is a sibling of .slides, not a child of the slide, so it
+   cannot inherit the dark palette the way everything inside the section does.
+   Look up from .reveal at whichever slide is currently present. */
+.reveal:has(section.present.sdaia-dark) .slide-number,
+.reveal:has(section.present.has-dark-background) .slide-number {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* =========================================================================
+   Semantic card system
+   Replaces per-slide inline styles across the decks. Two payoffs baked in:
+   1. RTL-safe by construction — uses `border-inline-start`, so the accent bar
+      sits on the start (reading) edge in BOTH LTR and RTL with no override.
+      (The old inline `border-left` did not mirror for Arabic.)
+   2. WCAG-safe fills — bright brand colors carry DARK text, because white on
+      teal/orange/purple fails the 4.5:1 contrast minimum.
+   ========================================================================= */
+
+/* Light concept card with a start-edge accent bar (default: teal). */
+.reveal .card {
+  background: var(--sdaia-code-bg);
+  padding: 1.2em;
+  border-radius: 12px;
+  border-inline-start: 4px solid var(--sdaia-teal);
+  text-align: start;
+}
+
+.reveal .card.tight {
+  padding: 0.8em 1em;
+}
+
+/* Accent-color modifiers for the card's start bar. */
+.reveal .card.accent-navy   { border-inline-start-color: var(--sdaia-navy); }
+.reveal .card.accent-teal   { border-inline-start-color: var(--sdaia-teal); }
+.reveal .card.accent-purple { border-inline-start-color: var(--sdaia-purple); }
+.reveal .card.accent-orange { border-inline-start-color: var(--sdaia-orange); }
+.reveal .card.accent-yellow { border-inline-start-color: var(--sdaia-yellow); }
+
+/* Filled navy card — white text is ~10:1 on navy, so it stays white. */
+.reveal .card-dark {
+  background: var(--sdaia-navy);
+  color: #ffffff;
+  padding: 1.2em;
+  border-radius: 12px;
+}
+.reveal .card-dark strong,
+.reveal .card-dark p,
+.reveal .card-dark li { color: #ffffff; }
+
+/* Filled bright chips — DARK text for contrast (white on these fails WCAG). */
+.reveal .fill-teal,
+.reveal .fill-purple,
+.reveal .fill-orange {
+  color: var(--text);
+  padding: 1.2em;
+  border-radius: 12px;
+  text-align: center;
+}
+.reveal .fill-teal   { background: var(--sdaia-teal); }
+.reveal .fill-purple { background: var(--sdaia-purple); }
+.reveal .fill-orange { background: var(--sdaia-orange); }
+
+/* Centering + spacing utilities to retire one-off inline `text-align`. */
+.reveal .center    { text-align: center; }
+.reveal .stack-top { margin-top: 0.5em; }
+
+/* `.center` and the filled chips set `text-align: center` on the WRAPPER, but
+   Pandoc puts the actual text in a child `<p>`, and the RTL block above targets
+   `html[dir="rtl"] .reveal .slides section p` at specificity (0,4,2) — which
+   outranks them. Every "centered" closer in an Arabic deck was really flush
+   right. Re-assert it at matching specificity. */
+html[dir="rtl"] .reveal .slides section .center p,
+html[dir="rtl"] .reveal .slides section .fill-teal p,
+html[dir="rtl"] .reveal .slides section .fill-purple p,
+html[dir="rtl"] .reveal .slides section .fill-orange p,
+.reveal[dir="rtl"] .slides section .center p,
+.reveal[dir="rtl"] .slides section .fill-teal p,
+.reveal[dir="rtl"] .slides section .fill-purple p,
+.reveal[dir="rtl"] .slides section .fill-orange p { text-align: center; }
+
+/* =========================================================================
+   Diagram vocabulary
+   HTML/CSS rather than Graphviz/mermaid, because those don't survive Arabic:
+   Graphviz does no Arabic shaping or bidi (labels come out as disconnected,
+   reversed letterforms) and mermaid gives up RTL layout + brand control. CSS
+   gets browser-native shaping, reveal fragments to build a diagram up live,
+   and free RTL mirroring — same reason `.card` exists instead of border-left.
+
+   Three components: `.nest` (containment), `.flow` (linear ladder),
+   `.cycle` (loop). All lay out with flex/grid under the inherited `dir`, so
+   SOURCE ORDER IS READING ORDER in both directions.
+   ========================================================================= */
+
+/* --- Containment: a labelled frame that visibly holds an inner box. ------ */
+.reveal .nest {
+  border: 3px solid var(--sdaia-teal);
+  border-radius: 16px;
+  padding: 1.6em 1.4em 1.3em;
+  position: relative;
+  background: var(--sdaia-code-bg);
+}
+
+/* Keep the held box off the frame's walls so containment reads at a glance. */
+.reveal .nest > .nest-inner {
+  max-width: 68%;
+  margin-inline: auto;
+}
+
+/* Label notched into the top border; --bg breaks the stroke behind it. */
+.reveal .nest-label {
+  position: absolute;
+  top: -0.72em;
+  inset-inline-start: 1.1em;
+  background: var(--bg);
+  padding: 0 0.5em;
+  color: var(--sdaia-teal);
+  font-weight: 700;
+  font-size: 0.72em;
+  white-space: nowrap;
+}
+
+/* Filled navy inner box — white text is ~10:1 on navy, as in `.card-dark`. */
+.reveal .nest-inner {
+  background: var(--sdaia-navy);
+  color: #ffffff;
+  border-radius: 12px;
+  padding: 1em 0.9em;
+  text-align: center;
+}
+.reveal .nest-inner strong,
+.reveal .nest-inner p { color: #ffffff; }
+
+.reveal .nest-note {
+  margin-top: 0.7em;
+  margin-bottom: 0;
+  font-size: 0.72em;
+  color: var(--muted);
+  text-align: center;
+}
+
+/* Row that puts an actor beside a `.nest` — [you] ← [the office [the brain]]. */
+.reveal .nest-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6em;
+  margin-top: 1.2em;
+}
+.reveal .nest-row > .nest { flex: 1 1 auto; }
+
+.reveal .actor {
+  background: var(--sdaia-code-bg);
+  border: 2px solid var(--sdaia-navy);
+  border-radius: 12px;
+  padding: 0.7em 0.8em;
+  font-weight: 700;
+  text-align: center;
+  white-space: nowrap;
+  flex: 0 0 auto;
+}
+
+/* --- Linear ladder: steps read right-to-left under dir="rtl". ----------- */
+.reveal .flow {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 0.35em;
+  margin-top: 1.2em;
+}
+
+.reveal .flow-step,
+.reveal .cycle-step {
+  background: var(--sdaia-code-bg);
+  border-radius: 12px;
+  border-block-start: 5px solid var(--sdaia-teal);
+  padding: 1.1em 0.7em;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.3em;
+}
+.reveal .flow-step { flex: 1 1 0; }
+
+/* A fork in one lane: two alternative routes stacked where a single step
+   would sit, so "either of these, then onward" stays one row. */
+.reveal .flow-branch {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.4em;
+  flex: 1 1 0;
+  align-items: stretch;
+}
+
+/* A branch whose lanes are UNEQUAL -- one a single step, another a whole
+   sub-flow -- must not stretch the short lane to the long one's width. The
+   parent `.flow` sets `align-items: stretch`, which otherwise makes a lone
+   `[User]{.t}` step span the full row and float above the chain instead of
+   reading as one arm of the fork. Centre the short lane on its own content and
+   let a nested `.flow` keep the full width it needs. */
+.reveal .flow-branch > .flow-step {
+  align-self: center;
+  flex: 0 0 auto;
+  min-width: 6em;
+}
+
+.reveal .flow-branch > .flow {
+  margin-top: 0;
+  width: 100%;
+}
+
+/* Accent modifiers mirror the `.card` names so the palette stays one vocab. */
+.reveal .flow-step.accent-navy,   .reveal .cycle-step.accent-navy   { border-block-start-color: var(--sdaia-navy); }
+.reveal .flow-step.accent-teal,   .reveal .cycle-step.accent-teal   { border-block-start-color: var(--sdaia-teal); }
+.reveal .flow-step.accent-purple, .reveal .cycle-step.accent-purple { border-block-start-color: var(--sdaia-purple); }
+.reveal .flow-step.accent-orange, .reveal .cycle-step.accent-orange { border-block-start-color: var(--sdaia-orange); }
+.reveal .flow-step.accent-yellow, .reveal .cycle-step.accent-yellow { border-block-start-color: var(--sdaia-yellow); }
+
+/* Ascending variant: each step stands taller than the one before it, so
+   "more capability as you go" is carried by the shape and not just a caption.
+   Heights go by source position (steps are children 1, 3, 5 — the arrows sit
+   between them), which is reading order in both directions. */
+.reveal .flow.ascend { align-items: flex-end; }
+.reveal .flow.ascend > .flow-step:nth-child(1) { min-height: 5em; }
+.reveal .flow.ascend > .flow-step:nth-child(3) { min-height: 6.2em; }
+.reveal .flow.ascend > .flow-step:nth-child(5) { min-height: 7.4em; }
+.reveal .flow.ascend > .flow-step:nth-child(7) { min-height: 8.6em; }
+
+/* Axis caption under a `.flow`: a bar whose gradient replays the steps' own
+   accent colors, so it reads as the same figure rather than a second block. */
+.reveal .flow-axis {
+  display: flex;
+  align-items: center;
+  gap: 0.7em;
+  margin-top: 0.6em;
+  font-size: 0.66em;
+  color: var(--muted);
+}
+.reveal .flow-axis p { margin: 0; white-space: nowrap; }
+.reveal .flow-axis::after {
+  content: "";
+  flex: 1 1 auto;
+  height: 5px;
+  border-radius: 3px;
+  /* LTR default; the RTL override below flips it so the gradient always runs
+     in the reading direction, same trick as the section brand bar above. */
+  background: linear-gradient(to right, var(--sdaia-purple), var(--sdaia-teal), var(--sdaia-orange));
+}
+html[dir="rtl"] .reveal .flow-axis::after,
+.reveal[dir="rtl"] .flow-axis::after {
+  background: linear-gradient(to left, var(--sdaia-purple), var(--sdaia-teal), var(--sdaia-orange));
+}
+
+/* `.t` title line, `.s` sub-line — inside steps only. */
+.reveal .flow-step .t,
+.reveal .cycle-step .t { font-weight: 700; display: block; line-height: 1.2; font-size: 0.9em; }
+.reveal .flow-step .s,
+.reveal .cycle-step .s { font-size: 0.68em; color: var(--muted); display: block; line-height: 1.3; }
+
+/* Arrow glyphs are authored literally (← ↓ → ↑) per the AR style guide §1.6.
+   `unicode-bidi: isolate` keeps bidi from reordering them beside numerals. */
+.reveal .flow-arrow,
+.reveal .cycle-arrow {
+  align-self: center;
+  justify-self: center;
+  color: var(--sdaia-navy);
+  font-size: 1.5em;
+  line-height: 1;
+  direction: ltr;
+  unicode-bidi: isolate;
+  flex: 0 0 auto;
+}
+
+/* An arrow may carry an EDGE LABEL -- what mermaid wrote as `-->|label|`.
+   The label belongs under the glyph at gloss size, not at arrow size, so the
+   arrow becomes a column when one is present. `.s` is the same gloss class the
+   steps use, so a label and a step subtitle read at the same weight. */
+.reveal .flow-arrow:has(.s),
+.reveal .cycle-arrow:has(.s) {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.05em;
+}
+
+/* A DASHED edge. mermaid's `-.->` means asynchronous, optional or out-of-band,
+   and that distinction is often the teaching point -- an async memory write
+   next to a synchronous reply, a feedback edge, an optional grader. The
+   vocabulary had no way to say it, so conversions were quietly dropping it.
+   Author the dashed glyph (&#8674; LTR, &#8673; RTL) and add `.dashed`. */
+.reveal .flow-arrow.dashed,
+.reveal .cycle-arrow.dashed {
+  color: var(--muted);
+  opacity: 0.85;
+}
+
+.reveal .flow-arrow .s,
+.reveal .cycle-arrow .s {
+  font-size: 0.45em;
+  color: var(--muted);
+  display: block;
+  line-height: 1.25;
+  max-width: 8em;
+  text-align: center;
+  font-weight: 400;
+}
+
+/* In a vertical flow the glyph is authored pointing down, so nothing is
+   rotated and a label stays upright. Authors write the arrow that points the
+   way the flow reads -- the same rule the horizontal flows follow. */
+
+/* --- Loop: 3x3 grid, not a circle. --------------------------------------
+   A real circle can't hold Arabic labels at the 32px root without an inline
+   font-size shrink, which the deck rules forbid. Named grid areas mirror
+   under RTL on their own (area column 1 = inline-start = the right side),
+   so this template is authored in reading order and needs no RTL variant. */
+.reveal .cycle {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  grid-template-rows: auto auto auto;
+  grid-template-areas:
+    "s1 a12 s2"
+    "a41 .  a23"
+    "s4 a34 s3";
+  gap: 0.6em 0.6em;
+  align-items: stretch;
+  margin-top: 1em;
+}
+/* Placement is by source position: author the eight children in loop order —
+   step, arrow, step, arrow, step, arrow, step, arrow — and they land in the
+   right cells. (`nth-of-type` would count by element name, not class, and
+   misassign every cell once steps and arrows are both divs.) */
+.reveal .cycle > *:nth-child(1) { grid-area: s1; }
+.reveal .cycle > *:nth-child(2) { grid-area: a12; }
+.reveal .cycle > *:nth-child(3) { grid-area: s2; }
+.reveal .cycle > *:nth-child(4) { grid-area: a23; }
+.reveal .cycle > *:nth-child(5) { grid-area: s3; }
+.reveal .cycle > *:nth-child(6) { grid-area: a34; }
+.reveal .cycle > *:nth-child(7) { grid-area: s4; }
+.reveal .cycle > *:nth-child(8) { grid-area: a41; }
+
+/* Pandoc wraps block content in `<p>`, so every diagram child is a paragraph.
+   Strip the inherited margins or the flex `gap` doubles up and the grid rows
+   grow past the frame. */
+.reveal .flow-step p,
+.reveal .cycle-step p,
+.reveal .flow-arrow p,
+.reveal .cycle-arrow p,
+.reveal .nest-label p,
+.reveal .nest-inner p,
+.reveal .nest-note p,
+.reveal .actor p { margin: 0; }
+
+/* Those same paragraphs must stay centered. The RTL block above sets
+   `html[dir="rtl"] .reveal .slides section p { text-align: right }` at
+   specificity (0,4,2), which outguns a plain `.flow-step { text-align:center }`
+   and left every diagram label hugging the start edge. Match the prefix to
+   win, and repeat unprefixed so LTR decks get the same treatment. */
+html[dir="rtl"] .reveal .slides section .flow-step p,
+html[dir="rtl"] .reveal .slides section .cycle-step p,
+html[dir="rtl"] .reveal .slides section .flow-arrow p,
+html[dir="rtl"] .reveal .slides section .cycle-arrow p,
+html[dir="rtl"] .reveal .slides section .nest-inner p,
+html[dir="rtl"] .reveal .slides section .nest-note p,
+html[dir="rtl"] .reveal .slides section .actor p,
+.reveal .flow-step p,
+.reveal .cycle-step p,
+.reveal .flow-arrow p,
+.reveal .cycle-arrow p,
+.reveal .nest-inner p,
+.reveal .nest-note p,
+.reveal .actor p { text-align: center; }
+
+/* --- File tree: a two-column grid, not ASCII art. ------------------------
+   A real `├──` tree is unreadable here. It has to live in a `pre` to keep
+   its alignment, `pre` is forced LTR for Arabic decks, and an Arabic gloss
+   inside an LTR `pre` gets reordered per line. So the tree is drawn as rows:
+   an LTR path chip on the reading edge, an Arabic gloss beside it, and depth
+   carried by `.sub` indentation instead of box-drawing glyphs.
+
+   Grid column 1 is the inline-start edge, so this mirrors under RTL with no
+   variant: the path sits on the right in Arabic and the left in English. */
+.reveal .tree {
+  background: var(--sdaia-code-bg);
+  border: 1px solid var(--sdaia-border);
+  border-radius: 12px;
+  padding: 1em 1.1em;
+  margin-top: 0.9em;
+}
+
+/* Pandoc puts every span of the block into one `<p>`, so the paragraph is the
+   grid container — same pattern as `.logo-row p`. */
+.reveal .tree p {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.42em 1em;
+  align-items: baseline;
+  margin: 0;
+}
+
+/* The row label deliberately keeps the PARAGRAPH's direction. The `<code>`
+   chip inside it is already isolated LTR by the rule above, so the path reads
+   correctly either way — and inheriting RTL here is what makes `.sub`'s
+   `padding-inline-start` land on the reading edge. Forcing `direction: ltr`
+   on this span instead flips its own inline axis, and the indent silently
+   moves to the far side where nothing can see it. */
+.reveal .tree .p {
+  justify-self: start;
+  white-space: nowrap;
+}
+
+.reveal .tree .g {
+  color: var(--muted);
+  font-size: 0.72em;
+}
+
+/* Depth, without box-drawing characters: an indent plus a hairline spine, so
+   containment reads at a glance instead of being inferred from alignment. */
+.reveal .tree .sub {
+  padding-inline-start: 1.6em;
+  border-inline-start: 2px solid var(--sdaia-border);
+  margin-inline-start: 0.6em;
+}
+
+/* The gloss is a `<p>` child under the RTL rule that forces `text-align:right`
+   at (0,4,2); it is a grid item here and must hug its own start edge. */
+html[dir="rtl"] .reveal .slides section .tree p,
+.reveal[dir="rtl"] .slides section .tree p { text-align: start; }
+
+/* Vendor marks, and only on section dividers. A `#` divider carries a title
+   and one line, so a single mark costs it no density; a content slide is
+   already at its two-block limit and an image there is a third block. `.spot`
+   takes one mark, `.logo-row` a row of them. Heights are capped because
+   `_quarto.yml` sets `scrollable: false` and overflow is clipped silently
+   rather than scrolled. */
+.reveal .spot img {
+  display: block;
+  margin: 0.8em auto 0;
+  max-height: 32vh;
+  width: auto;
+  max-width: 72%;
+}
+
+/* Pandoc puts every image of a paragraph inside that one `<p>`, so the flex
+   container has to be the paragraph, not the wrapping div. */
+.reveal .logo-row p {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4vw;
+  margin: 1.2em 0 0;
+}
+
+/* vh, not rem: reveal scales the whole deck with a transform, so a viewport
+   unit lands at the same fraction of the projected slide at any resolution,
+   which a rem tied to the root font size does not. */
+.reveal .logo-row img {
+  height: 9vh;
+  width: auto;
+  margin: 0;
+}
+
+/* Printable polish */
+
+
+/* =========================================================================
+   NEW IN THE MERGED THEME
+   The two components the mermaid/dot retirement needs, plus the direction
+   fixes that let the arrow glyphs above mirror instead of pointing backwards.
+   ========================================================================= */
+
+/* Arrow glyphs are authored pointing the way LTR text runs. Under dir="rtl"
+   the boxes already reverse -- flex and grid lay out along the inline axis --
+   so the glyph has to reverse with them. Isolation keeps a lone arrow from
+   being re-ordered by the surrounding Arabic run. */
+.reveal .flowrow .flownode + .flownode::before,
+.reveal .flowconv > p > .flownode::before {
+  unicode-bidi: isolate;
+}
+
+html[dir="rtl"] .reveal .flowrow .flownode + .flownode::before,
+.reveal[dir="rtl"] .flowrow .flownode + .flownode::before,
+html[dir="rtl"] .reveal .flowconv > p > .flownode::before,
+.reveal[dir="rtl"] .flowconv > p > .flownode::before {
+  content: "\2190";
+}
+
+/* --- Vertical ladder: `.flow.flow-col`. ---------------------------------
+   The column form of `.flow`, for a process that reads top to bottom. This is
+   what a `graph TD` / `flowchart TD` mermaid block becomes. Direction-neutral
+   by construction: the block axis does not mirror, so it needs no RTL rule. */
+.reveal .flow.flow-col {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+/* A column step is full-width, so the generous padding a row step carries
+   would let only three or four fit before the slide clips (the deck sets
+   `scrollable: false`). Tighten it so a six-step ladder fits. */
+.reveal .flow.flow-col > .flow-step {
+  flex: 0 0 auto;
+  padding: 0.45em 0.8em;
+  border-block-start-width: 4px;
+}
+
+.reveal .flow.flow-col > .flow-step .t {
+  font-size: 0.82em;
+}
+
+.reveal .flow.flow-col > .flow-step .s {
+  font-size: 0.62em;
+}
+
+.reveal .flow.flow-col > .flow-arrow {
+  align-self: center;
+  margin: 0;
+  font-size: 1.1em;
+}
+
+/* --- Lanes: a sequence diagram as a grid. --------------------------------
+   Actors across the top, one row per message. This is what a mermaid
+   `sequenceDiagram` becomes.
+
+     ::: {.lanes style="grid-template-columns: repeat(3, 1fr)"}
+     [Student]{.lane-actor}
+     [Notebook]{.lane-actor}
+     [Grader]{.lane-actor}
+     [submit]{.lane-msg style="--from:1; --to:2"}
+     [score]{.lane-msg .reply style="--from:2; --to:4"}
+     :::
+
+   A message spans from its start column to its end column via the inline
+   --from / --to custom properties, so the grid stays declarative and mirrors
+   under RTL for free. */
+.reveal .lanes {
+  display: grid;
+  grid-auto-rows: min-content;
+  gap: 0.35em 0.6em;
+  margin: 0.6em 0;
+  align-items: center;
+}
+
+.reveal .lanes > p {
+  display: contents;
+}
+
+.reveal .lanes > .lane-actor,
+.reveal .lanes > p > .lane-actor {
+  grid-row: 1;
+  background: var(--sdaia-navy);
+  color: #ffffff;
+  border-radius: 8px;
+  padding: 0.35em 0.6em;
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.8em;
+}
+
+.reveal .lanes > .lane-msg,
+.reveal .lanes > p > .lane-msg {
+  grid-column: var(--from, 1) / var(--to, 2);
+  border-block-end: 2px solid var(--sdaia-teal);
+  padding: 0 0.4em 0.15em;
+  font-size: 0.74em;
+  color: var(--text);
+  text-align: center;
+  position: relative;
+}
+
+/* The head points along the inline axis, so it mirrors with the grid. */
+.reveal .lanes .lane-msg::after {
+  content: "";
+  position: absolute;
+  inset-inline-end: -1px;
+  inset-block-end: -5px;
+  border: 4px solid transparent;
+  border-inline-start-color: var(--sdaia-teal);
+}
+
+.reveal .lanes .lane-msg.reply {
+  border-block-end-style: dashed;
+  border-block-end-color: var(--muted);
+}
+
+.reveal .lanes .lane-msg.reply::after {
+  border-inline-start-color: transparent;
+  border-inline-end-color: var(--muted);
+  inset-inline-end: auto;
+  inset-inline-start: -1px;
+}
+
+/* On a dark slide the lanes invert with everything else. */
+.reveal .slides section.sdaia-dark:not(:has(> section)) .lanes,
+.reveal .slides section.has-dark-background:not(:has(> section)) .lanes {
+  .lane-actor { background: rgba(255, 255, 255, 0.16); }
+  .lane-msg {
+    color: #ffffff;
+    border-block-end-color: var(--sdaia-teal-on-dark);
+  }
+  .lane-msg::after { border-inline-start-color: var(--sdaia-teal-on-dark); }
 }
 
 
+/* =========================================================================
+   RTL (Right-to-Left) support
+   Only what logical properties CANNOT express. Everything above is authored
+   with border-inline-*, margin-inline-*, text-align: start and flex/grid on
+   the inline axis, so it mirrors on its own. What is left here is the handful
+   of cases where correct RTL behaviour is not simply the mirror.
+   ========================================================================= */
 
-/* RTL (Right-to-Left) support for Arabic content */
-html[dir="rtl"] .reveal .slides section,
-.reveal[dir="rtl"] .slides section {
-  text-align: right;
-}
-
-html[dir="rtl"] .reveal .slides section.title-slide,
-.reveal[dir="rtl"] .slides section.title-slide {
-  text-align: right;
-}
-
-html[dir="rtl"] .reveal blockquote,
-.reveal[dir="rtl"] blockquote {
-  border-left: none;
-  border-right: 4px solid var(--sdaia-teal);
-  padding-left: 0;
-  padding-right: 0.8em;
-}
-
-html[dir="rtl"] .reveal .slides section:not(.title-slide)::before,
-.reveal[dir="rtl"] .slides section:not(.title-slide)::before {
-  background: linear-gradient(270deg, var(--sdaia-navy), var(--sdaia-teal), var(--sdaia-orange));
-}
-
-html[dir="rtl"] .reveal ul,
-html[dir="rtl"] .reveal ol,
-.reveal[dir="rtl"] ul,
-.reveal[dir="rtl"] ol {
-  text-align: right;
-  direction: rtl;
-}
-
-html[dir="rtl"] .reveal table,
-.reveal[dir="rtl"] table {
-  direction: rtl;
-}
-
-html[dir="rtl"] .reveal .slides section p,
-.reveal[dir="rtl"] .slides section p {
-  text-align: right;
-}
-
-/* Code blocks should always be LTR, even in RTL documents */
+/* Code is always LTR, in any document. A path or identifier reordered by the
+   surrounding Arabic run is unreadable. */
 html[dir="rtl"] .reveal pre,
 html[dir="rtl"] .reveal code,
 html[dir="rtl"] .reveal pre code,
@@ -501,6 +1412,29 @@ html[dir="rtl"] .reveal pre code,
 .reveal[dir="rtl"] pre code {
   direction: ltr;
   text-align: left;
+}
+
+/* `direction: ltr` alone governs a run's internal order but leaves it inside
+   the paragraph's bidi run, so punctuation at its edges is neutral and the
+   paragraph resolves it -- `.claude/` renders as `/claude.`. Isolation is what
+   fixes that. Do not remove it, and do not work around a reversed path by
+   rewriting the path. */
+html[dir="rtl"] .reveal :not(pre) > code,
+.reveal[dir="rtl"] :not(pre) > code {
+  unicode-bidi: isolate;
+}
+
+/* A linear-gradient angle is physical, so the brand bar has to be re-aimed. */
+html[dir="rtl"] .reveal .slides section:not(.title-slide)::before,
+.reveal[dir="rtl"] .slides section:not(.title-slide)::before {
+  background: linear-gradient(270deg, var(--sdaia-navy), var(--sdaia-teal), var(--sdaia-orange));
+}
+
+/* Tables lay out on the inline axis but need the explicit direction to
+   reorder their cells. */
+html[dir="rtl"] .reveal table,
+.reveal[dir="rtl"] table {
+  direction: rtl;
 }
 
 /* Printable polish */
