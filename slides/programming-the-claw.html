@@ -1698,7 +1698,7 @@ display:block!important;
 <aside class="notes">
 <p>Stage 7 follows the reference, experiment, and resistance lessons. The empty claw starts homed at the rigid open stop. Positive motor rotation closes this build. The runner supplies GRIP_TORQUE = 180 mNm. Keep stalled() visible as a familiar indicator from stage 5; done() will be introduced in stage 9. Ask when the second message will print, and take predictions aloud. Next runs the scene. Geometry and contact angles are illustrative, not calibrated robot measurements.</p>
 <p>Let the animation finish. Follow the jaws, the pending call, and the target readout. It freezes after the second print. Playback is slowed without changing the speed constants. A presentation pause freezes model time; it does not send a motor stop command.</p>
-<p>Ask students to explain the order: closing starts, 130° is reached, then the second print executes. Stop.HOLD maintains the reached target. Reference: https://docs.pybricks.com/en/stable/pupdevices/motor.html#pybricks.pupdevices.Motor.run_target</p>
+<p>Ask students to explain the order: closing starts, 120° is reached, then the second print executes. Stop.HOLD maintains the reached target. Reference: https://docs.pybricks.com/en/stable/pupdevices/motor.html#pybricks.pupdevices.Motor.run_target</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1719,7 +1719,7 @@ display:block!important;
 <aside class="notes">
 <p>The starting angle, target, speed, and Python code are unchanged. Only the object changes. Ask when the second print will appear now.</p>
 <p>The presentation freezes after blockage is detected. The Python call remains pending: we have not made it time out or return. Navigating to a fresh trial resets the scene.</p>
-<p>Ask: We reached the object. What is the program still waiting for? Compare actual angle near 70° with target 130°. The second message has not printed. Contact does not satisfy target arrival.</p>
+<p>Ask: We reached the object. What is the program still waiting for? Compare actual angle near 70° with target 120°. The second message has not printed. Contact does not satisfy target arrival.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1759,7 +1759,7 @@ display:block!important;
 <aside class="notes">
 <p>The trial resets and only the waiting argument changes. The program is now three instructions long: print, the closing command, print. Ask when the second message will print, and then ask what the program will do after that.</p>
 <p>The second message appears immediately, while the jaws are barely open. wait=False let the program continue instead of waiting for arrival.</p>
-<p>Press again. There is nothing left to run, so the program ends. Ending a program releases the motors, and the jaws stop at about 2° with 130° still the requested angle. Ask what the program achieved: it issued a closing command and then took it away. The motor was never given time to work. The simulator’s instruction ticks are illustrative, not firmware timing.</p>
+<p>Press again. There is nothing left to run, so the program ends. Ending a program releases the motors, and the jaws stop at about 2° with 120° still the requested angle. Ask what the program achieved: it issued a closing command and then took it away. The motor was never given time to work. The simulator’s instruction ticks are illustrative, not firmware timing.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -1815,15 +1815,16 @@ display:block!important;
 }</style></aside>
 </section>
 <section id="done-check" class="slide level2" data-cue="done-check" data-chapter="9 / The checking loop" data-phase="Predict">
-<h2>What if there is no object?</h2>
+<h2>Where will empty jaws stop?</h2>
 <div class="lab-slot">
 
 </div>
 <aside class="notes">
-<p>The same program with an empty claw. The requested target stays at 130°. Ask what stalled() will report when the motor settles slightly beyond that target.</p>
-<p>The actual motor angle settles at 132°, above the requested 130°. There is no object blocking the jaws, so stalled() remains False and the loop keeps checking. Draw attention to both readings: the movement can finish with a small position error. An exact check such as claw.angle() == GRIP_TARGET would also keep waiting on this settled reading.</p>
-<p>Reveal claw.done(): it reports that the commanded movement has completed. Pybricks uses both position and speed tolerances to decide completion. This illustrative preset has a +2° settled error within a 3° position tolerance. The motor has stopped before done() becomes True. Merely passing the requested angle while still moving does not prove completion. The preset illustrates tolerances without simulating a real controller, and these numbers are not universal Pybricks defaults.</p>
-<p>With both checks, the loop ends on done() in this empty trial and still ends on stalled() when an object blocks the jaws. Ask the last question: the loop ended, so is an object held? Here done() is True at 132° for a 130° request, with nothing between the jaws. Completion alone does not confirm a catch.</p>
+<p>The same program with an empty claw. The requested target stays at 120°, which is deliberately short of the angle where empty jaws would meet. Ask two questions before running: where will the jaws stop, and what will end the loop?</p>
+<p>The jaws reach the requested 120° and stop there, with a visible gap still between them. Nothing is between the jaws, so nothing ever blocks them: stalled() stays False while the check counter keeps climbing against a motor that has already finished moving. Point at the gap. The movement succeeded and the claw is holding nothing.</p>
+<p>Reveal claw.done(): it reports that the commanded movement has completed. It is the only ending available in this trial, because an unobstructed movement never produces a stall. On real hardware Pybricks decides completion using both position and speed tolerances, so a finished movement can rest a fraction of a degree from the requested angle; this model lands on the target exactly and does not simulate a controller.</p>
+<p>With both checks, the loop ends on done() in this empty trial and still ends on stalled() when an object blocks the jaws. Ask the last question: the loop ended, so is an object held? Here done() is True at the requested 120°, with a gap between the jaws. Completion alone does not confirm a catch.</p>
+<p>If a student proposes raising GRIP_TARGET until the empty jaws do meet, follow it through. The trial would then end on stalled() instead, but every empty grab would end by grinding the jaws into each other at the torque limit, and done() could never become True because the movement never completes. The target is kept short of that on purpose. The cost is the other half of the trade: an object narrower than the remaining gap is never gripped at all, which is the same tuning question stage 4 raised.</p>
 <p>References: https://docs.pybricks.com/en/stable/pupdevices/motor.html#pybricks.pupdevices.Motor.done and https://docs.pybricks.com/en/stable/pupdevices/motor.html#pybricks.pupdevices.Motor.control.target_tolerances</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
@@ -2042,7 +2043,7 @@ Download starter
 Download completed program
 </button>
 <p class="challenge-note">
-Both use Port E, an open zero at 0°, and a closing target of 130°.
+Both use Port E, an open zero at 0°, and a closing target of 120°, chosen to stop short of the angle where empty jaws meet.
 </p>
 <p><a class="course-link" href="../index.html">← Back to the course</a></p>
 </div>
@@ -2051,7 +2052,7 @@ Both use Port E, an open zero at 0°, and a closing target of 130°.
 <aside class="notes">
 <p>Students work independently before discussing answers. Run both trials on the bench build: home with the jaws empty, then place the object before grabbing, and repeat with nothing between the jaws.</p>
 <p>home() finishes its built-in stalled movement, coasts, settles, sets zero, and restores the gripping limit. grab() returns when either stalled() or done() becomes True. release() returns after its opening movement completes. An empty grab may finish on done() with no object held. Students should use the observed readings to explain both trials.</p>
-<p>For a bench extension, use the same module on the supplied Port E build. Keep the homing path empty and adapt the marked TUNE settings to the physical mechanism. The completed download defines functions without starting a motion sequence. Run the operations under the instructor’s guidance, placing the object after homing. The readings and tolerance example in the lesson are illustrative.</p>
+<p>For a bench extension, use the same module on the supplied Port E build. Keep the homing path empty and adapt the marked TUNE settings to the physical mechanism. The completed download defines functions without starting a motion sequence. Run the operations under the instructor’s guidance, placing the object after homing. The readings in the lesson are illustrative.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;
@@ -3413,7 +3414,7 @@ window.QuartoSupport = function () {
   else root.ClawEngine = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   'use strict';
-  const FACTS = Object.freeze({ port: 'E', direction: 'CLOCKWISE', openSpeed: 300, closeSpeed: 200, homeTorque: 220, gripTorque: 180, openTarget: 0, gripTarget: 130 });
+  const FACTS = Object.freeze({ port: 'E', direction: 'CLOCKWISE', openSpeed: 300, closeSpeed: 200, homeTorque: 220, gripTorque: 180, openTarget: 0, gripTarget: 120 });
   const DT = 0.005, MAX_ANGLE = 140, STALL_TIME = 0.25;
   const clamp = (n, lo, hi) => Math.min(hi, Math.max(lo, n));
   // Shared tooth size and tangent pitch circles for all three meshes.
@@ -3482,12 +3483,7 @@ window.QuartoSupport = function () {
     const target = p.type === 'homeRun' ? null : p.relative != null ? angle(s) + p.relative : p.target;
     s.motor = { kind: p.type === 'homeRun' ? 'home' : 'target', target,
       speed: Math.abs(p.speed || FACTS.closeSpeed), direction: p.type === 'homeRun' ? -1 : 0,
-      then: p.then || 'HOLD', reached: false, blockedFor: 0, finishNext: false, blockedBy: null,
-      // Optional teaching preset: a settled position error within the selected tolerance.
-      // These are model fields, not extra run_target() arguments or a controller simulation.
-      settleOffset: p.settleOffset ?? 0, positionTolerance: p.positionTolerance ?? 0.001 };
-    if (Math.abs(s.motor.settleOffset) > s.motor.positionTolerance)
-      throw new Error('Settled position must be within the completion tolerance');
+      then: p.then || 'HOLD', reached: false, blockedFor: 0, finishNext: false, blockedBy: null };
     s.stalled = false; s.done = false; s.lastTarget = target;
     event(s, p.type === 'homeRun' ? 'Motor: open until stalled' : `Motor: target ${target}° (${p.then || 'HOLD'})`);
   }
@@ -3496,12 +3492,10 @@ window.QuartoSupport = function () {
     s.contact = contacts(s.physical, s.object);
     if (!m) return;
     if (m.finishNext) { coast(s); event(s, 'Homing operation finished → COAST'); return; }
-    const target = m.kind === 'home' ? -1000 : m.target + s.offset + m.settleOffset;
+    const target = m.kind === 'home' ? -1000 : m.target + s.offset;
     const error = target - s.physical;
     if (m.kind !== 'home' && Math.abs(error) < 0.001) {
-      if (!m.reached) event(s, m.settleOffset
-        ? 'Target ' + m.target + '° complete within tolerance at ' + angle(s) + '° → ' + m.then
-        : 'Target ' + m.target + '° reached → ' + m.then);
+      if (!m.reached) event(s, 'Target ' + m.target + '° reached → ' + m.then);
       m.reached = true; m.blockedBy = null; s.done = true; s.stalled = false; m.blockedFor = 0;
       if (m.then === 'COAST') coast(s);
       return;
@@ -3596,7 +3590,7 @@ window.QuartoSupport = function () {
 })(typeof globalThis !== 'undefined' ? globalThis : this, function (E) {
   'use strict';
   const F = E.FACTS;
-  const base = { start: 0, homed: true, object: 'wide', target: 130, relative: -20, torque: 180, release: 50, objectX: 0, objectY: 0, propX: 154, propY: 255, direction: 'close', pauseZero: true, waiting: 'loop' };
+  const base = { start: 0, homed: true, object: 'wide', target: 120, relative: -20, torque: 180, release: 50, objectX: 0, objectY: 0, propX: 154, propY: 255, direction: 'close', pauseZero: true, waiting: 'loop' };
   const v = (id, label, config = {}, question, note) => ({ id, label, config, question, note });
   const scenes = [
     { id: 1, title: 'Follow the motion', short: 'The mechanism', concept: 'One motor. Two linked jaws.',
@@ -3636,8 +3630,8 @@ window.QuartoSupport = function () {
       notes: 'Use the eyes-closed vote briefly, then return to the claw. Introduce stalled() and connect blockage detection to the home() function students already used. Expand the existing function now. Walk through selecting the homing limit, opening until stalled, coasting, settling, labeling zero, restoring the gripping limit, and finishing at zero. Compare all three scenes. In homing, the demo pauses at the stall detection event; resume to see the command finish and coast. The live stalled() state can then clear, while the event remains in the trace.',
       variants: [v('blocked', 'Object blocks closing'), v('empty', 'Empty · target reached', { object: 'empty' }, 'Will reaching an unobstructed target count as a stall?'), v('home', 'Empty · open stop', { object: 'empty', start: 70, homed: false, pauseAtStall: true }, 'Could the motor stall here without catching an object?')] },
     { id: 6, title: 'Choose how hard to try', short: 'Torque & target', concept: 'Speed, effort limit, target, and actual angle are different.',
-      question: 'If an object blocks the motor near 70°, what does the requested 130° mean?', choices: ['A destination beyond contact', 'The measured contact angle', 'The torque at the jaw tips'],
-      explain: 'Which setting controls approach speed? Which limits effort? Why can the actual angle be below 130°?',
+      question: 'If an object blocks the motor near 70°, what does the requested 120° mean?', choices: ['A destination beyond contact', 'The measured contact angle', 'The torque at the jaw tips'],
+      explain: 'Which setting controls approach speed? Which limits effort? Why can the actual angle be below 120°?',
       takeaway: 'The torque limit is a motor setting in mNm, not a measured jaw-tip force. It persists until changed. home() selects 220; grab() and release() select 180.',
       checkpoint: 'Distinguish speed, torque limit, requested target, and actual motor angle.',
       notes: 'Keep the supplied values in teaching presets. The target should allow intended objects to interrupt closing before arrival. In Explore mode the torque control is qualitative: object compliance and real holding force are not modeled.',
@@ -3647,8 +3641,8 @@ window.QuartoSupport = function () {
       explain: 'We reached the object. What is run_target() still waiting for?',
       takeaway: 'wait=True is the default. The call waits for target arrival. An obstruction before the target can keep it pending. Reset scene cancels the trial.',
       checkpoint: 'Explain why contact alone does not release the pending call.',
-      notes: 'Run the unobstructed preset first so 130° is visibly reachable. Then repeat the identical code with an object. Keep the code highlight on run_target() and point to the missing second print. Do not add an automatic timeout that disguises the problem.',
-      variants: [v('empty', '130° is reachable', { object: 'empty' }), v('blocked', 'Same target · blocked')] },
+      notes: 'Run the unobstructed preset first so 120° is visibly reachable. Then repeat the identical code with an object. Keep the code highlight on run_target() and point to the missing second print. Do not add an automatic timeout that disguises the problem.',
+      variants: [v('empty', '120° is reachable', { object: 'empty' }), v('blocked', 'Same target · blocked')] },
     { id: 8, title: 'Let the program continue', short: 'wait=False', concept: 'Program progress does not mean the grip is ready.',
       question: 'With wait=False, when will “2: Continue” appear?', choices: ['While the jaws are moving', 'Only after target arrival', 'Only after a stall'],
       explain: 'If the next instruction drove away, would the object necessarily be secured?',
@@ -3666,10 +3660,10 @@ window.QuartoSupport = function () {
     { id: 10, title: 'The instruction stays active', short: 'Build grab()', concept: 'Leaving a checking loop does not cancel the motor command.',
       question: 'After the loop ends, does the motor still have its closing instruction?', choices: ['Yes, the earlier task remains', 'No, leaving the loop stops it', 'Only if we call run_target again'],
       explain: 'Make the object narrower. Which line gave the motor another closing instruction? What changes when the target itself is reached?',
-      takeaway: 'No new closing call is needed. The earlier task continues toward 130° after the loop. At 130°, HOLD maintains that position. An opening command replaces the closing task.',
+      takeaway: 'No new closing call is needed. The earlier task continues toward 120° after the loop. At 120°, HOLD maintains that position. An opening command replaces the closing task.',
       checkpoint: 'Compare what ends in home() with what ends in grab(). Returning from grab() does not certify a catch.',
-      notes: 'Wait for “Loop ended”, then make the object narrower during the observation wait. Remove it to see arrival at 130°. Repeat the empty outcome: the motor holds at the target without going beyond it. Compare homing, whose built-in operation ends and coasts. Reveal grab() after the explanation.',
-      variants: [v('blocked', 'Narrow after the loop'), v('empty', 'Reach 130° · hold', { object: 'empty' }), v('home', 'Compare home() · coast', { object: 'empty', start: 70, homed: false, pauseZero: false })] },
+      notes: 'Wait for “Loop ended”, then make the object narrower during the observation wait. Remove it to see arrival at 120°. Repeat the empty outcome: the motor holds at the target without going beyond it. Compare homing, whose built-in operation ends and coasts. Reveal grab() after the explanation.',
+      variants: [v('blocked', 'Narrow after the loop'), v('empty', 'Reach 120° · hold', { object: 'empty' }), v('home', 'Compare home() · coast', { object: 'empty', start: 70, homed: false, pauseZero: false })] },
     { id: 11, title: 'Release with room to spare', short: 'Build release()', concept: 'Open only as far as needed.',
       question: 'Will this opening release the object and clear the neighboring prop?', choices: ['Release and clear the prop', 'Release but sweep into the prop', 'Keep the object held'],
       explain: 'Why is 0° more open than 50° on this claw? Justify the smallest opening that releases this object with clearance.',
@@ -3757,7 +3751,7 @@ CLAW_DIRECTION = Direction.CLOCKWISE
 OPEN_SPEED = 300
 CLOSE_SPEED = 200
 OPEN_TARGET = 0
-GRIP_TARGET = 130
+GRIP_TARGET = 120
 HOME_TORQUE = 220
 GRIP_TORQUE = 180
 
@@ -3805,7 +3799,7 @@ def release(angle=OPEN_TARGET):
     checked: s => s.checkCount > 0,
     startup: s => s.waiting?.kind === 'sleep' && s.program[s.active]?.ms === 100,
     /* A loop that only checks stalled() never leaves an empty trial: the movement
-       finished within target tolerance, so the checks carry on past completion. */
+       reached its target, so the checks carry on past completion. */
     spinning: s => s.done && s.checkCount > 60,
     released: s => s.log.some(x => x.text === 'Released')
   };
@@ -3817,15 +3811,10 @@ def release(angle=OPEN_TARGET):
     }
     throw new Error('Checkpoint not reached: ' + stop);
   }
-  function start(stage, variant, settledExample = false) {
+  function start(stage, variant) {
     const c = S.configFor(stage, variant);
     const s = E.newState(c);
     const program = S.programFor(stage, variant, c);
-    if (settledExample) {
-      // This slide illustrates 132° actual for 130° requested, within a 3°
-      // position tolerance once stopped. Other slides retain exact target arrival.
-      Object.assign(program.find(p => p.type === 'move'), { settleOffset: 2, positionTolerance: 3 });
-    }
     E.start(s, program);
     return s;
   }
@@ -3844,7 +3833,7 @@ def release(angle=OPEN_TARGET):
     'fixed-end': () => until(get('fixed-start'), 'complete'),
     'stall-wide-start': () => start(9, 2),
     'stall-wide-end': () => until(get('stall-wide-start'), 'observing'),
-    'stall-empty-start': () => start(9, 3, true),
+    'stall-empty-start': () => start(9, 3),
     'stall-empty-spin': () => until(get('stall-empty-start'), 'spinning'),
     'loop-wide-start': () => start(9, 0),
     'loop-wide-end': () => until(get('loop-wide-start'), 'observing'),
@@ -3900,7 +3889,7 @@ def release(angle=OPEN_TARGET):
     ],
     'blocked': [
       {title:'The object stops closing before the target', label:'Observe', stop:'blocked'},
-      {title:'The program is waiting for 130°', label:'Explain', state:'default-wide-blocked', focus:'target', stop:null}
+      {title:'The program is waiting for 120°', label:'Explain', state:'default-wide-blocked', focus:'target', stop:null}
     ],
     /* Three instructions and nothing else: the program outruns the motor, and
        ending it releases the drive where the jaws happen to be. */
@@ -3920,16 +3909,17 @@ def release(angle=OPEN_TARGET):
       {title:'stalled() ends the waiting at the object', label:'Observe',
        focus:'check', stop:'observing'}
     ],
-    /* A small settled position error still allows completion. The empty claw never
-       stalls, so the program needs done() to stop waiting. */
+    /* GRIP_TARGET sits short of the angle where empty jaws would meet, so an empty
+       trial finishes its movement with the jaws apart and never stalls. Completion
+       is the only ending available, which is why the loop needs done(). */
     'done-check': [
-      {title:'Actual: 132°. Target: 130°. Still waiting.', label:'Observe',
-       caption:'The motor has settled slightly past the target. stalled() stays False.', stop:'spinning'},
+      {title:'The jaws stop, still apart, and the loop keeps checking', label:'Observe',
+       caption:'The motor reached 120° and stopped. Empty jaws never meet, so nothing blocks them.', stop:'spinning'},
       {title:'claw.done() lets the loop finish', label:'Observe',
        state:'loop-empty-start', status:2, focus:'check',
-       caption:'Illustrative reading: the motor has settled within the completion tolerance.', stop:'observing'},
+       caption:'The commanded movement is complete, so done() is True.', stop:'observing'},
       {title:'The loop ended with nothing between the jaws', label:'Explain', focus:'done',
-       caption:'132° actual > 130° requested. done() is True, and the claw is empty.', stop:null}
+       caption:'The target was reached with nothing to grip. done() is True, and the jaws are still apart.', stop:null}
     ],
     'release': [
       {title:'The jaws open to 0° and let the object go', label:'Observe', stop:'released'},
@@ -4029,7 +4019,7 @@ const support=`from pybricks.parameters import Stop
 from pybricks.tools import wait
 
 OPEN_TARGET = 0
-GRIP_TARGET = 130
+GRIP_TARGET = 120
 HOME_TORQUE = 220
 GRIP_TORQUE = 180
 
@@ -4044,7 +4034,7 @@ CLAW_DIRECTION = Direction.CLOCKWISE
 OPEN_SPEED = 300
 CLOSE_SPEED = 200
 OPEN_TARGET = 0
-GRIP_TARGET = 130
+GRIP_TARGET = 120
 HOME_TORQUE = 220
 GRIP_TORQUE = 180
 
@@ -4478,7 +4468,7 @@ Object.assign(window.ClawPresentation.cues, {
 </script>
 
     <script>// Generated by tools/sync-claw-downloads.py from code/.
-window.ClawDownloads = {"completed": "\"\"\"claw_gripper.py -- a claw that closes on the object.  Port E.\n\n    import claw_gripper as claw\n\n    claw.home()          # find the open end stop, zero there, stay at 0 deg\n    claw.grab()          # move toward 130 deg; keep pressing if blocked\n    claw.release()       # return to the 0 deg opening\n    claw.release(50)     # target 50 deg: less open than the default 0 deg\n\nZERO IS AT THE OPEN END STOP. Positive rotation closes this claw; negative\nrotation opens it. home() finds that stop with the jaws empty and calls it 0.\n\nAll angles are motor-shaft degrees from that zero, not jaw angles or gap widths.\nLarger targets close the jaws farther; smaller targets open them farther.\n\n    0 = OPEN_TARGET .................. GRIP_TARGET (130)\n    open stop / release                closing target\n\nAn object may stop the jaws before the grip target. The motor keeps trying\nto reach that target, with its torque limited. If it reaches the target,\nit holds that angle instead. Neither outcome alone confirms a successful catch.\n\"\"\"\n\nfrom pybricks.parameters import Direction, Port, Stop\nfrom pybricks.pupdevices import Motor\nfrom pybricks.tools import wait\n\n\n# ============================================================ CLAW FACTS ==\n\nCLAW_PORT = Port.E\nCLAW_DIRECTION = Direction.CLOCKWISE   # Positive closes; negative opens. TUNE\n\nOPEN_SPEED = 300        # motor deg/s -- move to the release target\nCLOSE_SPEED = 200       # motor deg/s -- also used to approach the open home stop\n\nHOME_TORQUE = 220       # mNm -- homing torque limit at the rigid open stop TUNE\nGRIP_TORQUE = 180       # mNm -- gripping and opening torque limit          TUNE\n\nOPEN_TARGET = 0        # motor deg from open zero -- default release position TUNE\nGRIP_TARGET = 130       # motor deg from open zero -- closing target          TUNE\n                       # An object may block it; reaching it is also allowed.\n\n\n# ============================================================== HARDWARE ==\n\nclaw = Motor(CLAW_PORT, CLAW_DIRECTION)\nclaw.control.limits(torque=GRIP_TORQUE)\n\n\n# ================================================================= VERBS ==\n\ndef home():\n    \"\"\"With empty jaws, find the open stop and zero there.\"\"\"\n    claw.control.limits(torque=HOME_TORQUE)\n    claw.run_until_stalled(-CLOSE_SPEED, then=Stop.COAST)\n    wait(200)                       # let the mechanism settle before setting zero\n    claw.reset_angle(0)\n    claw.control.limits(torque=GRIP_TORQUE)\n\n\ndef grab():\n    \"\"\"Move toward GRIP_TARGET; return when stalled or when the movement is done.\"\"\"\n    claw.control.limits(torque=GRIP_TORQUE)\n    claw.run_target(CLOSE_SPEED, GRIP_TARGET, then=Stop.HOLD, wait=False)\n    wait(100)                       # allow movement to start before checking status\n    while not claw.stalled() and not claw.done():\n        wait(10)\n    # Keep the command active: press toward a blocked target, or hold a reached one.\n\n\ndef release(angle=OPEN_TARGET):\n    \"\"\"Move to a release position, then let the motor coast.\n\n    The target is motor-shaft degrees from the open end stop. The default\n    is 0 deg; release(50) leaves the jaws less open than that default.\n    A larger target can reduce the opening sweep, but must still let the\n    object go. run_target moves to the requested angle from either direction.\n    \"\"\"\n    claw.control.limits(torque=GRIP_TORQUE)\n    claw.run_target(OPEN_SPEED, angle, then=Stop.COAST)\n", "starter": "from pybricks.parameters import Direction, Port, Stop\nfrom pybricks.pupdevices import Motor\nfrom pybricks.tools import wait\n\nCLAW_PORT = Port.E\nCLAW_DIRECTION = Direction.CLOCKWISE\nOPEN_SPEED = 300\nCLOSE_SPEED = 200\nOPEN_TARGET = 0\nGRIP_TARGET = 130\nHOME_TORQUE = 220\nGRIP_TORQUE = 180\n\nclaw = Motor(CLAW_PORT, CLAW_DIRECTION)\n\n\ndef home():\n    claw.control.limits(torque=HOME_TORQUE)\n    claw.run_until_stalled(\n        -CLOSE_SPEED,\n        then=Stop.COAST\n    )\n\n    wait(200)\n    claw.reset_angle(0)\n\n    claw.control.limits(torque=GRIP_TORQUE)\n"};
+window.ClawDownloads = {"completed": "\"\"\"claw_gripper.py -- a claw that closes on the object.  Port E.\n\n    import claw_gripper as claw\n\n    claw.home()          # find the open end stop, zero there, stay at 0 deg\n    claw.grab()          # move toward 120 deg; keep pressing if blocked\n    claw.release()       # return to the 0 deg opening\n    claw.release(50)     # target 50 deg: less open than the default 0 deg\n\nZERO IS AT THE OPEN END STOP. Positive rotation closes this claw; negative\nrotation opens it. home() finds that stop with the jaws empty and calls it 0.\n\nAll angles are motor-shaft degrees from that zero, not jaw angles or gap widths.\nLarger targets close the jaws farther; smaller targets open them farther.\n\n    0 = OPEN_TARGET .................. GRIP_TARGET (120)\n    open stop / release                closing target\n\nAn object may stop the jaws before the grip target. The motor keeps trying\nto reach that target, with its torque limited. If it reaches the target,\nit holds that angle instead. Neither outcome alone confirms a successful catch.\n\"\"\"\n\nfrom pybricks.parameters import Direction, Port, Stop\nfrom pybricks.pupdevices import Motor\nfrom pybricks.tools import wait\n\n\n# ============================================================ CLAW FACTS ==\n\nCLAW_PORT = Port.E\nCLAW_DIRECTION = Direction.CLOCKWISE   # Positive closes; negative opens. TUNE\n\nOPEN_SPEED = 300        # motor deg/s -- move to the release target\nCLOSE_SPEED = 200       # motor deg/s -- also used to approach the open home stop\n\nHOME_TORQUE = 220       # mNm -- homing torque limit at the rigid open stop TUNE\nGRIP_TORQUE = 180       # mNm -- gripping and opening torque limit          TUNE\n\nOPEN_TARGET = 0        # motor deg from open zero -- default release position TUNE\nGRIP_TARGET = 120       # motor deg from open zero -- closing target          TUNE\n                       # An object may block it; reaching it is also allowed.\n                       # Keep it short of the angle where empty jaws meet, or\n                       # every empty grab ends by jamming the jaws together.\n\n\n# ============================================================== HARDWARE ==\n\nclaw = Motor(CLAW_PORT, CLAW_DIRECTION)\nclaw.control.limits(torque=GRIP_TORQUE)\n\n\n# ================================================================= VERBS ==\n\ndef home():\n    \"\"\"With empty jaws, find the open stop and zero there.\"\"\"\n    claw.control.limits(torque=HOME_TORQUE)\n    claw.run_until_stalled(-CLOSE_SPEED, then=Stop.COAST)\n    wait(200)                       # let the mechanism settle before setting zero\n    claw.reset_angle(0)\n    claw.control.limits(torque=GRIP_TORQUE)\n\n\ndef grab():\n    \"\"\"Move toward GRIP_TARGET; return when stalled or when the movement is done.\"\"\"\n    claw.control.limits(torque=GRIP_TORQUE)\n    claw.run_target(CLOSE_SPEED, GRIP_TARGET, then=Stop.HOLD, wait=False)\n    wait(100)                       # allow movement to start before checking status\n    while not claw.stalled() and not claw.done():\n        wait(10)\n    # Keep the command active: press toward a blocked target, or hold a reached one.\n\n\ndef release(angle=OPEN_TARGET):\n    \"\"\"Move to a release position, then let the motor coast.\n\n    The target is motor-shaft degrees from the open end stop. The default\n    is 0 deg; release(50) leaves the jaws less open than that default.\n    A larger target can reduce the opening sweep, but must still let the\n    object go. run_target moves to the requested angle from either direction.\n    \"\"\"\n    claw.control.limits(torque=GRIP_TORQUE)\n    claw.run_target(OPEN_SPEED, angle, then=Stop.COAST)\n", "starter": "from pybricks.parameters import Direction, Port, Stop\nfrom pybricks.pupdevices import Motor\nfrom pybricks.tools import wait\n\nCLAW_PORT = Port.E\nCLAW_DIRECTION = Direction.CLOCKWISE\nOPEN_SPEED = 300\nCLOSE_SPEED = 200\nOPEN_TARGET = 0\nGRIP_TARGET = 120\nHOME_TORQUE = 220\nGRIP_TORQUE = 180\n\nclaw = Motor(CLAW_PORT, CLAW_DIRECTION)\n\n\ndef home():\n    claw.control.limits(torque=HOME_TORQUE)\n    claw.run_until_stalled(\n        -CLOSE_SPEED,\n        then=Stop.COAST\n    )\n\n    wait(200)\n    claw.reset_angle(0)\n\n    claw.control.limits(torque=GRIP_TORQUE)\n"};
 </script>
 
     <script>/* One persistent mechanism view, driven by Quarto slide cues. */
@@ -4824,9 +4814,8 @@ function render() {
   $('target-reading').querySelector('small').hidden = $('target-angle').textContent === '—';
   $('torque-value').textContent = state.torque;
   $('task-description').textContent = !m ? (state.cutOff ? 'Program ended · motor released' : state.active < 0 ? 'Ready to start' : 'Drive effort released · COAST') :
-    m.reached ? (m.settleOffset ? 'Holding near the target · within tolerance' : 'Holding the reached target') :
+    m.reached ? 'Holding the reached target' :
     m.blockedBy ? 'Blocked · still trying toward target' :
-    m.settleOffset && Math.abs(m.target + state.offset - state.physical) <= m.positionTolerance ? 'Settling near the target' :
     m.target + state.offset > state.physical ? 'Closing toward the target' : 'Opening toward the target';
   $('task-description').classList.toggle('blocked', !!m?.blockedBy);
   const rotations = E.gearAngles(state.physical);
