@@ -5,8 +5,9 @@ robot for the **WRO 2026 RoboMission Elementary** season (*"Robot Rockstars"*), 
 Prime programmed in Python with [Pybricks](https://pybricks.com/)**.
 
 **▶ The course portal is the thing to look at: <https://naifmersal.github.io/WRO-LEGO-pybricks/>** —
-a card grid of all 25 sessions, each opening a reveal.js deck, plus the recap arcade and the field
-tool.
+a card grid of the 25-session plan. The published sessions open a reveal.js deck; the rest show as
+"Coming soon" strips. The Reference and Toolbox rows add the cheat sheet, the recap arcade and the
+field tool.
 
 ---
 
@@ -14,18 +15,18 @@ tool.
 
 | Path | What it is |
 |:--|:--|
-| `index.qmd` | The kid-facing landing page — the card grid of all 25 sessions. |
-| `slides/` | One reveal.js deck per curriculum day, named by **topic**, never by day number. `slides/README.md` is the day → deck map. |
+| `index.qmd` | The kid-facing landing page — the card grid of the 25-session plan. |
+| `slides/` | One reveal.js deck per curriculum day, named by **topic**, never by day number. `slides/README.md` is the day → deck map. `slides/claw-lesson/` is the runtime the Programming the Claw deck loads — assets, not a deck. |
 | `library-cheatsheet.qmd` | Every verb the students own, on one page. Handed out at D5. |
 | `interactives/` | Hand-written standalone HTML the decks link or iframe: the Recap Arcade (master + its two generated sittings) and the Beam Balance catch-up lab. |
-| `code/` | Pybricks reference programs, including `claw_gripper.py` and `lift_gripper.py`. The claw lesson's `claw_starter.py` contains the starting `home()` function. |
+| `code/` | The four reference programs the site offers as downloads: `movements.py`, `claw_gripper.py` and `lift_gripper.py` from the cheat sheet, plus `claw_starter.py` — the claw lesson's starting point, containing only `home()`. `code/*` is gitignored with these four re-included; a new download must be added there and to `_quarto.yml`. |
 | `tools/odommap/` | Vendored field measuring tool (see attribution below), used coach-side for route planning and student-facing in the path-planning session. |
-| `slides_template/` | Shared branding and the deck scaffold: SCSS theme, logo, splash filter. |
+| `slides_template/` | Shared branding and the deck scaffold: SCSS theme, logo, splash filter. `assets/sdaia.scss` is **generated** from the `sdaia-slides` plugin bundle — edit it there and re-sync, never here. |
 | `handouts/` | Printables. |
 
-**One layout rule:** repo root = Quarto site pages · `slides/` = reveal decks · `interactives/` =
-hand-written standalone HTML. Put a new page in the matching place and list it in `_quarto.yml` if
-it is not a `.qmd`.
+**One layout rule:** repo root = Quarto site pages · `slides/` = reveal decks, plus any runtime a
+deck loads in a folder beside it · `interactives/` = hand-written standalone HTML that stands on its
+own. Put a new page in the matching place and list it in `_quarto.yml` if it is not a `.qmd`.
 
 ## 🛠️ Requirements
 
