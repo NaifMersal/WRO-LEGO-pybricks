@@ -152,14 +152,14 @@ import line goes in front — `gripper.`, `claw.`, `lift.`:
 | `gripper.home()` | find the end stop, call it zero — **run this first, always** |
 | `gripper.grab()` | close on the object and keep squeezing it |
 | `gripper.release()` | open all the way and let go |
-| `gripper.release(50)` | open **to 50°** and stop there, so the jaws shove nothing |
+| `gripper.release(50)` | move to **50° from that mechanism's zero**; check that the object can clear |
 
-> 🎤 **Open only as far as you need.** Plain `release()` swings the jaws
-> out to `READY_ANGLE`, and beside a standing microphone those jaw arms sweep a
-> wide arc and flatten it — the 20 points are for **upright**. Zero is where
-> the jaws meet, so the number you pass is simply *how far open*: find the
-> smallest one that still lets the object go, on the mat, and keep it in your
-> mission list next to the drive that gets you there.
+> 🎤 **Open only as far as you need.** On this claw, zero is the rigid **open**
+> stop. `home()` finds it, sets the reading to 0°, and stays there.
+> Plain `release()` returns to `OPEN_TARGET = 0`. A larger target such as 50°
+> leaves the jaws less open, which can reduce their sweep near another object.
+> Test that the chosen opening still releases your object. Each mechanism
+> has its own reference and settings.
 
 > 🎯 **There is no "did I get it?" verb, and that is deliberate.** If a
 > grab comes up empty, the claw was in the **wrong place** — and a robot that
@@ -231,9 +231,11 @@ now **garbage**, and every `run_target` after it inherits the mistake.
 So don't guess. Drive it until it physically can't move, and call *that* zero.
 
 ```python
-claw.run_until_stalled(-OPEN_SPEED, then=Stop.COAST, duty_limit=HOME_EFFORT)
+claw.control.limits(torque=HOME_TORQUE)
+claw.run_until_stalled(-CLOSE_SPEED, then=Stop.COAST)
 wait(200)
 claw.reset_angle(0)
+claw.control.limits(torque=GRIP_TORQUE)
 ```
 
 **The printed mat never lies — neither does the end stop.** Same trick, two

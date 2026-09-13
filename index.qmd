@@ -226,11 +226,18 @@ format:
     <div class="rr-week-head w-purple"><span class="num">Week 3</span> Build the Mechanisms, Chain the Anchor Run ⛓️</div>
     <div class="rr-grid">
 
-      <a class="rr-card" href="slides/gears-and-grippers.html">
+      <a class="rr-card" href="slides/gears.html">
         <span class="rr-badge b-purple">D11</span><span class="rr-card-emoji">⚙️</span>
-        <h3>Gears &amp; Grippers</h3>
-        <p>Crack open your gripper, learn the gears, re-gear it, and make it score: cables (30 pts) + microphone (20 pts).</p>
+        <h3>Gears</h3>
+        <p>Explore gear direction, ratio, and the trade-off between speed and torque.</p>
         <span class="rr-play">▶ Open slides</span>
+      </a>
+
+      <a class="rr-card" href="slides/programming-the-claw.html">
+        <span class="rr-badge b-purple">D11</span><span class="rr-card-emoji">🦾</span>
+        <h3>Programming the Claw</h3>
+        <p>Explore motor targets, find home, and build <code>home()</code>, <code>grab()</code>, and <code>release()</code>.</p>
+        <span class="rr-play">▶ Open the interactive lesson</span>
       </a>
 
     </div>

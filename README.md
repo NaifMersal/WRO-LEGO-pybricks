@@ -18,7 +18,7 @@ tool.
 | `slides/` | One reveal.js deck per curriculum day, named by **topic**, never by day number. `slides/README.md` is the day → deck map. |
 | `library-cheatsheet.qmd` | Every verb the students own, on one page. Handed out at D5. |
 | `interactives/` | Hand-written standalone HTML the decks link or iframe: the Recap Arcade (master + its two generated sittings) and the Beam Balance catch-up lab. |
-| `code/` | The four gold-reference Pybricks programs the cheat sheet offers as downloads — `movements.py`, `claw_gripper.py`, `lift_gripper.py`, `grip_test.py`. |
+| `code/` | Pybricks reference programs, including `claw_gripper.py` and `lift_gripper.py`. The claw lesson's `claw_starter.py` contains the starting `home()` function. |
 | `tools/odommap/` | Vendored field measuring tool (see attribution below), used coach-side for route planning and student-facing in the path-planning session. |
 | `slides_template/` | Shared branding and the deck scaffold: SCSS theme, logo, splash filter. |
 | `handouts/` | Printables. |

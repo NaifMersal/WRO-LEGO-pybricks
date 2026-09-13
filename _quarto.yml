@@ -17,6 +17,10 @@ project:
   # iframe them get a broken frame in output/.
   resources:
     - interactives/beam-balance-catchup.html
+    # Claw lesson downloads. programming-the-claw.qmd embeds both files for
+    # offline use; these copies are what the bench build actually loads.
+    - code/claw_starter.py
+    - code/claw_gripper.py
     # The recap arcade, three ways. The master carries all 12 levels; the two
     # part files are GENERATED from it by tools/split-recap.py and split at
     # level 7, so each sitting keeps its own localStorage key. All three must

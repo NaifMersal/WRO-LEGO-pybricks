@@ -50,11 +50,13 @@ coach.html
 tools/*
 !tools/odommap/
 
-# ── Gold-reference programs: the three the cheat sheet links, nothing else ────
-# library-cheatsheet.qmd declares exactly these three under `resources:` and
-# offers them as downloads; without them those links 404. code/.venv/ and
+# ── Gold-reference programs: the ones the site links, nothing else ──────────
+# library-cheatsheet.qmd declares the first three under `resources:` and offers
+# them as downloads; programming-the-claw.qmd does the same for claw_starter.py
+# and claw_gripper.py. Without them those links 404. code/.venv/ and
 # code/archive/ stay out.
 code/*
 !code/movements.py
 !code/claw_gripper.py
 !code/lift_gripper.py
+!code/claw_starter.py

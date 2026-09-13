@@ -1,0 +1,89 @@
+<template id="lab-template">
+<div id="lab" class="lab">
+<div class="mechanism-side">
+<div class="mechanism-heading"><h3>Mechanism</h3></div>
+<figure id="scene-figure" class="scene-figure" hidden>
+<svg id="scene-art" viewBox="0 0 560 330" role="img" aria-label="A bottle standing between two fingertips.">
+            <ellipse cx="280" cy="300" rx="78" ry="11" fill="#dde3da"/>
+            <g id="scene-eye" stroke="#93a8ac" stroke-width="4" fill="none" stroke-linecap="round"><path d="M34 52q30 24 60 0"/><path d="M40 64l-9 11M64 74v13M88 64l9 11"/></g>
+            <g id="scene-bottle">
+            <rect x="262" y="20" width="36" height="24" rx="6" fill="#2f7f8b"/>
+            <rect x="266" y="42" width="28" height="34" fill="#e8c97a" stroke="#bb872d" stroke-width="2"/>
+            <path d="M266 76c0 18-34 22-34 44h96c0-22-34-26-34-44z" fill="#e3af4b" stroke="#bb872d" stroke-width="2"/>
+            <rect x="232" y="116" width="96" height="176" rx="16" fill="#e3af4b" stroke="#bb872d" stroke-width="2"/>
+            <rect x="242" y="158" width="76" height="62" rx="7" fill="#fce1a2"/>
+            <text x="280" y="196" text-anchor="middle" fill="#8a6a1e" font-size="19" font-weight="700">BOTTLE</text>
+            </g>
+            <g id="scene-left" class="scene-finger">
+            <path d="M34 178h152" stroke="#d9a583" stroke-width="48" stroke-linecap="round"/>
+            <circle cx="186" cy="178" r="24" fill="#e6b795"/>
+            <path d="M120 158v40M74 160v36" stroke="#c89070" stroke-width="2.5" stroke-linecap="round" opacity=".6"/>
+            </g>
+            <g id="scene-right" class="scene-finger">
+            <path d="M526 230H374" stroke="#d9a583" stroke-width="48" stroke-linecap="round"/>
+            <circle cx="374" cy="230" r="24" fill="#e6b795"/>
+            <path d="M440 210v40M486 212v36" stroke="#c89070" stroke-width="2.5" stroke-linecap="round" opacity=".6"/>
+            </g>
+            <g id="scene-contact" fill="#f17c4c"><circle cx="232" cy="178" r="9"/><circle cx="328" cy="230" r="9"/></g>
+            <g id="scene-press" stroke="#f17c4c" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M170 132h26m-8-8l8 8-8 8"/><path d="M390 276h-26m8-8l-8 8 8 8"/></g>
+          </svg>
+<figcaption id="scene-caption"></figcaption>
+</figure>
+<svg id="claw-svg" viewBox="40 60 560 340" role="img" aria-label="Animated claw: motor pinion drives a transfer gear, then the right and left jaw gears. Each mesh reverses rotation.">
+            <defs><pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#c8d9de"/></pattern><filter id="shadow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#15364c" flood-opacity=".12"/></filter></defs>
+            <rect width="640" height="430" fill="url(#grid)"/>
+            <path d="M320 38v355" stroke="#ccdade" stroke-dasharray="4 7"/>
+            <rect x="246" y="72" width="148" height="152" rx="15" fill="#183e50" filter="url(#shadow)"/>
+            <rect x="256" y="83" width="128" height="53" rx="7" fill="#f0c943"/>
+            <g fill="#96791d"><circle cx="270" cy="96" r="5"/><circle cx="290" cy="96" r="5"/><circle cx="350" cy="96" r="5"/><circle cx="370" cy="96" r="5"/></g>
+            <rect x="272" y="108" width="96" height="69" rx="10" fill="#f5fafb" stroke="#c6dfe1" stroke-width="2"/>
+            <rect x="272" y="149" width="96" height="27" rx="7" fill="#22bfd0"/>
+            <g id="motor-gear"></g>
+            <g id="motor-rotor"><path d="M320 132v30m-15-15h30" stroke="#e8f5f3" stroke-width="4"/></g>
+            <g id="transfer-gear"></g>
+            <g id="ready-outline" fill="none" stroke="#869daf" stroke-width="19" stroke-dasharray="5 6" opacity=".6"><path id="ready-left"/><path id="ready-right"/></g>
+            <g id="prop-shape"><rect id="prop-rect" rx="5" fill="#e76f4e" stroke="#b54a2e" stroke-width="2"/><path id="prop-cross" stroke="#fff2e9" stroke-width="3"/></g>
+            <g id="object-shape" filter="url(#shadow)"><rect id="object-rect" rx="12" fill="#e3af4b" stroke="#bb872d" stroke-width="2"/><path id="object-stripe" stroke="#fce1a2" stroke-width="4"/><text id="object-label" text-anchor="middle" fill="#604716" font-size="14" font-weight="700">OBJECT</text></g>
+            <g id="left-arm"></g><g id="right-arm"></g>
+            <g id="left-gear"></g><g id="right-gear"></g>
+            <g fill="#233b4c"><rect x="246" y="189" width="22" height="12" rx="3"/><rect x="372" y="189" width="22" height="12" rx="3"/></g>
+            
+            <g id="contact-markers" fill="#f17c4c"><circle id="left-contact" r="9"/><circle id="right-contact" r="9"/></g>
+            
+          </svg>
+<div id="contact-description" class="contact-description"></div>
+<div class="task-block"><div class="task-label">Motor task</div><div id="task-description"></div></div>
+<div class="readings">
+<div class="reading"><div class="reading-label">Actual motor angle</div><div class="reading-value"><span id="actual-angle">0</span><small>°</small></div></div>
+<div class="reading" id="target-reading"><div class="reading-label">Requested target</div><div class="reading-value"><span id="target-angle">130</span><small>°</small></div></div>
+<div class="reading torque"><div class="reading-label">Torque limit</div><div class="reading-value"><span id="torque-value">180</span><small>mNm</small></div><div class="reading-note">Setting, not jaw-tip force</div></div>
+</div>
+<div class="status-flags"><div id="stalled-row" class="status-flag" hidden><code>stalled()</code><strong id="stalled-value">False</strong></div><div id="done-row" class="status-flag" hidden><code>done()</code><strong id="done-value">False</strong></div></div>
+</div>
+<div class="program-side">
+<div class="program-heading"><h3 id="program-label">Program</h3><span id="program-context"></span></div>
+<div id="program-code" class="program-code"></div>
+<div id="source-legend" class="source-legend" hidden>Earlier line that issued the motor task</div>
+<p id="code-caption" class="code-caption" hidden></p><div id="console-box" class="console"><div class="console-label">Printed messages</div><div id="console-lines"></div></div>
+</div>
+</div>
+</template>
+<template id="nav-template">
+<div class="deck-nav" role="navigation" aria-label="Presentation navigation">
+<div class="transport"><span id="play-status"></span><span id="step-status" class="step-status" hidden></span><button id="replay-button" title="Replay this scene (R)" hidden>Replay</button><button id="pause-button" title="Pause or resume animation (P)" hidden>Pause</button></div>
+<button id="notes-button" title="Instructor notes (N)">Notes</button>
+<button id="fullscreen-button" title="Enter fullscreen">Fullscreen</button>
+<span id="slide-count"></span>
+<button id="back-button" aria-label="Previous slide">← Back</button>
+<button id="next-button" aria-label="Next slide">Next →</button>
+<div class="progress-track"><span id="progress-fill"></span></div>
+</div>
+</template>
+<dialog id="notes-dialog"><div class="notes-heading">Instructor notes<button id="notes-close" aria-label="Close notes">×</button></div><h2 id="notes-title"></h2><div id="notes-content"></div></dialog>
+<script src="claw-lesson/engine.js"></script>
+<script src="claw-lesson/scenes.js"></script>
+<script src="claw-lesson/checkpoints.js"></script>
+<script src="claw-lesson/early-scenes.js"></script>
+<script src="claw-lesson/early-cues.js"></script>
+<script src="claw-lesson/downloads.js"></script>
+<script src="claw-lesson/presentation.js"></script>

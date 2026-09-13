@@ -1,0 +1,97 @@
+/* Earlier stages reuse the sample's fonts, colors, mechanism and code layout. */
+.early-message {font-size:34px;line-height:1.4;color:var(--ink);margin:20px!important;}
+.early .program-code:has(.early-message),.early .program-code:has(.early-pair),.early .program-code:has(.early-table) {background:transparent;}
+.early-pair {display:flex;align-items:center;gap:35px;margin:22px 20px;font-size:29px;line-height:1.4;}
+.early-pair strong {font-size:62px;font-weight:650;min-width:115px;color:var(--teal);}
+.early-table {width:95%;font-size:31px!important;border-collapse:collapse;margin:20px!important;}
+.early-table th,.early-table td {padding:18px 20px!important;border-bottom:1px solid var(--line)!important;}
+.early-table th {font-size:23px;color:var(--muted);font-weight:500;}
+.has-controls .program-code {height:222px;min-height:222px;}
+.early-controls {display:flex;flex-wrap:wrap;gap:9px 10px;align-content:start;margin-top:17px;font-size:18px;line-height:27px;}
+.early-controls label {display:flex;align-items:center;gap:7px;color:var(--muted);font-size:18px;white-space:nowrap;}
+.early-controls input,.early-controls select,.deck-nav select {font:inherit;color:var(--ink);background:var(--code);border:1px solid var(--line);border-radius:4px;padding:5px 7px;}
+.early-controls input {width:65px;}
+.early-controls button,.lesson-dialog button {font:inherit;font-size:18px;color:var(--teal);background:#e1efea;border:1px solid #c6dbd4;border-radius:4px;padding:6px 11px;cursor:pointer;}
+.early-controls button:disabled,.early-controls select:disabled,.early-controls input:disabled {opacity:.45;cursor:default;}
+.early-controls .control-feedback {flex-basis:100%;font-size:18px;line-height:1.4;color:var(--muted);margin:4px 0!important;}
+.trial-log {flex-basis:100%;width:100%;border-collapse:collapse;font-size:18px;margin:2px 0 0!important;}
+.trial-log th,.trial-log td {text-align:left;padding:5px 12px 5px 0!important;border-bottom:1px solid var(--line);white-space:nowrap;}
+.trial-log th {font-size:15px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;}
+.trial-log td:first-child {color:var(--teal);font-weight:600;}
+.trial-log tbody:empty {display:none;}
+.trial-log:has(tbody:empty) thead {display:none;}
+.lab.show-torque .reading-label {font-size:16px;}
+.lab.show-torque .reading-value {font-size:47px;}
+.lab.show-torque .reading.torque .reading-value {font-size:34px;}
+#approach-speed {font-size:18px;color:var(--muted);}
+.deck-nav #stage-picker {font-size:16px;width:104px;}
+.deck-nav #home-code-button {font-size:16px;padding:8px;white-space:nowrap;}
+.deck-nav #play-status {min-width:180px;font-size:16px;}
+.lesson-dialog {width:900px;max-width:88vw;max-height:86vh;box-sizing:border-box;background:#fffef8;color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:26px;font:18px/1.5 'Segoe UI',Arial,sans-serif;}
+.lesson-dialog::backdrop {background:#17353db3;}
+.lesson-dialog .dialog-heading {display:flex;align-items:center;justify-content:space-between;gap:25px;}
+.lesson-dialog h2 {font-size:30px;margin:0;color:var(--teal);}
+.lesson-dialog p {margin:12px 0;}
+.lesson-dialog pre {font:19px/1.45 Consolas,monospace;padding:18px;background:#f2f3eb;overflow:auto;max-height:52vh;}
+.dialog-actions {display:flex;gap:12px;}
+
+/* Show only the panels a slide needs, and reveal the rest on the next press. */
+#step-marks {display:none;}
+.step {transition:opacity .18s ease;}
+.step-hidden {opacity:0;visibility:hidden;}
+.step-status {font-size:16px;color:var(--teal);letter-spacing:.4px;white-space:nowrap;}
+.mechanism-side {display:flex;flex-direction:column;}
+.lab.mechanism-only {grid-template-columns:640px 1fr;}
+.mechanism-only #claw-svg {margin:auto 0;}
+.lab.message:not(.has-controls) .program-code {height:100%;min-height:0;}
+.mechanism-only #claw-svg {width:640px;height:341px;}
+.lab.message .early-message {font-size:35px;}
+.lab.scene {grid-template-columns:560px 1fr;}
+.scene-figure {display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;margin:0;}
+#scene-art {width:540px;height:318px;}
+#scene-caption {font-size:20px;line-height:26px;color:var(--muted);text-align:center;margin-top:4px;}
+.scene-finger {transition:transform .35s ease;}
+#scene-contact,#scene-press {opacity:0;transition:opacity .3s ease;}
+.scene-grip #scene-contact,.scene-grip #scene-press {opacity:1;}
+.scene-grip #scene-left {transform:translateX(22px);}
+.scene-grip #scene-right {transform:translateX(-22px);}
+@media (prefers-reduced-motion:reduce) {.step,.scene-finger,#scene-contact,#scene-press {transition:none;}}
+
+/* Course integration: controls and independent closing task. */
+.controls-hint {position:absolute;left:52px;right:52px;bottom:80px;font-size:18px!important;line-height:1.4!important;color:var(--muted);margin:0!important;}
+.challenge-layout {position:absolute;top:190px;left:52px;right:52px;display:grid;grid-template-columns:1.35fr 1fr;gap:68px;font-size:27px;line-height:1.4;}
+.challenge-layout p {margin:0 0 22px;}
+.challenge-layout .challenge-lead {font-size:31px;color:var(--ink);}
+.challenge-layout ol {margin:0 0 28px 30px;}
+.challenge-layout li {margin-bottom:18px;}
+.challenge-layout h3 {font-size:34px;color:var(--teal);margin:0 0 22px;}
+.challenge-actions {display:flex;gap:16px;flex-wrap:wrap;}
+.challenge-layout button,.challenge-actions a {display:inline-block;background:#e1efea;border:1px solid #b9d5cd;border-radius:5px;padding:12px 16px;font:22px/1.2 'Segoe UI',sans-serif;color:var(--ink);text-decoration:none;cursor:pointer;}
+.challenge-resources button {display:block;margin:14px 0;}
+.challenge-layout .challenge-note {font-size:21px;color:var(--muted);margin:24px 0;}
+.challenge-layout .course-link {font-size:22px;color:var(--teal);}
+
+/* Preserve the lesson's measured typography inside the course-wide theme. */
+body.claw-presentation .reveal .slides section h2 {
+  font-family:"Segoe UI",Arial,sans-serif;font-size:50px!important;font-weight:650;
+  line-height:1.13;color:var(--ink);border:0;padding:0;
+}
+body.claw-presentation .reveal .slides section .lab h3 {
+  font-size:19px!important;line-height:27px;margin:0;
+}
+body.claw-presentation .reveal .slides section .function-trio h3 {
+  font-family:Consolas,monospace;font-size:38px!important;margin:0 0 24px;
+}
+body.claw-presentation .reveal .slides section .challenge-layout h3 {
+  font-size:34px!important;
+}
+body.claw-presentation .reveal code {
+  background:transparent!important;border:0!important;border-radius:0!important;padding:0!important;
+}
+body.claw-presentation .reveal .function-trio pre {
+  border:0;border-radius:0;padding:0;box-shadow:none;background:none;
+}
+body.claw-presentation .reveal .function-trio pre code {
+  font-family:Consolas,monospace;font-size:inherit;line-height:inherit;
+  white-space:pre;overflow:visible;max-height:none;
+}
