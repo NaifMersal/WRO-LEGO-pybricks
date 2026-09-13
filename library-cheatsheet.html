@@ -4247,12 +4247,12 @@ code{ color:var(--navy); }
 </tr>
 <tr class="even">
 <td><code>gripper.release(50)</code></td>
-<td>open <strong>to 50°</strong> and stop there, so the jaws shove nothing</td>
+<td>move to <strong>50° from that mechanism’s zero</strong>; check that the object can clear</td>
 </tr>
 </tbody>
 </table>
 <blockquote class="blockquote">
-<p>🎤 <strong>Open only as far as you need.</strong> Plain <code>release()</code> swings the jaws out to <code>READY_ANGLE</code>, and beside a standing microphone those jaw arms sweep a wide arc and flatten it — the 20 points are for <strong>upright</strong>. Zero is where the jaws meet, so the number you pass is simply <em>how far open</em>: find the smallest one that still lets the object go, on the mat, and keep it in your mission list next to the drive that gets you there.</p>
+<p>🎤 <strong>Open only as far as you need.</strong> On this claw, zero is the rigid <strong>open</strong> stop. <code>home()</code> finds it, sets the reading to 0°, and stays there. Plain <code>release()</code> returns to <code>OPEN_TARGET = 0</code>. A larger target such as 50° leaves the jaws less open, which can reduce their sweep near another object. Test that the chosen opening still releases your object. Each mechanism has its own reference and settings.</p>
 </blockquote>
 <blockquote class="blockquote">
 <p>🎯 <strong>There is no “did I get it?” verb, and that is deliberate.</strong> If a grab comes up empty, the claw was in the <strong>wrong place</strong> — and a robot that knows it missed still has no idea <em>where</em> it actually is, so it can’t do anything useful about it. Spend the effort on arriving at the same spot every time instead: a <code>wall_square()</code> before the grab beats any amount of checking after it.</p>
@@ -4292,9 +4292,11 @@ code{ color:var(--navy); }
 <p><strong><code>gripper.home()</code> — the same idea, for your mechanism</strong></p>
 <p>The motor counts degrees from a mark on its <strong>own shaft</strong> — it has never seen your claw. Skip a gear tooth in a crash, re-seat an axle, or re-gear the mechanism, and the mark stays where it was while your jaws move. That zero is now <strong>garbage</strong>, and every <code>run_target</code> after it inherits the mistake. <a href="#move-by-or-move-to">More on that pair of verbs.</a></p>
 <p>So don’t guess. Drive it until it physically can’t move, and call <em>that</em> zero.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>claw.run_until_stalled(<span class="op">-</span>OPEN_SPEED, then<span class="op">=</span>Stop.COAST, duty_limit<span class="op">=</span>HOME_EFFORT)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>wait(<span class="dv">200</span>)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>claw.reset_angle(<span class="dv">0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>claw.control.limits(torque<span class="op">=</span>HOME_TORQUE)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>claw.run_until_stalled(<span class="op">-</span>CLOSE_SPEED, then<span class="op">=</span>Stop.COAST)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>wait(<span class="dv">200</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>claw.reset_angle(<span class="dv">0</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>claw.control.limits(torque<span class="op">=</span>GRIP_TORQUE)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><strong>The printed mat never lies — neither does the end stop.</strong> Same trick, two places: stop guessing, go and <em>touch</em> something that is where it says it is.</p>
 <p>That works because the end stop is <strong>rigid and always in the same place</strong>. An object in the jaws is neither — which is why <code>grab()</code> does something different. <a href="#stall-to-find-zero-torque-to-hold-a-thing">See below.</a></p>
 <blockquote class="blockquote">

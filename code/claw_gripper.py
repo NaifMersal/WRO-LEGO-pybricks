@@ -1,20 +1,24 @@
 """claw_gripper.py -- a claw that closes on the object.  Port E.
 
-    import claw_gripper as claw       # give it a name, don't star-import
+    import claw_gripper as claw
 
-    claw.home()          # shut on nothing = zero, then open ready
-    claw.grab()          # close and keep squeezing
-    claw.release()       # open all the way again
-    claw.release(50)     # ...or open only THIS far, so the jaws shove nothing
+    claw.home()          # find the open end stop, zero there, stay at 0 deg
+    claw.grab()          # move toward 130 deg; keep pressing if blocked
+    claw.release()       # return to the 0 deg opening
+    claw.release(50)     # target 50 deg: less open than the default 0 deg
 
-STALL TO FIND ZERO. TORQUE TO HOLD A THING.
+ZERO IS AT THE OPEN END STOP. Positive rotation closes this claw; negative
+rotation opens it. home() finds that stop with the jaws empty and calls it 0.
 
-ZERO IS WHERE THE JAWS MEET. home() shuts them on nothing and calls that 0,
-so an angle is simply how far the object holds the jaws open.
+All angles are motor-shaft degrees from that zero, not jaw angles or gap widths.
+Larger targets close the jaws farther; smaller targets open them farther.
 
-    0 ........... contact ........... READY_ANGLE
-    jaws met      object grips        open, ready
-                  VARIES BY SIZE
+    0 = OPEN_TARGET .................. GRIP_TARGET (130)
+    open stop / release                closing target
+
+An object may stop the jaws before the grip target. The motor keeps trying
+to reach that target, with its torque limited. If it reaches the target,
+it holds that angle instead. Neither outcome alone confirms a successful catch.
 """
 
 from pybricks.parameters import Direction, Port, Stop
@@ -25,17 +29,17 @@ from pybricks.tools import wait
 # ============================================================ CLAW FACTS ==
 
 CLAW_PORT = Port.E
-CLAW_DIRECTION = Direction.CLOCKWISE   # POSITIVE must mean OPENING TUNE
+CLAW_DIRECTION = Direction.CLOCKWISE   # Positive closes; negative opens. TUNE
 
-OPEN_SPEED = 300        # deg/s
-CLOSE_SPEED = 200       # deg/s -- slower so it doesn't slam the object
+OPEN_SPEED = 300        # motor deg/s -- move to the release target
+CLOSE_SPEED = 200       # motor deg/s -- also used to approach the open home stop
 
-HOME_EFFORT = 40        # % power, home() only. Jaw on jaw -- keep it gentle TUNE
-GRIP_TORQUE = 180       # mNm -- how hard we squeeze                        TUNE
+HOME_TORQUE = 220       # mNm -- homing torque limit at the rigid open stop TUNE
+GRIP_TORQUE = 180       # mNm -- gripping and opening torque limit          TUNE
 
-READY_ANGLE = 10       # deg open -- wide enough for your BIGGEST object   TUNE
-GRIP_TARGET = 130       # deg past shut. Unreachable on purpose: the jaws never
-                        # arrive, so they never stop leaning in.
+OPEN_TARGET = 0        # motor deg from open zero -- default release position TUNE
+GRIP_TARGET = 130       # motor deg from open zero -- closing target          TUNE
+                       # An object may block it; reaching it is also allowed.
 
 
 # ============================================================== HARDWARE ==
@@ -47,28 +51,31 @@ claw.control.limits(torque=GRIP_TORQUE)
 # ================================================================= VERBS ==
 
 def home():
-    """Shut the jaws on NOTHING, call that zero, then open ready. Every run."""
-    claw.run_until_stalled(-CLOSE_SPEED, then=Stop.COAST,
-                           duty_limit=HOME_EFFORT)
-    wait(200)                       # let it settle, or zero drifts
+    """With empty jaws, find the open stop and zero there."""
+    claw.control.limits(torque=HOME_TORQUE)
+    claw.run_until_stalled(-CLOSE_SPEED, then=Stop.COAST)
+    wait(200)                       # let the mechanism settle before setting zero
     claw.reset_angle(0)
-    claw.run_target(OPEN_SPEED, READY_ANGLE, then=Stop.COAST)
+    claw.control.limits(torque=GRIP_TORQUE)
 
 
 def grab():
-    """Close on the object and keep squeezing whatever stopped the jaws."""
+    """Move toward GRIP_TARGET; return when stalled or when the movement is done."""
+    claw.control.limits(torque=GRIP_TORQUE)
     claw.run_target(CLOSE_SPEED, GRIP_TARGET, then=Stop.HOLD, wait=False)
-    wait(100)                           # let it get moving before asking
+    wait(100)                       # allow movement to start before checking status
     while not claw.stalled() and not claw.done():
         wait(10)
-    # Don't stop or hold the motor here -- leaving it running IS the squeeze.
+    # Keep the command active: press toward a blocked target, or hold a reached one.
 
 
-def release(angle=READY_ANGLE):
-    """Open the claw and let go. A smaller angle opens less.
+def release(angle=OPEN_TARGET):
+    """Move to a release position, then let the motor coast.
 
-    Zero is where the jaws meet, so the number is just how far open you want
-    them: release() swings wide, release(50) barely lets go. Use a small one
-    beside something you must not knock over, like the microphone.
+    The target is motor-shaft degrees from the open end stop. The default
+    is 0 deg; release(50) leaves the jaws less open than that default.
+    A larger target can reduce the opening sweep, but must still let the
+    object go. run_target moves to the requested angle from either direction.
     """
+    claw.control.limits(torque=GRIP_TORQUE)
     claw.run_target(OPEN_SPEED, angle, then=Stop.COAST)
