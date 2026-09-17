@@ -3,7 +3,7 @@
     import claw_gripper as claw
 
     claw.home()          # find the open end stop, zero there, stay at 0 deg
-    claw.grab()          # move toward 130 deg; keep pressing if blocked
+    claw.grab()          # move toward 120 deg; keep pressing if blocked
     claw.release()       # return to the 0 deg opening
     claw.release(50)     # target 50 deg: less open than the default 0 deg
 
@@ -13,7 +13,7 @@ rotation opens it. home() finds that stop with the jaws empty and calls it 0.
 All angles are motor-shaft degrees from that zero, not jaw angles or gap widths.
 Larger targets close the jaws farther; smaller targets open them farther.
 
-    0 = OPEN_TARGET .................. GRIP_TARGET (130)
+    0 = OPEN_TARGET .................. GRIP_TARGET (120)
     open stop / release                closing target
 
 An object may stop the jaws before the grip target. The motor keeps trying
@@ -38,8 +38,10 @@ HOME_TORQUE = 220       # mNm -- homing torque limit at the rigid open stop TUNE
 GRIP_TORQUE = 180       # mNm -- gripping and opening torque limit          TUNE
 
 OPEN_TARGET = 0        # motor deg from open zero -- default release position TUNE
-GRIP_TARGET = 130       # motor deg from open zero -- closing target          TUNE
+GRIP_TARGET = 120       # motor deg from open zero -- closing target          TUNE
                        # An object may block it; reaching it is also allowed.
+                       # Keep it short of the angle where empty jaws meet, or
+                       # every empty grab ends by jamming the jaws together.
 
 
 # ============================================================== HARDWARE ==
