@@ -9,7 +9,7 @@
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.9.38">
 
-  <meta name="dcterms.date" content="2026-09-14">
+  <meta name="dcterms.date" content="2026-09-28">
   <title>The Drive That Heals Itself</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -202,17 +202,17 @@
 
 <section id="title-slide" data-background-image="../slides_template/assets/anim.svg" data-background-opacity="0.15" data-background-size="cover" class="quarto-title-block center">
   <h1 class="title">The Drive That Heals Itself</h1>
-  <p class="subtitle">Days 4a–4c · Robot Rockstars · SPIKE Prime + Pybricks</p>
+  <p class="subtitle">Session 9 · Lesson D4c · Robot Rockstars · SPIKE Prime + Pybricks</p>
 
 <div class="quarto-title-authors">
 </div>
 
-  <p class="date">2026-09-14</p>
+  <p class="date">2026-09-28</p>
 </section>
 <section>
 <section id="a.-warm-up" class="title-slide slide level1 sdaia-dark center" data-background-gradient="linear-gradient(135deg, #1C355E, #00C9A7)">
 <h1>A. Warm-Up</h1>
-<p>Yesterday your turn <em>watched itself</em>, then coasted to 94 with the guilty party named. Today: the cure. Then the cure gets a brain.</p>
+<p>Your turn arrives slowly now. Today a stopwatch joins in, and the cure gets a brain.</p>
 </section>
 <section id="where-we-left-off" class="slide level2">
 <h2>Where we left off</h2>
@@ -223,37 +223,33 @@
 </colgroup>
 <thead>
 <tr class="header">
-<th>Yesterday</th>
+<th>Last two sessions</th>
 <th>The trick</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>🧭 <strong>heading</strong></td>
-<td>one number for “which way”: net turning since <code>reset_heading(0)</code></td>
+<td>🩹 <strong>two speeds</strong></td>
+<td>fast, then crawl the last 30°: the coast has nothing left to steal</td>
 </tr>
 <tr class="even">
-<td>👀 the <strong>watched turn</strong></td>
-<td>spin · watch <code>heading()</code> · stop <em>at</em> the target, with <code>while</code></td>
+<td>📝 <strong><code>def</code></strong></td>
+<td>write the recipe once, then call it by name with any target</td>
 </tr>
 <tr class="odd">
-<td>🔁 <strong>loops, nested</strong></td>
-<td><code>for</code> draws the shape, <code>while</code> lands the corner, 360 ÷ sides</td>
-</tr>
-<tr class="even">
-<td>🚨 the <strong>open case</strong></td>
-<td>it printed <strong>94</strong>. Guilty party: <em>momentum</em>. Diagnosed, not cured</td>
+<td>⌨️ <strong>your own moves</strong></td>
+<td>three new problems, solved with <code>def</code> and nothing new</td>
 </tr>
 </tbody>
 </table>
 <div class="fragment fade-up">
-<p>🤔 Shape Shifter’s traces told the same story: every corner a few degrees hot, and the octagon paid 8 times. Today the coast meets its cure.</p>
+<p>🤔 Your sticky note holds three numbers. Do they work for <strong>every</strong> angle?</p>
 </div>
 <p>⏱️ <strong>Time: 10 minutes</strong></p>
 </section>
-<section id="setup-same-bench-one-new-import" class="slide level2">
-<h2>Setup: same bench, one new import</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-code-line-numbers="|1-4|6-8|10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="im">from</span> pybricks.hubs <span class="im">import</span> PrimeHub</span>
+<section id="setup-one-new-import" class="slide level2">
+<h2>Setup: one new import</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-code-line-numbers="|4|10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="im">from</span> pybricks.hubs <span class="im">import</span> PrimeHub</span>
 <span id="cb1-2"><a></a><span class="im">from</span> pybricks.pupdevices <span class="im">import</span> Motor</span>
 <span id="cb1-3"><a></a><span class="im">from</span> pybricks.parameters <span class="im">import</span> Port, Direction</span>
 <span id="cb1-4"><a></a><span class="im">from</span> pybricks.tools <span class="im">import</span> wait, StopWatch</span>
@@ -262,9 +258,9 @@
 <span id="cb1-7"><a></a>left <span class="op">=</span> Motor(Port.F, Direction.COUNTERCLOCKWISE)   <span class="co"># yours</span></span>
 <span id="cb1-8"><a></a>right <span class="op">=</span> Motor(Port.B)                              <span class="co"># yours</span></span>
 <span id="cb1-9"><a></a></span>
-<span id="cb1-10"><a></a><span class="co"># your watched turn from yesterday goes here. It still coasts to ~94, for now.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-10"><a></a><span class="co"># your gyro_turn(target) from Cure the Coast goes here</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <aside class="notes">
-<p>Everyone starts from their own D3 file — imports plus their watched-turn lines. <code>StopWatch</code> sneaks into the imports here; it gets used (and explained in one breath) in the race lab. Recap by asking, not telling: “walk me through your watched turn line by line — and who was guilty for the 94?” — two or three students, one loop. Do NOT preview the fix; the next act builds it from the coast they already diagnosed.</p>
+<p>Everyone starts from their own D4a file: imports plus their two-speed <code>gyro_turn</code>, tuned to the numbers on the sticky note. <code>StopWatch</code> is the only new import; it gets used (and explained in one breath) in the race lab. Recap by asking: “walk me through your <code>gyro_turn</code> line by line: where does it crawl, and why?” Do NOT preview the P-term.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -278,253 +274,8 @@
       }</style></aside>
 </section></section>
 <section>
-<section id="b.-the-cure-arrive-slowly" class="title-slide slide level1 sdaia-dark center" data-background-gradient="linear-gradient(135deg, #1C355E, #00C9A7)">
-<h1>B. The Cure: Arrive Slowly</h1>
-<p>Momentum needs <em>speed</em> to steal degrees. So give it none at the end.</p>
-</section>
-<section id="feel-the-fix-arrive-slowly" class="slide level2">
-<h2>Feel the fix: arrive slowly</h2>
-<div style="text-align:center;font-size:17px;color:#5b6678;margin-bottom:2px;">🚗 that's your <b>robot seen from above</b>: nose up = heading 0°. The judge calls: turn right to the <b style="color:#00AE8D;">90° tick</b>.</div>
-<div style="display:flex;justify-content:center;align-items:flex-start;gap:80px;">
-  <div style="text-align:center;">
-    <div style="font-weight:800;color:#1C355E;font-size:23px;">🚀 Full speed all the way</div>
-    <svg width="210" height="210" viewbox="-110 -110 220 220" style="margin:6px auto;display:block;">
-      <circle r="86" fill="#eef3f8" stroke="#1C355E" stroke-width="6"></circle>
-      <line x1="86" y1="0" x2="102" y2="0" stroke="#00C9A7" stroke-width="6"></line>
-      <text x="92" y="-12" font-size="17" fill="#00C9A7" font-weight="700">90°</text>
-      <path id="odArc" d="M 86 0 A 86 86 0 0 1 85.4 10.5" fill="none" stroke="#E96852" stroke-width="7" stroke-linecap="round" opacity="0"></path>
-      <g id="odN1">
-        <use href="#sim-bot" style="--bot:#FF7A5C"></use>
-      </g>
-    </svg>
-    <div style="font-size:24px;font-weight:800;color:#FF7A5C;"><span id="odV1">0</span>° <span id="odS1" style="font-size:17px;"></span></div>
-  </div>
-  <div style="display:flex;flex-direction:column;justify-content:center;height:240px;">
-    <button class="sim-btn teal" data-sim="raceDials">▶ Turn to 90°</button>
-  </div>
-  <div style="text-align:center;">
-    <div style="font-weight:800;color:#1C355E;font-size:23px;">🐢 Fast, then crawl</div>
-    <svg width="210" height="210" viewbox="-110 -110 220 220" style="margin:6px auto;display:block;">
-      <circle r="86" fill="#eef3f8" stroke="#1C355E" stroke-width="6"></circle>
-      <line x1="86" y1="0" x2="102" y2="0" stroke="#00C9A7" stroke-width="6"></line>
-      <text x="92" y="-12" font-size="17" fill="#00C9A7" font-weight="700">90°</text>
-      <g id="odN2">
-        <use href="#sim-bot" style="--bot:#00C9A7"></use>
-      </g>
-    </svg>
-    <div style="font-size:24px;font-weight:800;color:#00C9A7;"><span id="odV2">0</span>° <span id="odS2" style="font-size:17px;"></span></div>
-  </div>
-</div>
-<script>
-var odRAF = null;
-function raceDials(){
-  if(odRAF) cancelAnimationFrame(odRAF);
-  var t0 = performance.now();
-  SIM.el('odArc').setAttribute('opacity','0');
-  SIM.el('odS1').textContent = '';
-  SIM.el('odS2').textContent = '';
-  function pose(el, val, deg){
-    SIM.el(el).setAttribute('transform','rotate('+deg.toFixed(1)+')');
-    SIM.el(val).textContent = Math.round(deg);
-  }
-  function step(now){
-    var t = (now-t0)/1000;
-    // Dial 1: 180°/s to 90, then coast +7° over 0.45 s (ease-out)
-    var a1;
-    if(t < 0.5) a1 = 180*t;
-    else { var c = Math.min((t-0.5)/0.45, 1); a1 = 90 + 7*(1-(1-c)*(1-c)); }
-    // Dial 2: 180°/s to 60, then 35°/s to 90, dead stop
-    var a2;
-    if(t < 0.3333) a2 = 180*t;
-    else a2 = Math.min(60 + 35*(t-0.3333), 90);
-    pose('odN1','odV1',a1);
-    pose('odN2','odV2',a2);
-    if(t < 1.4){ odRAF = requestAnimationFrame(step); }
-    else {
-      odRAF = null;
-      SIM.el('odArc').setAttribute('opacity','1');
-      var s1 = SIM.el('odS1'); s1.textContent = '· coasted past 😬'; s1.style.color = '#E96852';
-      var s2 = SIM.el('odS2'); s2.textContent = '· parked on it 🎯'; s2.style.color = '#00AE8D';
-    }
-  }
-  odRAF = requestAnimationFrame(step);
-}
-
-/* Registered for the kit: these are plain function declarations, so
-   they were never assigned to window and nothing else picks them up. */
-SIM.def('raceDials', raceDials);
-</script>
-<div class="fragment fade-up">
-<div class="cardbox purple">
-<p>Same target. Same gyro. The only difference: the 🐢 arrives <strong>slowly</strong>, so there’s nothing left to coast. Fast when far, slow when close.</p>
-</div>
-</div>
-</section>
-<section id="the-fix-in-code" class="slide level2">
-<h2>The fix, in code</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-code-line-numbers="|1|2|3-5|6-8|9|11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a><span class="kw">def</span> gyro_turn(target):                        <span class="co"># def = name a move once, use it forever</span></span>
-<span id="cb2-2"><a></a>    hub.imu.reset_heading(<span class="dv">0</span>)</span>
-<span id="cb2-3"><a></a>    left.run(<span class="dv">200</span>)<span class="op">;</span> right.run(<span class="op">-</span><span class="dv">200</span>)            <span class="co"># fast for the long haul…</span></span>
-<span id="cb2-4"><a></a>    <span class="cf">while</span> hub.imu.heading() <span class="op">&lt;</span> target <span class="op">-</span> <span class="dv">30</span>:</span>
-<span id="cb2-5"><a></a>        wait(<span class="dv">5</span>)</span>
-<span id="cb2-6"><a></a>    left.run(<span class="dv">50</span>)<span class="op">;</span> right.run(<span class="op">-</span><span class="dv">50</span>)              <span class="co"># …crawl the last 30°</span></span>
-<span id="cb2-7"><a></a>    <span class="cf">while</span> hub.imu.heading() <span class="op">&lt;</span> target:</span>
-<span id="cb2-8"><a></a>        wait(<span class="dv">5</span>)</span>
-<span id="cb2-9"><a></a>    left.stop()<span class="op">;</span> right.stop()</span>
-<span id="cb2-10"><a></a></span>
-<span id="cb2-11"><a></a>gyro_turn(<span class="dv">90</span>)     <span class="co"># or gyro_turn(45), gyro_turn(180)…</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="fragment fade-up">
-<div class="cardbox purple">
-<p>Two speeds, two <code>while</code>s: <strong>fast for the long haul, crawl the last 30°</strong>, so momentum arrives with nothing left to steal. And line 1: <code>def</code> <strong>names the move once</strong>, and every call replays it.</p>
-</div>
-</div>
-<aside class="notes">
-<p>First <code>def</code> of the bootcamp — land it hard: a function is a <em>named move</em>, exactly like <code>run_angle</code> is someone else’s named move. This version handles right turns (positive targets); if a kid asks about left turns, brilliant — flip the two <code>run</code> signs and the <code>&lt;</code> to <code>&gt;</code>, or park it as a challenge. The constants 200/50/30 are the raw material the afternoon interrogates; they get promoted into the <code>ROBOT FACTS</code> block at D8. Demo on the next slide — walk the highlights here first.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="one-recipe-card-many-calls" class="slide level2">
-<h2>One recipe card, many calls 📝</h2>
-<div class="sim">
-  <div style="display:flex;justify-content:center;align-items:center;gap:10px;margin-bottom:8px;">
-    <span style="font-size:18px;color:#1C355E;font-weight:700;">call the one recipe:</span>
-    <button class="sim-btn teal small" data-sim="rcCall" data-sim-arg="45">gyro_turn(45)</button>
-    <button class="sim-btn purple small" data-sim="rcCall" data-sim-arg="90">gyro_turn(90)</button>
-    <button class="sim-btn coral small" data-sim="rcCall" data-sim-arg="180">gyro_turn(180)</button>
-  </div>
-  <div style="display:flex;justify-content:center;align-items:center;gap:48px;">
-    <div id="rcCard" style="font-family:Consolas,monospace;font-size:16px;color:#1C355E;background:#eef3f8;border-radius:12px;border-left:5px solid #625D9C;padding:12px 18px;transition:box-shadow .15s,transform .15s;">
-      <div style="font-weight:800;color:#625D9C;margin-bottom:4px;">📝 one recipe card</div>
-      <div>def gyro_turn(target):</div>
-      <div>&nbsp;&nbsp;fast … then crawl</div>
-      <div>&nbsp;&nbsp;stop at the target</div>
-    </div>
-    <div style="text-align:center;">
-      <svg width="170" height="170" viewbox="-100 -100 200 200" style="display:block;">
-        <circle r="82" fill="#eef3f8" stroke="#1C355E" stroke-width="5"></circle>
-        <g id="rcTick" opacity="0"><line x1="0" y1="-82" x2="0" y2="-98" stroke="#00AE8D" stroke-width="6"></line></g>
-        <g id="rcNeedle">
-          <use href="#sim-bot" style="--bot:#625D9C"></use>
-        </g>
-      </svg>
-      <div style="font-family:Consolas,monospace;font-size:18px;color:#1C355E;">landed <span id="rcLand" style="font-weight:800;">–</span>°</div>
-      <div style="font-size:15px;color:#625D9C;">calls made: <b><span id="rcN">0</span></b> · recipes written: <b>1</b></div>
-    </div>
-  </div>
-</div>
-<script>
-(function(){
-  var T=0, h=0, phase='idle', raf=null, last=null, n=0;
-  function step(now){
-    var dt = last ? Math.min((now-last)/1000,0.05) : 0.016; last=now;
-    if(phase==='fast'){ h += 300*dt; if(h >= T-30) phase='crawl'; }
-    else if(phase==='crawl'){ h += 70*dt; if(h >= T){ h=T; phase='settle'; } }
-    SIM.el('rcNeedle').setAttribute('transform','rotate('+h.toFixed(1)+')');
-    SIM.el('rcLand').textContent = Math.round(h);
-    if(phase==='settle'){ SIM.el('rcLand').style.color='#00AE8D'; raf=null; return; }
-    raf=requestAnimationFrame(step);
-  }
-  SIM.def('rcCall', function(t){
-    T=t; h=0; phase='fast'; last=null;
-    n++; SIM.el('rcN').textContent=n;
-    SIM.el('rcLand').style.color='#1C355E';
-    SIM.el('rcTick').setAttribute('transform','rotate('+T+')');
-    SIM.el('rcTick').setAttribute('opacity','1');
-    var c=SIM.el('rcCard');
-    c.style.boxShadow='0 0 0 3px #625D9C'; c.style.transform='scale(1.03)';
-    setTimeout(function(){ c.style.boxShadow='none'; c.style.transform='scale(1)'; },220);
-    if(raf) cancelAnimationFrame(raf);
-    raf=requestAnimationFrame(step);
-  });
-})();
-</script>
-<div class="fragment fade-up">
-<div class="cardbox purple">
-<p><strong>The 94 is cured</strong>, and you just wrote your first robot <em>move</em>: one recipe card, any number of calls, and the 🚗 parks on every tick.</p>
-</div>
-</div>
-<div class="fragment fade-up">
-<div class="cardbox teal">
-<p>Can you beat two speeds? Imagine speed <strong>shrinking as the degrees-left shrink</strong>. That idea comes due before lunch. 😏</p>
-</div>
-</div>
-<aside class="notes">
-<p>Run the demo BEFORE any fragment: click all three calls, watch the same recipe card flash and the car park on three different ticks — that <em>is</em> the def/call story, animated. Only then reveal the cards. The teal teaser plants the smarter fix (push proportional to distance-left) — do NOT name it: it gets built and <em>named</em> before lunch as the start of the PID story.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="bug-hunt-the-silent-robot" class="slide level2">
-<h2>🐛 Bug hunt: the silent robot</h2>
-<div class="qbox">
-<p><span class="qtitle">No red error. No crash. The robot just… <strong>sits there.</strong> The code looks perfect. What did we forget?</span></p>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a><span class="kw">def</span> gyro_turn(target):</span>
-<span id="cb3-2"><a></a>    hub.imu.reset_heading(<span class="dv">0</span>)</span>
-<span id="cb3-3"><a></a>    left.run(<span class="dv">200</span>)<span class="op">;</span> right.run(<span class="op">-</span><span class="dv">200</span>)</span>
-<span id="cb3-4"><a></a>    <span class="cf">while</span> hub.imu.heading() <span class="op">&lt;</span> target:</span>
-<span id="cb3-5"><a></a>        wait(<span class="dv">5</span>)</span>
-<span id="cb3-6"><a></a>    left.stop()<span class="op">;</span> right.stop()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="fragment fade-up">
-<div class="cardbox coral">
-<p><code>def</code> only <strong>writes</strong> the recipe, it never cooks it. Nothing happens until you <strong>call</strong> the move by name: add <code>gyro_turn(90)</code> below. Defining a move and <em>using</em> a move are two separate steps.</p>
-</div>
-</div>
-<aside class="notes">
-<p>The most instructive bug of the week — no error to read, so the robot’s stillness <em>is</em> the message. Elicit first: “if the code is right, why no movement?” Draw the split on the board — <code>def …:</code> writes the recipe card, <code>gyro_turn(90)</code> hands it to the cook. Leads straight into the bench lab, where they call it three times.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="bench-check-tune-your-crawl" class="slide level2">
-<h2>Bench check: tune your crawl 🎯</h2>
-<ul>
-<li>Build <code>gyro_turn</code>, then judge-call yourself: <strong>90° · 45° · 180°</strong>, printing the landing each time.</li>
-<li>Tune <strong>200 / 50 / 30</strong> until 90° lands within a degree or two. Write your three numbers on a sticky note. They’re about to testify.</li>
-</ul>
-<p>⏱️ <strong>Time: 20 minutes</strong></p>
-<aside class="notes">
-<p><em>Perfect Pivot</em>, folded into a bench lab: the cure is verified on 90°, but nobody is asked (yet) whether one tuning serves all three calls — that tension is the next act’s job. Make every squad physically write their three numbers down; the race lab reads them straight back.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section></section>
-<section>
-<section id="c.-break-it" class="title-slide slide level1 sdaia-dark center" data-background-gradient="linear-gradient(135deg, #1C355E, #FF7A5C)">
-<h1>C. Break It</h1>
+<section id="b.-break-it" class="title-slide slide level1 sdaia-dark center" data-background-gradient="linear-gradient(135deg, #1C355E, #FF7A5C)">
+<h1>B. Break It</h1>
 <p>The judge adds a <strong>stopwatch</strong>. Suddenly your crawl zone has a price tag.</p>
 </section>
 <section id="three-calls-one-sticky-note" class="slide level2">
@@ -561,15 +312,19 @@ SIM.def('raceDials', raceDials);
 </section>
 <section id="lab-race-your-own-turn" class="slide level2">
 <h2>Lab: race your own turn 🏁</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" data-code-line-numbers="|1|3-5|6-8|9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a>timer <span class="op">=</span> StopWatch()                 <span class="co"># a stopwatch, in code</span></span>
-<span id="cb4-2"><a></a></span>
-<span id="cb4-3"><a></a><span class="cf">for</span> target <span class="kw">in</span> [<span class="dv">45</span>, <span class="dv">90</span>, <span class="dv">180</span>]:</span>
-<span id="cb4-4"><a></a>    timer.reset()</span>
-<span id="cb4-5"><a></a>    gyro_turn(target)</span>
-<span id="cb4-6"><a></a>    elapsed <span class="op">=</span> timer.time()</span>
-<span id="cb4-7"><a></a>    wait(<span class="dv">1000</span>)                      <span class="co"># let the coast settle before you trust heading()</span></span>
-<span id="cb4-8"><a></a>    <span class="bu">print</span>(target, <span class="st">"-&gt;"</span>, elapsed, <span class="st">"ms, landed"</span>, hub.imu.heading())</span>
-<span id="cb4-9"><a></a>    wait(<span class="dv">3000</span>)                      <span class="co"># set the robot straight again</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-code-line-numbers="|1|3-9|11-13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a>timer <span class="op">=</span> StopWatch()                 <span class="co"># a stopwatch, in code</span></span>
+<span id="cb2-2"><a></a></span>
+<span id="cb2-3"><a></a><span class="kw">def</span> race(target):</span>
+<span id="cb2-4"><a></a>    timer.reset()</span>
+<span id="cb2-5"><a></a>    gyro_turn(target)</span>
+<span id="cb2-6"><a></a>    elapsed <span class="op">=</span> timer.time()</span>
+<span id="cb2-7"><a></a>    wait(<span class="dv">1000</span>)                      <span class="co"># let the coast settle before you trust heading()</span></span>
+<span id="cb2-8"><a></a>    <span class="bu">print</span>(target, <span class="st">"-&gt;"</span>, elapsed, <span class="st">"ms, landed"</span>, hub.imu.heading())</span>
+<span id="cb2-9"><a></a>    wait(<span class="dv">3000</span>)                      <span class="co"># set the robot straight again</span></span>
+<span id="cb2-10"><a></a></span>
+<span id="cb2-11"><a></a>race(<span class="dv">45</span>)</span>
+<span id="cb2-12"><a></a>race(<span class="dv">90</span>)</span>
+<span id="cb2-13"><a></a>race(<span class="dv">180</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>Run it with <strong>your bench tuning</strong> from the sticky note. Look at 45°’s time. Sleepy? That’s the crawl lane eating two-thirds of a small turn.</li>
 <li>Now chase the clock: crank the fast speed <strong>200 → 500</strong> and rerun. Look at where <strong>180° lands</strong>. 😬</li>
@@ -596,7 +351,7 @@ SIM.def('raceDials', raceDials);
 <section id="the-tuning-treadmill" class="slide level2">
 <h2>The tuning treadmill 🎡</h2>
 <div class="qbox">
-<p><span class="qtitle">Fix it with yesterday’s toolbox: a <strong>wider</strong> crawl zone? A <strong>third</strong> speed? A different tuning <strong>per angle</strong>? What does each one cost?</span></p>
+<p><span class="qtitle">Fix it with the toolbox you own: a <strong>wider</strong> crawl zone? A <strong>third</strong> speed? A different tuning <strong>per angle</strong>? What does each one cost?</span></p>
 <p>Talk it out. Follow each fix two steps ahead.</p>
 </div>
 <div class="fragment fade-up">
@@ -604,7 +359,7 @@ SIM.def('raceDials', raceDials);
 </div>
 <p>⏱️ <strong>Time: 20 minutes</strong> <em>(discussion + test-drives)</em></p>
 <aside class="notes">
-<p>This is the morning’s teal teaser (“imagine speed shrinking as the degrees-left shrink”) coming due. Let them propose the staircase fixes seriously — each is a real idea with a real cost; the point isn’t that they’re dumb, it’s that they don’t <em>scale</em>. Collect the fixes on the board first; the next slide drives them.</p>
+<p>This is <em>Cure the Coast</em>’s teal teaser (“imagine speed shrinking as the degrees-left shrink”) coming due. Let them propose the staircase fixes seriously — each is a real idea with a real cost; the point isn’t that they’re dumb, it’s that they don’t <em>scale</em>. Collect the fixes on the board first; the next slide drives them.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -782,8 +537,8 @@ SIM.def('raceDials', raceDials);
       }</style></aside>
 </section></section>
 <section>
-<section id="d.-name-it-the-p-controller" class="title-slide slide level1 sdaia-dark center" data-background-gradient="linear-gradient(135deg, #1C355E, #625D9C)">
-<h1>D. Name It: the P-controller</h1>
+<section id="c.-name-it-the-p-controller" class="title-slide slide level1 sdaia-dark center" data-background-gradient="linear-gradient(135deg, #1C355E, #625D9C)">
+<h1>C. Name It: the P-controller</h1>
 <p>You’ve been running this controller your whole life. Time to write it down.</p>
 </section>
 <section id="you-already-run-this-controller" class="slide level2">
@@ -991,23 +746,23 @@ SIM.def('raceDials', raceDials);
 </section>
 <section id="the-proportional-turn" class="slide level2">
 <h2>The proportional turn</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" data-code-line-numbers="|1|3|4|5-6|8|10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a><span class="kw">def</span> gyro_turn_p(target, kp<span class="op">=</span><span class="dv">4</span>):</span>
-<span id="cb5-2"><a></a>    hub.imu.reset_heading(<span class="dv">0</span>)</span>
-<span id="cb5-3"><a></a>    <span class="cf">while</span> <span class="bu">abs</span>(target <span class="op">-</span> hub.imu.heading()) <span class="op">&gt;</span> <span class="dv">1</span>:   <span class="co"># until within 1°…</span></span>
-<span id="cb5-4"><a></a>        error <span class="op">=</span> target <span class="op">-</span> hub.imu.heading()       <span class="co"># degrees still to go</span></span>
-<span id="cb5-5"><a></a>        left.run(kp <span class="op">*</span> error)                     <span class="co"># far → fast</span></span>
-<span id="cb5-6"><a></a>        right.run(<span class="op">-</span>kp <span class="op">*</span> error)                   <span class="co"># close → gentle</span></span>
-<span id="cb5-7"><a></a>        wait(<span class="dv">5</span>)</span>
-<span id="cb5-8"><a></a>    left.stop()<span class="op">;</span> right.stop()</span>
-<span id="cb5-9"><a></a></span>
-<span id="cb5-10"><a></a>gyro_turn_p(<span class="dv">90</span>)   <span class="co"># gyro_turn_p(45)… gyro_turn_p(180)… gyro_turn_p(-90)!</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" data-code-line-numbers="|1|3|4|5-6|8|10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a><span class="kw">def</span> gyro_turn_p(target, kp):</span>
+<span id="cb3-2"><a></a>    hub.imu.reset_heading(<span class="dv">0</span>)</span>
+<span id="cb3-3"><a></a>    <span class="cf">while</span> <span class="bu">abs</span>(target <span class="op">-</span> hub.imu.heading()) <span class="op">&gt;</span> <span class="dv">1</span>:   <span class="co"># until within 1°…</span></span>
+<span id="cb3-4"><a></a>        error <span class="op">=</span> target <span class="op">-</span> hub.imu.heading()       <span class="co"># degrees still to go</span></span>
+<span id="cb3-5"><a></a>        left.run(kp <span class="op">*</span> error)                     <span class="co"># far → fast</span></span>
+<span id="cb3-6"><a></a>        right.run(<span class="op">-</span>kp <span class="op">*</span> error)                   <span class="co"># close → gentle</span></span>
+<span id="cb3-7"><a></a>        wait(<span class="dv">5</span>)</span>
+<span id="cb3-8"><a></a>    left.stop()<span class="op">;</span> right.stop()</span>
+<span id="cb3-9"><a></a></span>
+<span id="cb3-10"><a></a>gyro_turn_p(<span class="dv">90</span>, <span class="dv">4</span>)   <span class="co"># (45, 4)… (180, 4)… (-90, 4)!</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment fade-up">
 <div class="cardbox teal">
-<p>Line 10: a <strong>negative</strong> target flips the sign and the wheels swap, so <strong>left turns come free.</strong> Yesterday’s version needed surgery for that.</p>
+<p>Line 10: a <strong>negative</strong> target flips the sign and the wheels swap, so <strong>left turns come free.</strong> The two-speed version needed surgery for that.</p>
 </div>
 </div>
 <aside class="notes">
-<p>Walk the highlight stops: <code>kp</code> arrives as a <em>parameter with a default</em> — new syntax, teach it in one breath (“a knob you can leave alone”). Line 3’s <code>abs()</code> is what makes negative targets work. Demo on the next slide.</p>
+<p>Walk the highlight stops: <code>kp</code> is a plain second parameter, passed on every call. <strong>No default yet</strong> (decision #55): “a knob you can leave alone” only makes sense once the move lives in a library, and that is <em>Name Your Moves</em>. Line 3’s <code>abs()</code> is D3’s “how far, whichever way” and is what makes negative targets work; ask for it, don’t teach it. Demo on the next slide.</p>
 <p><strong>Coach aside — “why <code>run()</code> and not <code>motor.dc()</code>?”</strong> (for the sharp student who’s read ahead). Honest truth: <code>run()</code> is <em>itself</em> a closed-loop <strong>speed</strong> controller inside Pybricks — so this hand-written P sits <em>on top</em> of it, a controller-on-a-controller. Your <code>kp</code> sets a speed <em>target</em>; Pybricks’ own loop chases it. A pro writing a controller from scratch often reaches for <code>motor.dc()</code> instead — raw power/duty — so their formula is the <em>whole</em> controller, one layer, nothing hidden underneath. Totally legitimate, and purer. We keep <code>run()</code> on purpose for two reasons: it’s <strong>smoother and battery-proof</strong> (a fresh vs.&nbsp;tired hub turns the same — priceless with five robots on the bench), and it speaks the same <strong>“speed”</strong> language as <code>robot.drive(speed, turn)</code> and <code>DriveBase</code> — so <code>speed = error × KP</code> stays literally true all the way from this turn, through the self-healing straight, to D6’s line-follower. <code>dc()</code> is the right tool the day you build a controller with no help underneath; that day isn’t this bootcamp.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -1033,7 +788,7 @@ SIM.def('raceDials', raceDials);
   </div>
   <div style="display:flex;justify-content:center;gap:70px;">
     <div style="text-align:center;">
-      <div style="font-weight:800;color:#E96852;font-size:21px;">🪜 two speeds (yesterday)</div>
+      <div style="font-weight:800;color:#E96852;font-size:21px;">🪜 two speeds (before)</div>
       <svg width="195" height="195" viewbox="-105 -105 210 210" style="display:block;margin:2px auto;">
         <circle r="86" fill="#eef3f8" stroke="#1C355E" stroke-width="5"></circle>
         <g id="tsTick" opacity="0"><line x1="0" y1="-86" x2="0" y2="-101" stroke="#00AE8D" stroke-width="6"></line></g>
@@ -1159,7 +914,7 @@ SIM.def('raceDials', raceDials);
 </div>
 </div>
 <aside class="notes">
-<p>This is the payoff of yesterday’s “it has a name every roboticist on Earth knows” — let it land with a beat of silence. Do NOT preview what I and D do; tomorrow each arrives as the rescue to a failure they’ll <em>see</em> (P in a hurry overshoots → D; a leftover P can’t kill → I).</p>
+<p>This is the payoff of <em>Drive a Square</em>’s “it has a name every roboticist on Earth knows” — let it land with a beat of silence. Do NOT preview what I and D do; tomorrow each arrives as the rescue to a failure they’ll <em>see</em> (P in a hurry overshoots → D; a leftover P can’t kill → I).</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1199,13 +954,13 @@ SIM.def('raceDials', raceDials);
 <section id="lab-your-kp-your-rematch" class="slide level2">
 <h2>Lab: your KP, your rematch 🎛️</h2>
 <ul>
-<li>Build <code>gyro_turn_p</code>, then rerun the <strong>morning race</strong>: same three calls, one KP. Beat your two-speed times <em>and</em> landings?</li>
+<li>Build <code>gyro_turn_p</code>, then rerun the <strong>race</strong>: same three calls, one KP. Beat your two-speed times <em>and</em> landings?</li>
 <li>Find <strong>your</strong> KP: start at 4 → halve it, double it, feel both failures, close in from the middle.</li>
-<li>Try <code>gyro_turn_p(-90)</code>. No surgery required. 😎</li>
+<li>Try <code>gyro_turn_p(-90, 4)</code>. No surgery required. 😎</li>
 </ul>
 <p>⏱️ <strong>Time: 30 minutes</strong></p>
 <aside class="notes">
-<p>Every squad’s best KP is different (battery, tire wear, robot mass) — that’s the point of it being a knob, and why nobody copies a neighbor’s number. Log times + landings like the morning so the win over the staircase is on paper. Fast squads: call <code>gyro_turn_p(360)</code> — a full spin that parks where it started — or race 45 at KP 8 vs 4.</p>
+<p>Every squad’s best KP is different (battery, tire wear, robot mass) — that’s the point of it being a knob, and why nobody copies a neighbor’s number. Log times + landings like the race lab so the win over the staircase is on paper. Fast squads: call <code>gyro_turn_p(360, 4)</code> — a full spin that parks where it started — or race 45 at KP 8 vs 4.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1219,20 +974,20 @@ SIM.def('raceDials', raceDials);
       }</style></aside>
 </section></section>
 <section>
-<section id="e.-straight-with-it" class="title-slide slide level1 sdaia-dark center" data-background-gradient="linear-gradient(135deg, #1C355E, #FF7A5C)">
-<h1>E. Straight With It</h1>
+<section id="d.-straight-with-it" class="title-slide slide level1 sdaia-dark center" data-background-gradient="linear-gradient(135deg, #1C355E, #FF7A5C)">
+<h1>D. Straight With It</h1>
 <p>Turns are true. But is your “straight”… actually straight?</p>
 </section>
 <section id="break-it-the-nudge-test" class="slide level2">
 <h2>Break it: the nudge test 💥</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" data-code-line-numbers="|1-2|4-7|8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a>hub.imu.reset_heading(<span class="dv">0</span>)</span>
-<span id="cb6-2"><a></a>left.reset_angle(<span class="dv">0</span>)              <span class="co"># zero the wheel's degree-counter</span></span>
-<span id="cb6-3"><a></a></span>
-<span id="cb6-4"><a></a>left.run(<span class="dv">500</span>)<span class="op">;</span> right.run(<span class="dv">500</span>)</span>
-<span id="cb6-5"><a></a><span class="cf">while</span> left.angle() <span class="op">&lt;</span> <span class="dv">1304</span>:       <span class="co"># ≈ 100 cm, your own number</span></span>
-<span id="cb6-6"><a></a>    <span class="bu">print</span>(hub.imu.heading())</span>
-<span id="cb6-7"><a></a>    wait(<span class="dv">100</span>)</span>
-<span id="cb6-8"><a></a>left.stop()<span class="op">;</span> right.stop()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" data-code-line-numbers="|1-2|4-7|8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a>hub.imu.reset_heading(<span class="dv">0</span>)</span>
+<span id="cb4-2"><a></a>left.reset_angle(<span class="dv">0</span>)              <span class="co"># zero the wheel's degree-counter</span></span>
+<span id="cb4-3"><a></a></span>
+<span id="cb4-4"><a></a>left.run(<span class="dv">500</span>)<span class="op">;</span> right.run(<span class="dv">500</span>)</span>
+<span id="cb4-5"><a></a><span class="cf">while</span> left.angle() <span class="op">&lt;</span> <span class="dv">1304</span>:       <span class="co"># ≈ 100 cm, your own number</span></span>
+<span id="cb4-6"><a></a>    <span class="bu">print</span>(hub.imu.heading())</span>
+<span id="cb4-7"><a></a>    wait(<span class="dv">100</span>)</span>
+<span id="cb4-8"><a></a>left.stop()<span class="op">;</span> right.stop()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li><code>left.angle()</code> is the same degree-counter <code>run_angle</code> uses. Now <strong>you</strong> read it.</li>
 <li>While it drives, give the robot’s side a <strong>gentle nudge</strong> (or lay a pencil in its path). Watch the printout…</li>
@@ -1312,15 +1067,15 @@ SIM.def('raceDials', raceDials);
 </section>
 <section id="the-drive-that-heals-itself" class="slide level2">
 <h2>The drive that heals itself</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" data-code-line-numbers="|1-2|4|5|6-7|8-9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a>hub.imu.reset_heading(<span class="dv">0</span>)</span>
-<span id="cb7-2"><a></a>left.reset_angle(<span class="dv">0</span>)</span>
-<span id="cb7-3"><a></a></span>
-<span id="cb7-4"><a></a><span class="cf">while</span> left.angle() <span class="op">&lt;</span> <span class="dv">1304</span>:        <span class="co"># until ≈ 100 cm rolls by…</span></span>
-<span id="cb7-5"><a></a>    error <span class="op">=</span> hub.imu.heading()     <span class="co"># +8 = nosed right · -5 = nosed left</span></span>
-<span id="cb7-6"><a></a>    left.run(<span class="dv">500</span> <span class="op">-</span> <span class="dv">4</span> <span class="op">*</span> error)     <span class="co"># nosed right? left eases off…</span></span>
-<span id="cb7-7"><a></a>    right.run(<span class="dv">500</span> <span class="op">+</span> <span class="dv">4</span> <span class="op">*</span> error)    <span class="co"># …right pushes harder → steers back left</span></span>
-<span id="cb7-8"><a></a>    wait(<span class="dv">10</span>)</span>
-<span id="cb7-9"><a></a>left.stop()<span class="op">;</span> right.stop()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" data-code-line-numbers="|1-2|4|5|6-7|8-9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a>hub.imu.reset_heading(<span class="dv">0</span>)</span>
+<span id="cb5-2"><a></a>left.reset_angle(<span class="dv">0</span>)</span>
+<span id="cb5-3"><a></a></span>
+<span id="cb5-4"><a></a><span class="cf">while</span> left.angle() <span class="op">&lt;</span> <span class="dv">1304</span>:        <span class="co"># until ≈ 100 cm rolls by…</span></span>
+<span id="cb5-5"><a></a>    error <span class="op">=</span> hub.imu.heading()     <span class="co"># +8 = nosed right · -5 = nosed left</span></span>
+<span id="cb5-6"><a></a>    left.run(<span class="dv">500</span> <span class="op">-</span> <span class="dv">4</span> <span class="op">*</span> error)     <span class="co"># nosed right? left eases off…</span></span>
+<span id="cb5-7"><a></a>    right.run(<span class="dv">500</span> <span class="op">+</span> <span class="dv">4</span> <span class="op">*</span> error)    <span class="co"># …right pushes harder → steers back left</span></span>
+<span id="cb5-8"><a></a>    wait(<span class="dv">10</span>)</span>
+<span id="cb5-9"><a></a>left.stop()<span class="op">;</span> right.stop()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Run it, then <strong>nudge it again.</strong> 😈</p>
 <div class="fragment fade-up">
 <div class="cardbox purple">
@@ -1418,8 +1173,8 @@ SIM.def('raceDials', raceDials);
 <p>⏱️ <strong>Time: 15 minutes</strong></p>
 </section></section>
 <section>
-<section id="f.-competition-gate" class="title-slide slide level1 sdaia-dark center" data-background-gradient="linear-gradient(135deg, #1C355E, #00C9A7)">
-<h1>F. Competition &amp; Gate</h1>
+<section id="e.-competition-gate" class="title-slide slide level1 sdaia-dark center" data-background-gradient="linear-gradient(135deg, #1C355E, #00C9A7)">
+<h1>E. Competition &amp; Gate</h1>
 <p>Today’s showdown: <strong>Nudge Wars</strong> 💥</p>
 </section>
 <section id="nudge-wars" class="slide level2">

@@ -4091,13 +4091,14 @@ code{ color:var(--navy); }
 </tbody>
 </table>
 <p>You get <strong>one</strong> <code>movements.py</code> and <strong>as many gripper files as you built mechanisms</strong> — one, or both.</p>
-<p><strong>One import line per mechanism you actually built.</strong> Give each one a name:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> movements <span class="im">import</span> <span class="op">*</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> claw_gripper <span class="im">as</span> claw      <span class="co"># port E</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> lift_gripper <span class="im">as</span> lift      <span class="co"># port C</span></span>
+<p><strong>Every import gets a name</strong> — driving and mechanisms alike:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> movements <span class="im">as</span> move           <span class="co"># the wheels and the eye</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> claw_gripper <span class="im">as</span> claw        <span class="co"># port E</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> lift_gripper <span class="im">as</span> lift        <span class="co"># port C</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>claw.grab()      <span class="co"># the jaws close</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>lift.grab()      <span class="co"># the fork rises</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>move.drive_straight(<span class="dv">300</span>)           <span class="co"># 30 cm, gyro-straight</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>claw.grab()                        <span class="co"># the jaws close</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>lift.grab()                        <span class="co"># the fork rises</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Built only one? Then one line, and <code>gripper</code> is the natural name:</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> claw_gripper <span class="im">as</span> gripper   <span class="co"># ...or lift_gripper</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="callout callout-style-default callout-warning callout-titled">
@@ -4114,20 +4115,20 @@ code{ color:var(--navy); }
 </div>
 </div>
 <blockquote class="blockquote">
-<p>🏷️ <strong>Why <code>as claw</code> and not <code>from claw_gripper import *</code>?</strong> Because with two mechanisms, a star import is a silent trap: import both files and the second <code>grab</code> <strong>overwrites</strong> the first. You’d get one working verb, one dead one, and no error message. <code>claw.grab()</code> and <code>lift.grab()</code> can’t collide — you said which one you meant.</p>
-<p>It also tells you <em>which file to open</em> when something misbehaves, and it makes rebuilding a claw as a fork a <strong>one-word</strong> change on the import line.</p>
-<p>Driving is different: there’s only one <code>movements.py</code>, so nothing can shadow it and <code>import *</code> is safe. <strong>Star-import a file when it’s the only one of its kind. Name it when something else could claim the same words.</strong></p>
+<p>🏷️ <strong>Why every import gets a name?</strong> Because two mechanisms share the same verbs, and a star import is a silent trap: import both files that way and the second <code>grab</code> <strong>overwrites</strong> the first. You’d get one working verb, one dead one, and no error message. <code>claw.grab()</code> and <code>lift.grab()</code> can’t collide — you said which one you meant.</p>
+<p>The prefix also tells you <em>which file to open</em> when something misbehaves, and it makes rebuilding a claw as a fork a <strong>one-word</strong> change on the import line.</p>
+<p>Driving follows the same rule: <code>import movements as move</code>, so a mission line reads <code>move.drive_straight(300)</code>. <strong>Name every import.</strong> An unqualified verb makes you hunt for the file that owns it; a prefix answers that where you stand. (#37, #64.)</p>
 </blockquote>
 <p>Downloads: <a href="code/movements.py">movements.py</a> · <a href="code/claw_gripper.py">claw_gripper.py</a> · <a href="code/lift_gripper.py">lift_gripper.py</a></p>
 </section>
 <section id="the-rules-of-the-road" class="level2">
 <h2 class="anchored" data-anchor-id="the-rules-of-the-road">The rules of the road</h2>
 <p><strong>Distances in mm. Speeds in mm/s. Turning takes a flag.</strong></p>
-<p><code>drive_straight(300)</code> drives 30 cm. <code>drive_straight(300, speed=150)</code> does it slowly. Turning is Pybricks’ own verb, and one word decides everything:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>robot.turn(<span class="dv">90</span>)                   <span class="co"># BY 90, from wherever I&#39;m pointing</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>robot.turn(<span class="dv">90</span>, absolute<span class="op">=</span><span class="va">True</span>)    <span class="co"># TO heading 90 on the mat</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>move.drive_straight(300)</code> drives 30 cm. <code>move.drive_straight(300, speed=150)</code> does it slowly. Turning is Pybricks’ own verb, and one word decides everything:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>move.robot.turn(<span class="dv">90</span>)              <span class="co"># BY 90, from wherever I&#39;m pointing</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>move.robot.turn(<span class="dv">90</span>, absolute<span class="op">=</span><span class="va">True</span>)  <span class="co"># TO heading 90 on the mat</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <blockquote class="blockquote">
-<p>🧭 <strong>Absolute is a compass; relative is a steering wheel.</strong> <code>robot.turn(90, absolute=True)</code> three times leaves you at 90 — not 270. Each absolute turn throws away the leftover error from the last one instead of inheriting it. Four relative turns pile their mistakes up until the robot walks off the mat. <strong>Write the anchor run in absolute turns</strong>; reach for the relative one only when the mission really means “a quarter turn from here”.</p>
+<p>🧭 <strong>Absolute is a compass; relative is a steering wheel.</strong> <code>move.robot.turn(90, absolute=True)</code> three times leaves you at 90 — not 270. Each absolute turn throws away the leftover error from the last one instead of inheriting it. Four relative turns pile their mistakes up until the robot walks off the mat. <strong>Write the anchor run in absolute turns</strong>; reach for the relative one only when the mission really means “a quarter turn from here”.</p>
 </blockquote>
 </section>
 <section id="the-verbs" class="level2">
@@ -4135,6 +4136,10 @@ code{ color:var(--navy); }
 <section id="driving-movements.py" class="level3">
 <h3 class="anchored" data-anchor-id="driving-movements.py">Driving — <code>movements.py</code></h3>
 <table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
 <thead>
 <tr class="header">
 <th>Verb</th>
@@ -4143,27 +4148,27 @@ code{ color:var(--navy); }
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>robot.reset(angle=0)</code></td>
+<td><code>move.robot.reset(angle=0)</code></td>
 <td>“the way I’m facing now is zero”</td>
 </tr>
 <tr class="even">
-<td><code>drive_straight(mm)</code></td>
+<td><code>move.drive_straight(mm)</code></td>
 <td>drive straight; negative = backward</td>
 </tr>
 <tr class="odd">
-<td><code>robot.turn(a, absolute=True)</code></td>
+<td><code>move.robot.turn(a, absolute=True)</code></td>
 <td>turn until you <strong>face</strong> heading <code>a</code></td>
 </tr>
 <tr class="even">
-<td><code>robot.turn(a)</code></td>
+<td><code>move.robot.turn(a)</code></td>
 <td>spin <code>a</code> degrees <strong>more</strong>, from here</td>
 </tr>
 <tr class="odd">
-<td><code>robot.angle()</code></td>
+<td><code>move.robot.angle()</code></td>
 <td>which way am I pointing right now</td>
 </tr>
 <tr class="even">
-<td><code>follow_line(mm)</code></td>
+<td><code>move.follow_line(mm)</code></td>
 <td>ride the edge of the line</td>
 </tr>
 </tbody>
@@ -4185,23 +4190,23 @@ code{ color:var(--navy); }
 </thead>
 <tbody>
 <tr class="odd">
-<td><code>find_line()</code></td>
+<td><code>move.find_line()</code></td>
 <td>creep until the eye sees a line; <code>True</code> if found</td>
 </tr>
 <tr class="even">
-<td><code>drive_to_wall()</code></td>
+<td><code>move.drive_to_wall()</code></td>
 <td>creep until the wheels <strong>stall</strong> on the border</td>
 </tr>
 <tr class="odd">
-<td><code>wall_square(h)</code></td>
+<td><code>move.wall_square(h)</code></td>
 <td>push flat on the border, then declare heading <code>h</code></td>
 </tr>
 <tr class="even">
-<td><code>square_on_line(h)</code></td>
+<td><code>move.square_on_line(h)</code></td>
 <td>sit square on a line, then declare <code>h</code> — <strong>two eyes</strong></td>
 </tr>
 <tr class="odd">
-<td><code>show_eye()</code></td>
+<td><code>move.show_eye()</code></td>
 <td>print what the eye sees — <strong>use this to tune</strong></td>
 </tr>
 </tbody>
@@ -4209,9 +4214,9 @@ code{ color:var(--navy); }
 <blockquote class="blockquote">
 <p>👁️ <strong>One eye or two?</strong> One eye tells you that you <em>are</em> on the line, never whether you’re <strong>crooked</strong> on it — so a one-eye robot squares up on a wall (<code>wall_square</code>), where both wheels press the same flat edge. A second eye on the free port buys <code>square_on_line()</code>. That is the trade port <strong>A</strong> is for.</p>
 </blockquote>
-<p><code>find_line()</code> returns <code>True</code> or <code>False</code>. <strong>Check the answer.</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> find_line():</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    drive_straight(<span class="dv">120</span>)          <span class="co"># measured FROM the line</span></span>
+<p><code>move.find_line()</code> returns <code>True</code> or <code>False</code>. <strong>Check the answer.</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> move.find_line():</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    move.drive_straight(<span class="dv">120</span>)       <span class="co"># measured FROM the line</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">&quot;no line -- something is wrong&quot;</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <blockquote class="blockquote">
@@ -4263,13 +4268,13 @@ code{ color:var(--navy); }
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>lift.home()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </blockquote>
 <blockquote class="blockquote">
-<p>📦 <strong>Same three words on every robot.</strong> Four students built four different mechanisms. A claw closes sideways; a fork scoops upward; they share no parts. But the mission list can’t tell them apart —</p>
+<p>📦 <strong>Same three words on every robot.</strong> Four students built four different mechanisms. A claw closes sideways; a fork scoops upward; they share no parts. The same sequence of calls works with each one —</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>gripper.home()</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>drive_straight(<span class="dv">200</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>move.drive_straight(<span class="dv">200</span>)</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>gripper.grab()</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>drive_straight(<span class="op">-</span><span class="dv">200</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>move.drive_straight(<span class="op">-</span><span class="dv">200</span>)</span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>gripper.release()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>That list runs on all four robots. The only line that differs between them is the <code>import</code>. <strong>That</strong> is what a library is for: hide the machine behind the word.</p>
+<p>That sequence runs on all four robots. The only line that differs between them is the <code>import</code>. <strong>That</strong> is what a library is for: hide the machine behind the word.</p>
 <p>Built two mechanisms? Then the name in front says which one you’re talking to — <code>claw.grab()</code>, <code>lift.grab()</code> — and the three verbs stay exactly the same.</p>
 </blockquote>
 </section>
@@ -4288,7 +4293,7 @@ code{ color:var(--navy); }
 </blockquote>
 <section id="the-two-things-that-fix-your-run" class="level3">
 <h3 class="anchored" data-anchor-id="the-two-things-that-fix-your-run">The two things that fix your run</h3>
-<p><strong><code>find_line()</code> / <code>follow_line()</code> — position truth, from the printed mat.</strong> Drive <em>to a landmark</em>, then measure from there. A leg that ends on a found line doesn’t care about the wheel slip that happened on the way to it.</p>
+<p><strong><code>move.find_line()</code> / <code>move.follow_line()</code> — position truth, from the printed mat.</strong> Drive <em>to a landmark</em>, then measure from there. A leg that ends on a found line doesn’t care about the wheel slip that happened on the way to it.</p>
 <p><strong><code>gripper.home()</code> — the same idea, for your mechanism</strong></p>
 <p>The motor counts degrees from a mark on its <strong>own shaft</strong> — it has never seen your claw. Skip a gear tooth in a crash, re-seat an axle, or re-gear the mechanism, and the mark stays where it was while your jaws move. That zero is now <strong>garbage</strong>, and every <code>run_target</code> after it inherits the mistake. <a href="#move-by-or-move-to">More on that pair of verbs.</a></p>
 <p>So don’t guess. Drive it until it physically can’t move, and call <em>that</em> zero.</p>
@@ -4296,11 +4301,11 @@ code{ color:var(--navy); }
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>claw.run_until_stalled(<span class="op">-</span>CLOSE_SPEED, then<span class="op">=</span>Stop.COAST)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>wait(<span class="dv">200</span>)</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>claw.reset_angle(<span class="dv">0</span>)</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>claw.control.limits(torque<span class="op">=</span>GRIP_TORQUE)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>claw.control.limits(torque<span class="op">=</span>SQUEEZE_TORQUE)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><strong>The printed mat never lies — neither does the end stop.</strong> Same trick, two places: stop guessing, go and <em>touch</em> something that is where it says it is.</p>
 <p>That works because the end stop is <strong>rigid and always in the same place</strong>. An object in the jaws is neither — which is why <code>grab()</code> does something different. <a href="#stall-to-find-zero-torque-to-hold-a-thing">See below.</a></p>
 <blockquote class="blockquote">
-<p>⚠️ <strong>Your heading has no landmark.</strong> <code>find_line()</code> fixes how far you’ve travelled, but nothing on this robot re-checks which way you’re <em>pointing</em> — that’s the gyro alone, for the whole run. So place the robot straight in the start area, call <code>robot.reset(angle=0)</code> once, and keep your legs short.</p>
+<p>⚠️ <strong>Your heading has no landmark.</strong> <code>move.find_line()</code> fixes how far you’ve travelled, but nothing on this robot re-checks which way you’re <em>pointing</em> — that’s the gyro alone, for the whole run. So place the robot straight in the start area, call <code>move.robot.reset(angle=0)</code> once, and keep your legs short.</p>
 </blockquote>
 </section>
 </section>
@@ -4344,7 +4349,7 @@ code{ color:var(--navy); }
 </tbody>
 </table>
 <blockquote class="blockquote">
-<p>🧭 <strong>You already know this pair — it’s the same idea, twice.</strong> On the wheels it’s a flag: <code>robot.turn(90)</code> moves <strong>by</strong>, <code>robot.turn(90, absolute=True)</code> moves <strong>to</strong>. On a motor it’s two verb names: <code>run_angle</code> moves <strong>by</strong>, <code>run_target</code> moves <strong>to</strong>. Different hardware, different spelling, one rule: <strong>a relative move inherits every mistake before it, an absolute move forgets them.</strong></p>
+<p>🧭 <strong>You already know this pair — it’s the same idea, twice.</strong> On the wheels it’s a flag: <code>move.robot.turn(90)</code> moves <strong>by</strong>, <code>move.robot.turn(90, absolute=True)</code> moves <strong>to</strong>. On a motor it’s two verb names: <code>run_angle</code> moves <strong>by</strong>, <code>run_target</code> moves <strong>to</strong>. Different hardware, different spelling, one rule: <strong>a relative move inherits every mistake before it, an absolute move forgets them.</strong></p>
 </blockquote>
 <blockquote class="blockquote">
 <p>🤖 <strong>Wheels move <em>by</em>. Mechanisms move <em>to</em>.</strong> A wheel can roll forever, so “300 mm more” is a sensible thing to want. A claw has a small number of places it is allowed to be — open, gripping, stowed — so every verb in your gripper file is <code>run_target</code>.</p>
@@ -4360,6 +4365,11 @@ code{ color:var(--navy); }
 <h2 class="anchored" data-anchor-id="stall-to-find-zero-torque-to-hold-a-thing">Stall to find zero — torque to hold a thing</h2>
 <p>Your mechanism does two jobs that <em>look</em> the same — press until something stops you — and they need opposite tools. Getting them the wrong way round is what makes a claw let go halfway across the mat.</p>
 <table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
 <thead>
 <tr class="header">
 <th>The job</th>
@@ -4376,14 +4386,15 @@ code{ color:var(--navy); }
 <tr class="even">
 <td><strong><code>grab()</code></strong></td>
 <td><em>how hard do I squeeze?</em></td>
-<td>ask for a <strong>torque</strong></td>
+<td>ask for a <strong>torque</strong>, then wait on the <strong>load</strong></td>
 </tr>
 </tbody>
 </table>
 <section id="finding-zero-run_until_stalled" class="level3">
 <h3 class="anchored" data-anchor-id="finding-zero-run_until_stalled">Finding zero — <code>run_until_stalled</code></h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>motor.run_until_stalled(<span class="op">-</span>CLOSE_SPEED, then<span class="op">=</span>Stop.COAST, duty_limit<span class="op">=</span>HOME_EFFORT)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>motor.reset_angle(<span class="dv">0</span>)                    <span class="co"># the jaws just met -- THAT is zero</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>claw.control.limits(torque<span class="op">=</span>HOME_TORQUE)                 <span class="co"># how hard it may press</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>claw.run_until_stalled(<span class="op">-</span>CLOSE_SPEED, then<span class="op">=</span>Stop.COAST)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>claw.reset_angle(<span class="dv">0</span>)                     <span class="co"># the jaw just hit the body -- THAT is zero</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 50%">
@@ -4405,36 +4416,42 @@ code{ color:var(--navy); }
 <td>relax on arrival. Homing is <em>leaving</em>, not holding.</td>
 </tr>
 <tr class="odd">
-<td><code>duty_limit</code></td>
-<td>how hard it may push, 0–100.</td>
+<td><code>HOME_TORQUE</code></td>
+<td>how hard it may press the stop, in <strong>mNm</strong>.</td>
 </tr>
 </tbody>
 </table>
 <blockquote class="blockquote">
-<p>🧱 <strong>Stalling is only trustworthy against a thing that doesn’t move.</strong> The jaws meeting each other is rigid, part of the mechanism, and in exactly the same place on every run. Press into <em>that</em> and you get the same answer every time. That’s what makes <code>home()</code> exact.</p>
+<p>🧱 <strong>Stalling is only trustworthy against a thing that doesn’t move.</strong> The robot body the claw opens into is rigid, part of the robot, and in exactly the same place on every run. Press into <em>that</em> and you get the same answer every time. That’s what makes <code>home()</code> exact.</p>
 <p>An <strong>object</strong> is none of those things. It sits where it landed, it squashes, it rolls. Press into that and “where it stopped” is a different number every run — which is why gripping needs the other tool.</p>
 </blockquote>
 <blockquote class="blockquote">
-<p>🎯 <strong>Zero goes where the jaws meet.</strong> Both gripper files home the jaws <strong>shut</strong> and call that 0, so every angle in the file reads as <em>how far open</em> the mechanism is. <code>READY_ANGLE</code> is a positive number and <code>GRIP_TARGET</code> a small negative one. Nothing to measure, nothing to mistype, and nothing to re-measure after you re-gear.</p>
+<p>🎯 <strong>Zero goes on a rigid stop you can reach empty.</strong> The claw homes <strong>open</strong>: the opening jaw stalls against the robot body and that is 0, so every claw angle reads as <em>how far closed</em>, and <code>CLOSE_TARGET</code> is a positive number (72). The lift homes <strong>shut</strong>: its jaws meet and that is 0, so every lift angle reads as <em>how far open</em>. The two files count opposite ways, so check which one you’re in before you flip a sign.</p>
 </blockquote>
 <blockquote class="blockquote">
-<p>⚠️ <strong><code>duty_limit</code> is the knob that breaks gears.</strong> Too high and the motor keeps shoving after the mechanism has arrived — you’ll <em>hear</em> the plastic teeth skip. Too low and it gives up early, <code>reset_angle(0)</code> fires anyway, and now zero is <strong>almost</strong> right. It lives in your gripper file’s facts block as <code>HOME_EFFORT</code> (the claw starts at <strong>40</strong> — it is pressing jaw on jaw — and the lift at <strong>75</strong>) — change it there, never at the call, and adjust by ear.</p>
+<p>⚠️ <strong>The homing push is the knob that breaks gears.</strong> Too high and the motor keeps shoving after the mechanism has arrived — you’ll <em>hear</em> the plastic teeth skip. Too low and it gives up early, <code>reset_angle(0)</code> fires anyway, and now zero is <strong>almost</strong> right. It lives in your gripper file’s facts block: <code>HOME_TORQUE</code> on the claw (<strong>220</strong> mNm) and <code>HOME_EFFORT</code> on the lift (<strong>50</strong>, a <code>duty_limit</code> percentage). Change it there, never at the call, and adjust by ear.</p>
 </blockquote>
 </section>
 <section id="holding-a-thing-aim-past-it-cap-the-torque" class="level3">
 <h3 class="anchored" data-anchor-id="holding-a-thing-aim-past-it-cap-the-torque">Holding a thing — aim past it, cap the torque</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>claw.control.limits(torque<span class="op">=</span>GRIP_TORQUE)     <span class="co"># the squeeze, set once</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>claw.run_target(CLOSE_SPEED, GRIP_TARGET, then<span class="op">=</span>Stop.HOLD, wait<span class="op">=</span><span class="va">False</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><code>GRIP_TARGET</code> is deliberately set a little <strong>past</strong> where the jaws meet. The claw can never get there — the object is in the way — so it never stops trying, and it leans in at <code>GRIP_TORQUE</code> for the whole carry.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>claw.control.limits(torque<span class="op">=</span>SQUEEZE_TORQUE)     <span class="co"># how hard to squeeze</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>claw.run_target(CLOSE_SPEED, CLOSE_TARGET, then<span class="op">=</span>Stop.HOLD, wait<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>wait(<span class="dv">100</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> <span class="bu">abs</span>(claw.load()) <span class="op">&lt;</span> CONTACT_LOAD <span class="kw">and</span> <span class="kw">not</span> claw.done():</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    wait(<span class="dv">10</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>CLOSE_TARGET</code> is set <strong>past</strong> where the object stops the jaws. The claw can’t get there — the object is in the way — so it never stops trying, and it leans in at <code>SQUEEZE_TORQUE</code> for the whole carry.</p>
 <blockquote class="blockquote">
-<p>🧮 <strong><code>GRIP_TARGET</code> is a small negative number, and that’s the whole trick.</strong> Zero is where the jaws meet, so “a few degrees past shut” is just <code>-10</code> — the same line in every squad’s file, with nothing to measure and nothing to keep it in step with.</p>
+<p>🧮 <strong><code>CLOSE_TARGET</code> is 72, and short of shut on purpose.</strong> With an object, the jaws stop before 72 and keep pushing. With nothing in them, they reach 72 and <code>done()</code> ends the wait. Set it past the angle where empty jaws meet and every empty grab ends by jamming the jaws into each other.</p>
+</blockquote>
+<blockquote class="blockquote">
+<p>⏱️ <strong><code>grab()</code> waits on the load, not on a stall.</strong> <code>claw.load()</code> is how hard the motor is pushing right now, in mNm (it reads negative while closing, so <code>abs()</code> it). It passes <code>CONTACT_LOAD</code> (100) the moment the jaws press on something, so <code>grab()</code> returns straight away. <code>stalled()</code> would only answer once the push had maxed out at <code>SQUEEZE_TORQUE</code> and stayed there, which is a visible pause. The motor keeps squeezing after <code>grab()</code> returns, so the grip keeps building while the robot drives. Find <code>CONTACT_LOAD</code> by printing <code>abs(claw.load())</code> while closing on air, then on your object, and pick a number in between.</p>
 </blockquote>
 <blockquote class="blockquote">
 <p>🤝 <strong>Why aim at a place you can’t reach?</strong> Because that’s what keeps the pressure on. A motor that <em>arrives</em> stops pushing: it holds the angle it reached, and the moment the object settles a hair, your squeeze is gone and the object walks out on the next turn. A motor that’s still trying takes up that slack by itself.</p>
 <p>This is also why <code>grab()</code> never calls <code>hold()</code> — freezing the claw where it is would undo the entire trick.</p>
 </blockquote>
 <blockquote class="blockquote">
-<p>🔩 <strong><code>GRIP_TORQUE</code> is one number doing two jobs.</strong> It’s how hard you squeeze, <em>and</em> it’s the gear protection: the motor physically cannot shove harder than this, whatever you ask it. Raise it if the object slips on turns; lower it if you hear crunching or the object deforms. Find it on the mat, with the object you actually carry — not by guessing at the desk.</p>
+<p>🔩 <strong><code>SQUEEZE_TORQUE</code> is one number doing two jobs.</strong> It’s how hard you squeeze, <em>and</em> it’s the gear protection: the motor physically cannot shove harder than this, whatever you ask it. Raise it if the object slips on turns; lower it if you hear crunching or the object deforms. Find it on the mat, with the object you actually carry — not by guessing at the desk. It <strong>must</strong> stay above <code>CONTACT_LOAD</code>: the load can never pass the torque limit, so a lower <code>SQUEEZE_TORQUE</code> means <code>grab()</code> never returns on an object.</p>
 </blockquote>
 </section>
 </section>
@@ -4461,7 +4478,7 @@ code{ color:var(--navy); }
 <td>one wheel, exact speed</td>
 </tr>
 <tr class="even">
-<td><code>robot.straight(300)</code></td>
+<td><code>move.robot.straight(300)</code></td>
 <td>“drive 30 cm”</td>
 <td>both wheels, gyro-straight, ramped</td>
 </tr>
@@ -4476,9 +4493,9 @@ code{ color:var(--navy); }
 <p>🔋 <strong>We don’t compete on <code>dc()</code>.</strong> <code>dc(40)</code> on a fresh battery, a tired battery, and a carpet seam is <em>three different robots</em>. <code>run(300)</code> is the same robot every time — it spends whatever power it takes to hold 300 deg/s. WRO runs are won by doing the same thing twice, and that’s the one thing raw power can’t promise.</p>
 </blockquote>
 <blockquote class="blockquote">
-<p>⚖️ <strong>Same rule, over in the claw.</strong> <code>GRIP_TORQUE</code> is in <strong>mNm</strong> — an amount of actual turning force — for exactly the reason <code>run()</code> is in deg/s: ask for the <em>thing you want</em> and the hub spends whatever power that costs today. Percentages are a promise about the battery. Units are a promise about the robot.</p>
+<p>⚖️ <strong>Same rule, over in the claw.</strong> <code>SQUEEZE_TORQUE</code> is in <strong>mNm</strong> — an amount of actual turning force — for exactly the reason <code>run()</code> is in deg/s: ask for the <em>thing you want</em> and the hub spends whatever power that costs today. Percentages are a promise about the battery. Units are a promise about the robot.</p>
 </blockquote>
-<p><code>DriveBase</code> (<code>robot.straight</code>, <code>robot.turn</code>) does the most for you: it converts mm to degrees, holds the gyro line, and ramps up and down so nothing lurches. Use it for driving — every verb in <code>movements.py</code> is built on it.</p>
+<p><code>DriveBase</code> (<code>move.robot.straight</code>, <code>move.robot.turn</code>) does the most for you: it converts mm to degrees, holds the gyro line, and ramps up and down so nothing lurches. Use it for driving — every verb in <code>movements.py</code> is built on it.</p>
 <p><code>motor.run_until_stalled()</code> and <code>motor.run_target()</code> are what your gripper file uses — a claw hunts an end stop or goes to an angle; it never just spins. Plain <code>motor.run()</code> is what you’d reach for if you ever needed <strong>one</strong> drive wheel moving on its own: <code>DriveBase</code> always moves both, so the shortcut never completely replaces the motors underneath it.</p>
 </section>
 <section id="when-you-get-stuck" class="level2">

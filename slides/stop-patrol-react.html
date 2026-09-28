@@ -9,7 +9,7 @@
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.9.38">
 
-  <meta name="dcterms.date" content="2026-09-14">
+  <meta name="dcterms.date" content="2026-09-28">
   <title>Stop at the Wall</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -202,12 +202,12 @@
 
 <section id="title-slide" data-background-image="../slides_template/assets/anim.svg" data-background-opacity="0.15" data-background-size="cover" class="quarto-title-block center">
   <h1 class="title">Stop at the Wall</h1>
-  <p class="subtitle">Day 7 · Robot Rockstars · SPIKE Prime + Pybricks</p>
+  <p class="subtitle">Session 12 · Lesson D7 · Robot Rockstars · SPIKE Prime + Pybricks</p>
 
 <div class="quarto-title-authors">
 </div>
 
-  <p class="date">2026-09-14</p>
+  <p class="date">2026-09-28</p>
 </section>
 <section>
 <section id="a.-warm-up" class="title-slide slide level1 sdaia-dark center" data-background-gradient="linear-gradient(135deg, #1C355E, #00C9A7)">
@@ -259,12 +259,67 @@
 <section id="robots-out-line-king-rematch" class="slide level2">
 <h2>🤖 Robots out: Line King rematch 👑</h2>
 <ul>
-<li>🛣️ <code>follow_line(600)</code> on the mat’s staff lines: <strong>hold the curve</strong></li>
-<li>📐 finish with <code>square_on_line()</code> at the junction: <strong>sit square</strong></li>
+<li>🛣️ <code>move.follow_line(600)</code> on the mat’s staff lines: <strong>hold the curve</strong></li>
+<li>📐 <strong>Two eyes:</strong> finish with <code>move.square_on_line()</code>; <strong>one eye:</strong> explain why the wall will do that job today</li>
 <li>⏱️ <strong>15 minutes</strong>, then the robot gets its sense of touch</li>
 </ul>
 <aside class="notes">
 <p>Drill-first (decision #22): yesterday’s compete replayed as the warm-up, on the real mat. It re-proves the two verbs the anchor run leans on — the tuned P follower and the junction square — and it surfaces overnight drift: if a squad’s follower wobbles today, the first question is the threshold (did the light change? re-read white/black, re-split), not the code. Squads that finish early re-run for speed — that’s the Speed Demon itch, let them scratch it. Logistics: mat on the ground, no table yet (decision #23) — the wall board goes at the mat edge for the stall work next; nothing today needs borders at true positions. Keep it to 15 minutes; the leaderboard can wait for Gentle Giant.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="before-the-wall-can-it-reverse" class="slide level2">
+<h2>Before the wall: can it reverse? ↩︎️</h2>
+<p>Our first <code>drive_straight</code> only drove forward. Predict this call:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a>move.drive_straight(<span class="op">-</span><span class="dv">50</span>)  <span class="co"># back away by 50 mm?</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment fade-up">
+<div class="cardbox coral">
+<p>The old finish line is <strong>behind</strong> the current wheel angle. Its <code>while angle &lt; finish</code> check is False immediately, so it never drives.</p>
+</div>
+</div>
+<p>Choose the direction with <code>if</code>. Measure distance travelled with <code>abs()</code>.</p>
+<aside class="notes">
+<p>This is a required prerequisite, not a stretch. Run the old version once, predict the first check, then upgrade the function on the next slide. Both if and abs are familiar. Ten minutes including the forward/backward bench check.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="a-straight-in-either-direction" class="slide level2 code-shrink">
+<h2>A straight in either direction</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a><span class="kw">def</span> drive_straight(distance_mm, speed<span class="op">=</span><span class="dv">400</span>):</span>
+<span id="cb2-2"><a></a>    <span class="cf">if</span> distance_mm <span class="op">&lt;</span> <span class="dv">0</span>:</span>
+<span id="cb2-3"><a></a>        direction <span class="op">=</span> <span class="op">-</span><span class="dv">1</span></span>
+<span id="cb2-4"><a></a>    <span class="cf">else</span>:</span>
+<span id="cb2-5"><a></a>        direction <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb2-6"><a></a>    start <span class="op">=</span> left.angle()</span>
+<span id="cb2-7"><a></a>    heading <span class="op">=</span> hub.imu.heading()</span>
+<span id="cb2-8"><a></a>    travel <span class="op">=</span> <span class="bu">abs</span>(distance_mm) <span class="op">*</span> DEG_PER_MM</span>
+<span id="cb2-9"><a></a>    <span class="cf">while</span> <span class="bu">abs</span>(left.angle() <span class="op">-</span> start) <span class="op">&lt;</span> travel:</span>
+<span id="cb2-10"><a></a>        error <span class="op">=</span> hub.imu.heading() <span class="op">-</span> heading</span>
+<span id="cb2-11"><a></a>        left.run(direction <span class="op">*</span> <span class="bu">abs</span>(speed) <span class="op">-</span> KP <span class="op">*</span> error)</span>
+<span id="cb2-12"><a></a>        right.run(direction <span class="op">*</span> <span class="bu">abs</span>(speed) <span class="op">+</span> KP <span class="op">*</span> error)</span>
+<span id="cb2-13"><a></a>        wait(<span class="dv">5</span>)</span>
+<span id="cb2-14"><a></a>    left.stop()<span class="op">;</span> right.stop()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Test <code>move.drive_straight(100)</code>, then <code>move.drive_straight(-100)</code>. A zero-distance call stays still.</p>
+<aside class="notes">
+<p>Replace the forward-only definition in movements.py. The distance sign selects travel direction; speed is a magnitude. The wheel-angle difference measures progress from this call’s start, without resetting the gyro or wheel counters. The gyro correction keeps the same signs in reverse: positive yaw still needs leftward correction. Check positive, negative and zero distances before approaching the wall. This upgrade is the code all later back-off calls use.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -284,10 +339,11 @@
 </section>
 <section id="feel-it-see-the-invisible" class="slide level2">
 <h2>Feel it: see the invisible 📉</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="co"># Run this ALONE first -- watch the number, not the robot.</span></span>
-<span id="cb1-2"><a></a><span class="cf">while</span> <span class="va">True</span>:</span>
-<span id="cb1-3"><a></a>    <span class="bu">print</span>(<span class="st">"wheel speed:"</span>, left.speed())</span>
-<span id="cb1-4"><a></a>    wait(<span class="dv">100</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a><span class="co"># Wheels lifted first; the loop reads a motor already running.</span></span>
+<span id="cb3-2"><a></a>left.run(<span class="dv">150</span>)</span>
+<span id="cb3-3"><a></a><span class="cf">while</span> <span class="va">True</span>:</span>
+<span id="cb3-4"><a></a>    <span class="bu">print</span>(<span class="st">"wheel speed:"</span>, left.speed())</span>
+<span id="cb3-5"><a></a>    wait(<span class="dv">100</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>🤖 <strong>Robots out.</strong> Run the loop and <strong>grab the wheels</strong>, and watch it dive. Then the wall board: same dive, no hand.</p>
 <div class="fragment fade-up">
 <div class="cardbox teal">
@@ -310,13 +366,13 @@
 </section>
 <section id="fix-it-stall-touch-then-back-off" class="slide level2">
 <h2>Fix it: stall = touch, then back off 🧱</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-code-line-numbers="|1|2|3-4|5|6|7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a>APPROACH_SPEED <span class="op">=</span> <span class="dv">150</span>         <span class="co"># deg/s, gentle, not a crash</span></span>
-<span id="cb2-2"><a></a>right.run(APPROACH_SPEED)    <span class="co"># right rolls along…</span></span>
-<span id="cb2-3"><a></a>left.run_until_stalled(APPROACH_SPEED,</span>
-<span id="cb2-4"><a></a>                       duty_limit<span class="op">=</span><span class="dv">50</span>)   <span class="co"># …until LEFT jams</span></span>
-<span id="cb2-5"><a></a>right.stop()</span>
-<span id="cb2-6"><a></a>hub.speaker.beep()           <span class="co"># "I arrived"</span></span>
-<span id="cb2-7"><a></a>drive_straight(<span class="op">-</span>BACKOFF_MM)         <span class="co"># measured, repeatable</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" data-code-line-numbers="|1|2|3-4|5|6|7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a>APPROACH_SPEED <span class="op">=</span> <span class="dv">150</span>         <span class="co"># deg/s, gentle, not a crash</span></span>
+<span id="cb4-2"><a></a>right.run(APPROACH_SPEED)    <span class="co"># right rolls along…</span></span>
+<span id="cb4-3"><a></a>left.run_until_stalled(APPROACH_SPEED,</span>
+<span id="cb4-4"><a></a>                       duty_limit<span class="op">=</span><span class="dv">50</span>)   <span class="co"># …until LEFT jams</span></span>
+<span id="cb4-5"><a></a>right.stop()</span>
+<span id="cb4-6"><a></a>hub.speaker.beep()           <span class="co"># "I arrived"</span></span>
+<span id="cb4-7"><a></a>move.drive_straight(<span class="op">-</span>BACKOFF_MM)    <span class="co"># measured, repeatable</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>🤖 <strong>Robots out.</strong> Build it and tune <code>BACKOFF_MM</code> against the board. This is today’s competition in seven lines.</p>
 <div class="fragment fade-up">
 <div class="cardbox purple">
@@ -324,7 +380,7 @@
 </div>
 </div>
 <aside class="notes">
-<p>Stress the gentleness knobs: a low approach speed (≈150 deg/s) and <code>duty_limit=50</code> — the duty limit caps how hard the motor is <em>allowed</em> to push, so the reading is crisp and the LEGO survives. Driving straight into a wall jams both wheels, so watching ONE motor is enough — <code>run_until_stalled</code> blocks on the left while the right just rolls. Line 6 calls their own <code>drive_straight</code> with a <em>negative</em> distance — the challenge parked at the library day is now urgent: flip the <code>while</code> comparison (or mirror it for negatives) in <code>movements.py</code>, two-minute fix, big payoff. Back-off is measured, not guessed — <code>BACKOFF_MM = 50</code> ends exactly 5 cm off the wall, every run. (The pro equivalent, <code>DriveBase.stalled()</code>, arrives with the D8 reveal.)</p>
+<p>Stress the gentleness knobs: a low approach speed (≈150 deg/s) and <code>duty_limit=50</code> — the duty limit caps how hard the motor is <em>allowed</em> to push, so the reading is crisp and the LEGO survives. Driving straight into a wall jams both wheels, so watching ONE motor is enough — <code>run_until_stalled</code> blocks on the left while the right just rolls. The negative-distance call uses the upgraded <code>drive_straight</code> that every student tested in today’s warm-up. Ask which line selects reverse and which line measures the distance. Back-off is measured, not guessed — <code>BACKOFF_MM = 50</code> ends exactly 5 cm off the wall, every run. (The pro equivalent, <code>DriveBase.stalled()</code>, arrives with the D8 reveal.)</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -369,16 +425,16 @@
 </section>
 <section id="name-it-the-patrol-loop" class="slide level2">
 <h2>Name it: the patrol loop 🔁</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" data-code-line-numbers="|1|2|3|4-6|7|8|9-10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a>hub.imu.reset_heading(<span class="dv">0</span>)</span>
-<span id="cb3-2"><a></a><span class="cf">for</span> lap <span class="kw">in</span> <span class="bu">range</span>(PATROL_LAPS):          <span class="co"># counted repeat = laps</span></span>
-<span id="cb3-3"><a></a>    left.run(PATROL_SPEED)<span class="op">;</span> right.run(PATROL_SPEED)</span>
-<span id="cb3-4"><a></a>    <span class="cf">while</span> <span class="kw">not</span> left.stalled():           <span class="co"># repeat until the wall</span></span>
-<span id="cb3-5"><a></a>        <span class="cf">if</span> left_eye.reflection() <span class="op">&lt;</span> REFLECT_THRESHOLD:</span>
-<span id="cb3-6"><a></a>            hub.speaker.beep(<span class="dv">880</span>)       <span class="co"># react, don't stop</span></span>
-<span id="cb3-7"><a></a>        wait(<span class="dv">10</span>)</span>
-<span id="cb3-8"><a></a>    left.stop()<span class="op">;</span> right.stop()</span>
-<span id="cb3-9"><a></a>    drive_straight(<span class="op">-</span>BACKOFF_MM)                <span class="co"># measured back-off</span></span>
-<span id="cb3-10"><a></a>    turn(<span class="dv">90</span> <span class="op">*</span> (lap <span class="op">+</span> <span class="dv">1</span>), absolute<span class="op">=</span><span class="va">True</span>)   <span class="co"># absolute appointment</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" data-code-line-numbers="|1|2|3|4-6|7|8|9-10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a>hub.imu.reset_heading(<span class="dv">0</span>)</span>
+<span id="cb5-2"><a></a><span class="cf">for</span> lap <span class="kw">in</span> <span class="bu">range</span>(PATROL_LAPS):          <span class="co"># counted repeat = laps</span></span>
+<span id="cb5-3"><a></a>    left.run(PATROL_SPEED)<span class="op">;</span> right.run(PATROL_SPEED)</span>
+<span id="cb5-4"><a></a>    <span class="cf">while</span> <span class="kw">not</span> left.stalled():           <span class="co"># repeat until the wall</span></span>
+<span id="cb5-5"><a></a>        <span class="cf">if</span> left_eye.reflection() <span class="op">&lt;</span> THRESHOLD:</span>
+<span id="cb5-6"><a></a>            hub.speaker.beep(<span class="dv">880</span>)       <span class="co"># react, don't stop</span></span>
+<span id="cb5-7"><a></a>        wait(<span class="dv">10</span>)</span>
+<span id="cb5-8"><a></a>    left.stop()<span class="op">;</span> right.stop()</span>
+<span id="cb5-9"><a></a>    move.drive_straight(<span class="op">-</span>BACKOFF_MM)           <span class="co"># measured back-off</span></span>
+<span id="cb5-10"><a></a>    move.turn(<span class="dv">90</span> <span class="op">*</span> (lap <span class="op">+</span> <span class="dv">1</span>), absolute<span class="op">=</span><span class="va">True</span>)   <span class="co"># absolute appointment</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment fade-up">
 <div class="cardbox teal">
 <p>Two loops <strong>nested</strong>: <code>for</code> counts laps, <code>while</code> waits for the wall, and the <code>if</code> reacts <strong>on the move.</strong></p>
@@ -405,27 +461,27 @@
 </section>
 <section id="drive_to_wall-and-wall_square-join-the-library" class="slide level2 code-shrink">
 <h2><code>drive_to_wall</code> and <code>wall_square</code> join the library 📦</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" data-code-line-numbers="|1-5|7-9|10-11|12|13|14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a><span class="kw">def</span> drive_to_wall(speed<span class="op">=</span><span class="dv">150</span>):</span>
-<span id="cb4-2"><a></a>    <span class="co">"""Roll gently until the wheels feel the wall."""</span></span>
-<span id="cb4-3"><a></a>    right.run(speed)</span>
-<span id="cb4-4"><a></a>    left.run_until_stalled(speed, duty_limit<span class="op">=</span><span class="dv">50</span>)</span>
-<span id="cb4-5"><a></a>    right.stop()</span>
-<span id="cb4-6"><a></a></span>
-<span id="cb4-7"><a></a><span class="kw">def</span> wall_square(heading<span class="op">=</span><span class="dv">0</span>):</span>
-<span id="cb4-8"><a></a>    <span class="co">"""Press BOTH wheels flat on the wall → truth restored."""</span></span>
-<span id="cb4-9"><a></a>    left.run(<span class="dv">120</span>)<span class="op">;</span> right.run(<span class="dv">120</span>)</span>
-<span id="cb4-10"><a></a>    <span class="cf">while</span> <span class="kw">not</span> (left.stalled() <span class="kw">and</span> right.stalled()):</span>
-<span id="cb4-11"><a></a>        wait(<span class="dv">10</span>)</span>
-<span id="cb4-12"><a></a>    left.stop()<span class="op">;</span> right.stop()</span>
-<span id="cb4-13"><a></a>    hub.imu.reset_heading(heading)   <span class="co"># the wall never lies</span></span>
-<span id="cb4-14"><a></a>    drive_straight(<span class="op">-</span>BACKOFF_MM)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" data-code-line-numbers="|1-5|7-9|10-11|12|13|14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a><span class="kw">def</span> drive_to_wall(speed<span class="op">=</span><span class="dv">150</span>):</span>
+<span id="cb6-2"><a></a>    <span class="co">"""Roll gently until the wheels feel the wall."""</span></span>
+<span id="cb6-3"><a></a>    right.run(speed)</span>
+<span id="cb6-4"><a></a>    left.run_until_stalled(speed, duty_limit<span class="op">=</span><span class="dv">50</span>)</span>
+<span id="cb6-5"><a></a>    right.stop()</span>
+<span id="cb6-6"><a></a></span>
+<span id="cb6-7"><a></a><span class="kw">def</span> wall_square(heading<span class="op">=</span><span class="dv">0</span>):</span>
+<span id="cb6-8"><a></a>    <span class="co">"""Press BOTH wheels flat on the wall → truth restored."""</span></span>
+<span id="cb6-9"><a></a>    left.run(<span class="dv">120</span>)<span class="op">;</span> right.run(<span class="dv">120</span>)</span>
+<span id="cb6-10"><a></a>    <span class="cf">while</span> <span class="kw">not</span> (left.stalled() <span class="kw">and</span> right.stalled()):</span>
+<span id="cb6-11"><a></a>        wait(<span class="dv">10</span>)</span>
+<span id="cb6-12"><a></a>    left.stop()<span class="op">;</span> right.stop()</span>
+<span id="cb6-13"><a></a>    hub.imu.reset_heading(heading)   <span class="co"># the wall never lies</span></span>
+<span id="cb6-14"><a></a>    drive_straight(<span class="op">-</span>BACKOFF_MM)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment fade-up">
 <div class="cardbox purple">
 <p>Both wheels flat on the wall → heading <strong>known again</strong>. <strong>The wall never lies.</strong></p>
 </div>
 </div>
 <aside class="notes">
-<p>Same promotion ritual as the library day: the morning’s loose fix-it lines get names and move into <code>movements.py</code>, right under <code>drive_straight</code> and <code>turn</code>. Walk <code>wall_square</code> slowly — it’s the first verb whose <em>output</em> is trust, not motion: waiting for BOTH motors to stall means the bumper is flat on the wall, so the physical world just told you your heading exactly; <code>reset_heading(heading)</code> writes that truth back into the gyro, and the measured back-off leaves you at a known distance too. Gyro drift accumulates over a 2-minute run — squaring is how Weeks 3–4 missions reset it between tasks, which is why this humble verb outlives almost everything else. Demo: spin the robot a few times by hand (drift injected), wall_square, then a <code>turn(90, absolute=True)</code> — still true. Table note (decision #23): until the bordered table exists, <code>wall_square</code> trains on the fixed board; when the table lands we re-validate it at the true border positions — that’s the table-arrival checkpoint.</p>
+<p>Same promotion ritual as the library day: the morning’s loose fix-it lines get names and move into <code>movements.py</code>, right under <code>drive_straight</code> and <code>turn</code>. Walk <code>wall_square</code> slowly. Its loop header is <em>Line King</em>’s <code>square_on_line</code> check with <code>stalled()</code> swapped in for the eye: ask the room to read <code>not (… and …)</code> aloud before explaining anything. It’s the first verb whose <em>output</em> is trust, not motion: waiting for BOTH motors to stall means the bumper is flat on the wall, so the physical world just told you your heading exactly; <code>reset_heading(heading)</code> writes that truth back into the gyro, and the measured back-off leaves you at a known distance too. Gyro drift accumulates over a 2-minute run — squaring is how Weeks 3–4 missions reset it between tasks, which is why this humble verb outlives almost everything else. Demo: spin the robot a few times by hand (drift injected), wall_square, then a <code>turn(90, absolute=True)</code> — still true. Table note (decision #23): until the bordered table exists, <code>wall_square</code> trains on the fixed board; when the table lands we re-validate it at the true border positions — that’s the table-arrival checkpoint.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -452,7 +508,7 @@
     <line x1="432.4" y1="34" x2="432.4" y2="104" stroke="#625D9C" stroke-width="2" stroke-dasharray="5 4"></line>
     <text class="label purple" x="432.4" y="28" font-size="12" font-weight="800" text-anchor="middle">≈135 · the gate</text>
     <line x1="551.6" y1="104" x2="551.6" y2="120" stroke="#E96852" stroke-width="2" stroke-dasharray="5 4"></line>
-    <text class="label coral" x="551.6" y="134" font-size="12" font-weight="800" text-anchor="middle">≈175 · D24 stretch</text>
+    <text class="label coral" x="551.6" y="134" font-size="12" font-weight="800" text-anchor="middle">≈175 · post-gate stretch</text>
     <text class="label" x="790" y="134" font-size="12" font-weight="800" text-anchor="end">255 max</text>
   </svg>
   <div id="scMsg" class="sim-msg">the anchor run scores <b>~135 with NO color sensor</b>, and that's what we build first.</div>
@@ -471,7 +527,7 @@
   var msgs=[
     'the anchor run scores <b>~135 with NO color sensor</b>, and that\'s what we build first.',
     '<b>Anchor ~135</b>: Instruments 45 · Cables 30 · Avoidance 40 · Microphone 20, zero color needed. 🧱',
-    '<b>+40 fixed notes</b> (green/red) → <b>~175</b>: a D24 stretch, taken only after the lock. 🎶',
+    '<b>+40 fixed notes</b> (green/red) → <b>~175</b>: a post-gate stretch, taken only after the lock. 🎶',
     '<b>+80 randomized notes</b> → <b>255</b>: the Week-5 stretch. Anchor first, always. 🌈'
   ];
   function xw(pts){ return pts/TOT*W; }

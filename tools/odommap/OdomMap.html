@@ -394,6 +394,12 @@
         .edge-btn-top { grid-column: 1 / 3; }
         .edge-btn-bottom { grid-column: 1 / 3; }
 
+        /* Arc calculator */
+        #arc-btn-setA.btn-active, #arc-btn-setB.btn-active, #arc-btn-add.btn-active {
+            background: #4dd0e1 !important;
+            color: #000080 !important;
+        }
+
         #robot-size-customizer {
             position: absolute;
             top: 20px;
@@ -917,6 +923,52 @@
                 </div>
             </div>
 
+            <div class="sidebar-section" id="arc-section">
+                <h3>Arc Calculator</h3>
+                <div style="font-size:0.75rem;color:#ffffff;line-height:1.5;margin-bottom:8px;">
+                    Click <b>Set A</b>, then <b>Set B</b>, then <b>Add Point</b> for each next stop. Each arc starts with the previous arc's end heading. <b>Flip</b> mirrors a segment to the other side (adds a turn first); <b>Long</b> drives the rest of the same circle instead. Outputs chained <b>drive_base.arc()</b> calls.
+                </div>
+                <div style="display:flex;gap:5px;margin-bottom:6px;">
+                    <button class="btn btn-secondary" id="arc-btn-setA" style="flex:1;padding:6px;font-size:0.8rem;">Set A</button>
+                    <button class="btn btn-secondary" id="arc-btn-setB" style="flex:1;padding:6px;font-size:0.8rem;">Set B</button>
+                </div>
+                <div style="display:flex;gap:5px;margin-bottom:6px;">
+                    <button class="btn btn-secondary" id="arc-btn-add" style="flex:1;padding:5px;font-size:0.75rem;">Add Point</button>
+                    <button class="btn btn-secondary" id="arc-btn-undo" style="flex:1;padding:5px;font-size:0.75rem;">Undo</button>
+                </div>
+                <div style="display:flex;gap:5px;margin-bottom:8px;">
+                    <button class="btn btn-danger" id="arc-btn-clear" style="flex:1;padding:5px;font-size:0.75rem;">Clear All</button>
+                </div>
+                <div class="measurement-item">
+                    <span>Points:</span>
+                    <span class="measurement-value" id="arc-A-val">--</span>
+                </div>
+                <div class="measurement-item">
+                    <span>Last:</span>
+                    <span class="measurement-value" id="arc-B-val">--</span>
+                </div>
+                <div style="margin:8px 0 4px;display:flex;align-items:center;gap:8px;">
+                    <label for="arc-heading" style="font-size:0.8rem;">Heading A:</label>
+                    <input type="number" id="arc-heading" value="0" min="-180" max="180" step="1" style="width:70px;padding:5px 6px;font-size:0.8rem;">
+                    <span style="font-size:0.8rem;color:#4dd0e1;">deg</span>
+                </div>
+                <input type="range" id="arc-heading-slider" min="-180" max="180" step="1" value="0" style="width:100%;margin-bottom:4px;">
+                <div style="font-size:0.7rem;color:#888;margin-bottom:8px;">0 = up, 90 = right, 180/-180 = down, -90 = left</div>
+                <div id="arc-seg-list" style="display:flex;flex-direction:column;gap:4px;margin:4px 0;"></div>
+                <div class="measurement-item">
+                    <span>Total dist:</span>
+                    <span class="measurement-value" id="arc-total-val">--</span>
+                </div>
+                <div class="measurement-item">
+                    <span>Final heading:</span>
+                    <span class="measurement-value" id="arc-final-val">--</span>
+                </div>
+                <div id="arc-note" style="font-size:0.72rem;color:#ffff99;line-height:1.5;margin:6px 0;min-height:1em;"></div>
+                <label style="font-size:0.8rem;color:#ffffff;">Pybricks:</label>
+                <textarea id="arc-code" readonly style="width:100%;height:110px;margin-top:5px;background:#1a1a2e;color:#4dd0e1;border:1px solid #0f3460;border-radius:5px;font-family:monospace;font-size:0.72rem;resize:none;"></textarea>
+                <button class="btn btn-secondary" id="arc-btn-copy" style="margin-top:5px;padding:5px;">Copy Code</button>
+            </div>
+
             <div class="sidebar-section">
                 <h3>HyperLib Odometry</h3>
                 <a href="https://github.com/Lamcao2109/HYPERLIBwro" target="_blank" class="hyperlink-box">
@@ -942,6 +994,15 @@
         let edgeMeasureMode = null; // 'top' | 'bottom' | 'left' | 'right' | null
         let edgeLines = []; // {edge, px, py, distMM}
         let showGrid = false;
+
+        // Arc calculator state: chained waypoints P0..Pn (canvas px).
+        // Heading deg: 0=up, 90=right. arcHeading is the start heading at P0;
+        // each following arc starts with the previous arc's end heading.
+        let arcPts = [];
+        let arcHeading = 0;
+        let arcPickMode = null; // 'set0' | 'set1' | 'add' | null
+        let arcFlipped = new Set(); // segment indices mirrored to the other side
+        let arcLong = new Set(); // segment indices taking the rest of the circle (major arc)
 
         // State
         let startPoint = null;
@@ -1824,6 +1885,9 @@
                 drawTextWithOutline(Math.round(distMM) + 'mm', lx, ly, 13, '#00ccff');
             }
 
+            // Draw arc calculator preview (A/B markers + arc)
+            drawArcPreview();
+
             // Draw robot cursor
             if (isMouseOver) {
                 drawRobotCursor(mousePos.x, mousePos.y);
@@ -2146,6 +2210,11 @@
                 updateMeasurements(startPoint, mousePos);
             }
 
+            // Live arc values while picking (chained preview follows mouse)
+            if (arcPickMode) {
+                updateArcPanel();
+            }
+
             // Node Interaction logic (Route Mode)
             if (currentMode === 'route' && routePoints.length > 0) {
                 // Check for hover
@@ -2223,6 +2292,26 @@
             const rect = canvas.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
+
+            // Arc calculator picking (overrides other modes while armed).
+            // set0 -> places P0 and auto-arms P1; set1 -> places P1 and
+            // auto-arms chaining; add -> appends a point, stays armed.
+            if (arcPickMode) {
+                const P = { x, y };
+                if (arcPickMode === 'set0') {
+                    arcPts[0] = P;
+                    arcPickMode = 'set1';
+                } else if (arcPickMode === 'set1') {
+                    arcPts[1] = P;
+                    arcPickMode = 'add';
+                } else {
+                    arcPts.push(P);
+                }
+                refreshArcPickButtons();
+                updateArcPanel();
+                draw();
+                return;
+            }
 
             // Edge measure mode click
             if (edgeMeasureMode) {
@@ -2395,6 +2484,13 @@
 
         canvas.addEventListener('contextmenu', (e) => {
             e.preventDefault();
+            // Cancel arc picking on right click
+            if (arcPickMode) {
+                arcPickMode = null;
+                refreshArcPickButtons();
+                draw();
+                return;
+            }
             // Deselect edge measure mode on right click
             if (edgeMeasureMode) {
                 document.getElementById(`edge-btn-${edgeMeasureMode}`).classList.remove('active');
@@ -3196,6 +3292,502 @@
             updateSavedRoutesList();
             draw();
         };
+
+        // ================================================
+        // ARC CALCULATOR (Pybricks DriveBase.arc params)
+        // Convention: heading deg 0=up, 90=right, 180/-180=down, -90=left.
+        // Canvas/mm space here is x-right, y-DOWN (same as toMM mapping).
+        // Pybricks: radius > 0 = circle on robot's right, < 0 = left;
+        // angle/distance > 0 = forward, < 0 = reverse.
+        // Geometry: circle tangent to start heading at A, passing through B.
+        // ================================================
+
+        function arcHeadingVec(hDeg) {
+            const r = hDeg * Math.PI / 180;
+            return { x: Math.sin(r), y: -Math.cos(r) };
+        }
+
+        // Heading (deg, 0=up 90=right) of a direction vector (x-right, y-down)
+        function arcHeadingOfVec(v) {
+            return Math.atan2(v.x, -v.y) * 180 / Math.PI;
+        }
+
+        // Mirror a solved forward arc across the A->B chord to the other side.
+        // Returns the mirrored circle (radius negated, same sweep) plus the
+        // turn needed to face its start tangent and its new exit heading.
+        function mirrorArcMM(A, B, hDeg, r) {
+            const dx = B.x - A.x, dy = B.y - A.y;
+            const chord = Math.sqrt(dx * dx + dy * dy) || 1;
+            const u = { x: dx / chord, y: dy / chord };
+            const refl = (v) => {
+                const d = v.x * u.x + v.y * u.y;
+                return { x: 2 * d * u.x - v.x, y: 2 * d * u.y - v.y };
+            };
+            const tangent = arcNorm180(arcHeadingOfVec(refl(arcHeadingVec(hDeg))));
+            const end = arcNorm180(arcHeadingOfVec(refl(arcHeadingVec(r.endHeading))));
+            const turn = arcNorm180(tangent - hDeg); // + = turn right (Pybricks turn sign)
+            return { radius: -r.radius, sweep: r.sweep, arcLen: r.arcLen, tangent, end, turn };
+        }
+
+        function arcNorm180(a) {
+            a = ((a + 180) % 360 + 360) % 360 - 180;
+            // Keep +180 instead of -180 for display consistency
+            if (a === -180) a = 180;
+            return a;
+        }
+
+        // Effective points including live mouse preview while picking
+        function getEffectiveArcPoints() {
+            const pts = arcPts.map(p => ({ x: p.x, y: p.y }));
+            if (!isMouseOver) return pts;
+            if (arcPickMode === 'set0') {
+                pts[0] = { x: mousePos.x, y: mousePos.y };
+            } else if (arcPickMode === 'set1') {
+                pts[1] = { x: mousePos.x, y: mousePos.y };
+            } else if (arcPickMode === 'add' && pts.length >= 1) {
+                pts.push({ x: mousePos.x, y: mousePos.y });
+            }
+            return pts;
+        }
+
+        // A, B in mm ({x, y}, y down). Returns pure geometry + Pybricks params.
+        function computeArcMM(A, B, hDeg) {
+            const dx = B.x - A.x;
+            const dy = B.y - A.y;
+            const chord = Math.sqrt(dx * dx + dy * dy);
+            if (chord < 1e-9) {
+                return { degenerate: true, chord: 0 };
+            }
+            const h = arcHeadingVec(hDeg);
+            const n = { x: -h.y, y: h.x }; // right normal of heading
+            const ndot = n.x * dx + n.y * dy;
+            const hdot = h.x * dx + h.y * dy;
+
+            // B (almost) on the heading line -> straight, no arc
+            if (Math.abs(ndot) < 1e-9) {
+                return {
+                    straight: true, chord,
+                    forward: hdot >= 0,
+                    distMM: hdot // signed: + ahead, - behind
+                };
+            }
+
+            const R = (dx * dx + dy * dy) / (2 * ndot); // signed, mm
+            // Practically straight (huge radius) -> report as straight
+            if (Math.abs(R) > 50000) {
+                return {
+                    straight: true, chord,
+                    forward: hdot >= 0,
+                    distMM: hdot,
+                    radiusHuge: R
+                };
+            }
+
+            const C = { x: A.x + R * n.x, y: A.y + R * n.y };
+            const a1 = Math.atan2(A.y - C.y, A.x - C.x) * 180 / Math.PI;
+            const a2 = Math.atan2(B.y - C.y, B.x - C.x) * 180 / Math.PI;
+            // Forward travel: R>0 (center right) goes toward increasing
+            // atan2(y-down) angle, R<0 goes toward decreasing angle.
+            let sweep;
+            if (R > 0) sweep = ((a2 - a1) % 360 + 360) % 360;
+            else sweep = ((a1 - a2) % 360 + 360) % 360;
+            const arcLen = Math.abs(R) * sweep * Math.PI / 180;
+            const endHeading = arcNorm180(hDeg + (R > 0 ? sweep : -sweep));
+            return {
+                radius: R, sweep, arcLen, endHeading, chord,
+                center: C, a1, a2,
+                side: R > 0 ? 'right' : 'left',
+                behind: hdot < 0
+            };
+        }
+
+        // Chain: segment i runs P[i] -> P[i+1], starting with the
+        // previous segment's end heading (straights keep heading).
+        // Flipped segments mirror across the chord: turn() first, then the
+        // mirrored arc; long segments drive the rest of the same circle
+        // (major arc, no turn needed). Downstream continues from each exit.
+        function computeArcChain(ptsMm, h0) {
+            const segs = [];
+            let h = h0;
+            for (let i = 0; i + 1 < ptsMm.length; i++) {
+                const r = computeArcMM(ptsMm[i], ptsMm[i + 1], h);
+                const seg = { from: i, to: i + 1, startHeading: h, geom: r, flipped: false, mirror: null, longWay: false, long: null };
+                if (!r.degenerate && !r.straight) {
+                    if (arcFlipped.has(i)) {
+                        seg.flipped = true;
+                        seg.mirror = mirrorArcMM(ptsMm[i], ptsMm[i + 1], h, r);
+                        h = seg.mirror.end;
+                    } else if (arcLong.has(i)) {
+                        seg.longWay = true;
+                        const sw = 360 - r.sweep;
+                        seg.long = {
+                            sweep: sw,
+                            arcLen: Math.abs(r.radius) * sw * Math.PI / 180,
+                            end: arcNorm180(h + (r.radius > 0 ? sw : -sw))
+                        };
+                        h = seg.long.end;
+                    } else {
+                        h = r.endHeading;
+                    }
+                }
+                // straight / degenerate: heading unchanged
+                segs.push(seg);
+            }
+            return { segs, finalHeading: h };
+        }
+
+        // Toggle per-segment mirror; indices are positional (append-only),
+        // so pruning only matters on undo/clear. Flip and Long exclude each other.
+        window.arcToggleFlip = function(i) {
+            if (arcFlipped.has(i)) arcFlipped.delete(i);
+            else { arcFlipped.add(i); arcLong.delete(i); }
+            updateArcPanel();
+            draw();
+        };
+        window.arcToggleLong = function(i) {
+            if (arcLong.has(i)) arcLong.delete(i);
+            else { arcLong.add(i); arcFlipped.delete(i); }
+            updateArcPanel();
+            draw();
+        };
+
+        function refreshArcPickButtons() {
+            document.getElementById('arc-btn-setA').classList.toggle('btn-active', arcPickMode === 'set0');
+            document.getElementById('arc-btn-setB').classList.toggle('btn-active', arcPickMode === 'set1');
+            document.getElementById('arc-btn-add').classList.toggle('btn-active', arcPickMode === 'add');
+        }
+
+        function updateArcPanel() {
+            const pts = getEffectiveArcPoints();
+            const elPts = document.getElementById('arc-A-val');
+            const elLast = document.getElementById('arc-B-val');
+            const elTotal = document.getElementById('arc-total-val');
+            const elFinal = document.getElementById('arc-final-val');
+            const elNote = document.getElementById('arc-note');
+            const elCode = document.getElementById('arc-code');
+            const list = document.getElementById('arc-seg-list');
+
+            elPts.textContent = pts.length === 0 ? '--' : `${pts.length} (P0..P${pts.length - 1})`;
+            elLast.textContent = pts.length === 0 ? '--'
+                : `${toMM(pts[pts.length - 1].x).toFixed(0)}, ${toMM(pts[pts.length - 1].y).toFixed(0)} mm`;
+
+            if (pts.length < 2) {
+                list.innerHTML = '';
+                elTotal.textContent = '--';
+                elFinal.textContent = `${arcNorm180(arcHeading).toFixed(1)} deg`;
+                elNote.textContent = pts.length === 0
+                    ? 'Click "Set A" to place P0 (auto-arms P1, then chaining).'
+                    : 'Place P1 on the field. After P1, every click appends the next stop. Right-click stops adding.';
+                elCode.value = '';
+                return;
+            }
+
+            const ptsMm = pts.map(P => ({ x: toMM(P.x), y: toMM(P.y) }));
+            const chain = computeArcChain(ptsMm, arcHeading);
+
+            list.innerHTML = '';
+            let total = 0;
+            const codeLines = [`# Arc chain P0..P${pts.length - 1}, start heading ${arcNorm180(arcHeading).toFixed(0)} deg`];
+            const warnings = [];
+
+            chain.segs.forEach((s, i) => {
+                const r = s.geom;
+                const row = document.createElement('div');
+                row.style.cssText = 'background:#0d1b2a;border:1px solid #0f3460;border-radius:5px;padding:5px 7px;font-size:0.72rem;line-height:1.5;';
+                const btns = (!r.degenerate && !r.straight)
+                    ? ` <button onclick="arcToggleFlip(${i})" style="padding:1px 8px;font-size:0.7rem;background:${s.flipped ? '#4dd0e1' : '#1a1a2e'};color:${s.flipped ? '#000080' : '#4dd0e1'};border:1px solid #4dd0e1;border-radius:4px;cursor:pointer;font-family:inherit;font-weight:bold;">${s.flipped ? 'Unflip' : 'Flip'}</button>`
+                      + ` <button onclick="arcToggleLong(${i})" style="padding:1px 8px;font-size:0.7rem;background:${s.longWay ? '#4dd0e1' : '#1a1a2e'};color:${s.longWay ? '#000080' : '#4dd0e1'};border:1px solid #4dd0e1;border-radius:4px;cursor:pointer;font-family:inherit;font-weight:bold;">${s.longWay ? 'Short' : 'Long'}</button>`
+                    : '';
+                const head = `<span style="color:#4dd0e1;font-weight:bold;">#${i + 1} P${s.from}-&gt;P${s.to}</span> <span style="color:#888;">h=${arcNorm180(s.startHeading).toFixed(0)}deg</span>${s.flipped ? ' <span style="color:#ffff99;">(mirrored)</span>' : ''}${s.longWay ? ' <span style="color:#00ff88;">(long way)</span>' : ''}${btns}`;
+                if (r.degenerate) {
+                    row.innerHTML = `${head}<br><span style="color:#ff6666;">coincide: skipped</span>`;
+                    codeLines.push(`# seg ${i + 1}: P${s.from} == P${s.to}, skipped`);
+                    warnings.push(`Seg ${i + 1}: points coincide.`);
+                } else if (r.straight) {
+                    const d = Math.abs(r.distMM);
+                    total += d;
+                    row.innerHTML = `${head}<br><span style="color:#00ccff;">straight ${d.toFixed(1)} mm${r.forward ? '' : ' (behind!)'}</span>`;
+                    codeLines.push(`drive_base.straight(${(r.forward ? d : -d).toFixed(1)})  # seg ${i + 1} straight`);
+                    if (!r.forward) warnings.push(`Seg ${i + 1}: target straight behind.`);
+                } else if (s.flipped) {
+                    const m = s.mirror;
+                    total += m.arcLen;
+                    row.innerHTML = `${head} <span style="color:#888;">end ${m.end.toFixed(0)}deg</span><br>`
+                        + `<span style="color:#ffff99;">turn ${m.turn.toFixed(1)}deg</span><span style="color:#888;"> then </span>`
+                        + `<span style="color:#00ff88;">R ${m.radius.toFixed(1)} (${m.radius > 0 ? 'right' : 'left'}), ${m.sweep.toFixed(1)}deg, ${m.arcLen.toFixed(1)} mm</span>`;
+                    codeLines.push(`drive_base.turn(${m.turn.toFixed(1)})  # seg ${i + 1} flip: face mirrored arc`);
+                    codeLines.push(`drive_base.arc(radius=${m.radius.toFixed(1)}, angle=${m.sweep.toFixed(1)})  # seg ${i + 1} mirrored`);
+                    if (m.sweep > 180) warnings.push(`Seg ${i + 1}: mirrored loop ${m.sweep.toFixed(0)}deg (target behind).`);
+                } else if (s.longWay) {
+                    const L = s.long;
+                    total += L.arcLen;
+                    row.innerHTML = `${head} <span style="color:#888;">end ${L.end.toFixed(0)}deg</span><br>`
+                        + `<span style="color:#00ff88;">R ${r.radius.toFixed(1)} (${r.side}) LONG ${L.sweep.toFixed(1)}deg, ${L.arcLen.toFixed(1)} mm</span>`;
+                    codeLines.push(`drive_base.arc(radius=${r.radius.toFixed(1)}, angle=${L.sweep.toFixed(1)})  # seg ${i + 1} long way`);
+                    if (Math.abs(r.radius) > 5000) warnings.push(`Seg ${i + 1}: nearly straight, consider straight().`);
+                } else {
+                    total += r.arcLen;
+                    row.innerHTML = `${head} <span style="color:#888;">end ${r.endHeading.toFixed(0)}deg</span><br>`
+                        + `<span style="color:#00ff88;">R ${r.radius.toFixed(1)} (${r.side}), ${r.sweep.toFixed(1)}deg, ${r.arcLen.toFixed(1)} mm</span>`;
+                    codeLines.push(`drive_base.arc(radius=${r.radius.toFixed(1)}, angle=${r.sweep.toFixed(1)})  # seg ${i + 1}`);
+                    if (r.sweep > 180) warnings.push(`Seg ${i + 1}: loops ${r.sweep.toFixed(0)}deg (target behind).`);
+                    else if (r.behind) warnings.push(`Seg ${i + 1}: wide arc (target slightly behind).`);
+                    else if (Math.abs(r.radius) > 5000) warnings.push(`Seg ${i + 1}: nearly straight, consider straight().`);
+                }
+                list.appendChild(row);
+            });
+
+            elTotal.textContent = `${total.toFixed(1)} mm`;
+            elFinal.textContent = `${chain.finalHeading.toFixed(1)} deg`;
+            const anyFlip = chain.segs.some(s => s.flipped);
+            const anyLong = chain.segs.some(s => s.longWay);
+            elNote.textContent = (warnings.length ? warnings.join(' ') + ' ' : '')
+                + (anyFlip ? 'Flipped segs turn() in place first, then arc the mirrored circle. ' : '')
+                + (anyLong ? 'Long segs drive the rest of the same circle, no turn needed. ' : '')
+                + 'Radius + = right circle, - = left. Angle positive = forward.';
+            elCode.value = codeLines.join('\n');
+        }
+
+        function strokeArcWithOutline(cx, cy, rPx, a1rad, a2rad, ccw, color) {
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 7;
+            ctx.beginPath();
+            ctx.arc(cx, cy, rPx, a1rad, a2rad, ccw);
+            ctx.stroke();
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.arc(cx, cy, rPx, a1rad, a2rad, ccw);
+            ctx.stroke();
+        }
+
+        function drawArcArrowhead(px, py, tx, ty, size, color) {
+            const ang = Math.atan2(ty, tx);
+            const a1 = ang + Math.PI * 0.85;
+            const a2 = ang - Math.PI * 0.85;
+            ctx.fillStyle = '#ffffff';
+            ctx.beginPath();
+            ctx.moveTo(px, py);
+            ctx.lineTo(px + (size + 3) * Math.cos(a1), py + (size + 3) * Math.sin(a1));
+            ctx.lineTo(px + (size + 3) * Math.cos(a2), py + (size + 3) * Math.sin(a2));
+            ctx.closePath();
+            ctx.fill();
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.moveTo(px, py);
+            ctx.lineTo(px + size * Math.cos(a1), py + size * Math.sin(a1));
+            ctx.lineTo(px + size * Math.cos(a2), py + size * Math.sin(a2));
+            ctx.closePath();
+            ctx.fill();
+        }
+
+        // Draw one chain segment (A, B in canvas px; seg = {startHeading, geom, flipped, mirror})
+        function drawArcSegment(A, B, seg, idx) {
+            const r = seg.geom;
+            if (r.degenerate) return;
+
+            // Straight segment: cyan chord arrow
+            if (r.straight) {
+                drawLineWithOutline(A.x, A.y, B.x, B.y, '#00ccff', 3, 6);
+                const dx = B.x - A.x, dy = B.y - A.y;
+                const len = Math.sqrt(dx * dx + dy * dy) || 1;
+                drawArcArrowhead(B.x, B.y, dx / len, dy / len, 10, '#00ccff');
+                drawTextWithOutline(`#${idx + 1} straight ${Math.abs(r.distMM).toFixed(0)}mm`,
+                    (A.x + B.x) / 2, (A.y + B.y) / 2 - 16, 11, '#00ccff');
+                return;
+            }
+
+            // Flipped: circle mirrored across the chord; robot turns in place
+            // first to face the mirrored start tangent.
+            const m = seg.mirror;
+            const L = seg.long;
+            const startH = seg.flipped ? m.tangent : seg.startHeading;
+            const R = seg.flipped ? m.radius : r.radius;
+            const endH = seg.flipped ? m.end : (seg.longWay ? L.end : r.endHeading);
+            const effSweep = seg.longWay ? L.sweep : r.sweep;
+
+            if (seg.flipped) {
+                const hv = arcHeadingVec(seg.startHeading);
+                const tv = arcHeadingVec(m.tangent);
+                const a0 = Math.atan2(hv.y, hv.x);
+                const dRad = m.turn * Math.PI / 180;
+                ctx.strokeStyle = '#ffffff';
+                ctx.lineWidth = 5;
+                ctx.beginPath();
+                ctx.arc(A.x, A.y, 24, a0, a0 + dRad, dRad < 0);
+                ctx.stroke();
+                ctx.strokeStyle = '#ffff99';
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.arc(A.x, A.y, 24, a0, a0 + dRad, dRad < 0);
+                ctx.stroke();
+                const ae = a0 + dRad;
+                drawArcArrowhead(A.x + 24 * Math.cos(ae), A.y + 24 * Math.sin(ae),
+                    dRad >= 0 ? -Math.sin(ae) : Math.sin(ae),
+                    dRad >= 0 ? Math.cos(ae) : -Math.cos(ae), 9, '#ffff99');
+                drawTextWithOutline(`turn ${m.turn.toFixed(0)}deg`, A.x, A.y + 38, 11, '#ffff99');
+            }
+
+            const h = arcHeadingVec(startH);
+            const n = { x: -h.y, y: h.x };
+            const Cx = A.x + R * scale * n.x;
+            const Cy = A.y + R * scale * n.y;
+            const rPx = Math.abs(R) * scale;
+            if (!isFinite(Cx) || !isFinite(Cy) || !isFinite(rPx) || rPx < 1) return;
+            const a1rad = Math.atan2(A.y - Cy, A.x - Cx);
+            const a2rad = Math.atan2(B.y - Cy, B.x - Cx);
+            // Normal: R>0 travels toward increasing atan2 angle, R<0 decreasing.
+            // Long way travels the same circle in the opposite direction.
+            const increasing = seg.longWay ? (R < 0) : (R > 0);
+            const ccw = !increasing;
+
+            // Faint full circle
+            ctx.strokeStyle = 'rgba(77, 208, 225, 0.35)';
+            ctx.lineWidth = 1;
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            ctx.arc(Cx, Cy, rPx, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Radius lines A-C and B-C
+            ctx.strokeStyle = 'rgba(77, 208, 225, 0.7)';
+            ctx.lineWidth = 1;
+            ctx.setLineDash([4, 4]);
+            ctx.beginPath(); ctx.moveTo(A.x, A.y); ctx.lineTo(Cx, Cy); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(B.x, B.y); ctx.lineTo(Cx, Cy); ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Center cross
+            ctx.strokeStyle = '#4dd0e1';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(Cx - 8, Cy); ctx.lineTo(Cx + 8, Cy);
+            ctx.moveTo(Cx, Cy - 8); ctx.lineTo(Cx, Cy + 8);
+            ctx.stroke();
+            drawTextWithOutline('C' + (idx + 1), Cx, Cy - 16, 11, '#4dd0e1');
+
+            // The arc itself
+            strokeArcWithOutline(Cx, Cy, rPx, a1rad, a2rad, ccw, '#00ff88');
+
+            // Travel-direction arrow at arc midpoint
+            const sweepRad = effSweep * Math.PI / 180;
+            const midAng = increasing ? a1rad + sweepRad / 2 : a1rad - sweepRad / 2;
+            const Mx = Cx + rPx * Math.cos(midAng);
+            const My = Cy + rPx * Math.sin(midAng);
+            let tx, ty;
+            if (increasing) { tx = -Math.sin(midAng); ty = Math.cos(midAng); }
+            else { tx = Math.sin(midAng); ty = -Math.cos(midAng); }
+            drawArcArrowhead(Mx, My, tx, ty, 12, '#00ff88');
+
+            // End heading arrow at B (shows chaining into the next arc)
+            const ehv = arcHeadingVec(endH);
+            const ex = B.x + 30 * ehv.x, ey = B.y + 30 * ehv.y;
+            drawLineWithOutline(B.x, B.y, ex, ey, '#ffff99', 2, 5);
+            drawArcArrowhead(ex, ey, ehv.x, ehv.y, 8, '#ffff99');
+
+            // Labels: radius outside the arc, sweep inside
+            const rx = Math.cos(midAng), ry = Math.sin(midAng);
+            drawTextWithOutline(`#${idx + 1} R ${Math.abs(R).toFixed(0)}mm${seg.longWay ? ' (long)' : ''}`, Mx + rx * 30, My + ry * 30, 11, '#00ff88');
+            drawTextWithOutline(`${effSweep.toFixed(0)}deg`, Mx - rx * 26, My - ry * 26, 11, '#00ff88');
+        }
+
+        function drawArcPreview() {
+            const pts = getEffectiveArcPoints();
+
+            // Pick-mode prompt near cursor
+            if (arcPickMode && isMouseOver) {
+                const lbl = arcPickMode === 'add' ? ('P' + arcPts.length)
+                    : arcPickMode === 'set0' ? 'P0 (start)' : 'P1';
+                drawTextWithOutline('click to set ' + lbl, mousePos.x, mousePos.y - 28, 13, '#00cc66');
+            }
+
+            // Markers P0..Pn (P0 green, rest orange)
+            pts.forEach((P, idx) => {
+                const col = idx === 0 ? '#00cc66' : '#ff9900';
+                ctx.fillStyle = '#ffffff';
+                ctx.beginPath(); ctx.arc(P.x, P.y, 8, 0, Math.PI * 2); ctx.fill();
+                ctx.fillStyle = col;
+                ctx.beginPath(); ctx.arc(P.x, P.y, 5, 0, Math.PI * 2); ctx.fill();
+                drawTextWithOutline(`P${idx} (${toMM(P.x).toFixed(0)}, ${toMM(P.y).toFixed(0)})`, P.x, P.y - 18, 11, col);
+            });
+            if (pts.length === 0) return;
+
+            // Start heading arrow at P0
+            const hv = arcHeadingVec(arcHeading);
+            const hx = pts[0].x + 42 * hv.x, hy = pts[0].y + 42 * hv.y;
+            drawLineWithOutline(pts[0].x, pts[0].y, hx, hy, '#ffff99', 3, 6);
+            drawArcArrowhead(hx, hy, hv.x, hv.y, 10, '#ffff99');
+
+            if (pts.length < 2) return;
+            const ptsMm = pts.map(P => ({ x: toMM(P.x), y: toMM(P.y) }));
+            const chain = computeArcChain(ptsMm, arcHeading);
+            chain.segs.forEach((s, i) => drawArcSegment(pts[s.from], pts[s.to], s, i));
+        }
+
+        // Arc UI wiring
+        document.getElementById('arc-btn-setA').addEventListener('click', () => {
+            arcPickMode = (arcPickMode === 'set0') ? null : 'set0';
+            refreshArcPickButtons();
+            draw();
+        });
+        document.getElementById('arc-btn-setB').addEventListener('click', () => {
+            arcPickMode = (arcPickMode === 'set1') ? null : 'set1';
+            refreshArcPickButtons();
+            draw();
+        });
+        document.getElementById('arc-btn-add').addEventListener('click', () => {
+            if (arcPts.length < 1) {
+                // Nothing to chain from yet: start by placing P0
+                arcPickMode = (arcPickMode === 'set0') ? null : 'set0';
+            } else {
+                arcPickMode = (arcPickMode === 'add') ? null : 'add';
+            }
+            refreshArcPickButtons();
+            draw();
+        });
+        document.getElementById('arc-btn-undo').addEventListener('click', () => {
+            arcPts.pop();
+            for (const k of [...arcFlipped]) {
+                if (k >= arcPts.length - 1) arcFlipped.delete(k);
+            }
+            for (const k of [...arcLong]) {
+                if (k >= arcPts.length - 1) arcLong.delete(k);
+            }
+            updateArcPanel();
+            draw();
+        });
+        document.getElementById('arc-btn-clear').addEventListener('click', () => {
+            arcPts = []; arcPickMode = null; arcFlipped.clear(); arcLong.clear();
+            refreshArcPickButtons();
+            updateArcPanel();
+            draw();
+        });
+        document.getElementById('arc-heading').addEventListener('input', (e) => {
+            let v = parseFloat(e.target.value);
+            if (isNaN(v)) v = 0;
+            v = Math.max(-180, Math.min(180, v));
+            arcHeading = v;
+            document.getElementById('arc-heading-slider').value = v;
+            updateArcPanel();
+            draw();
+        });
+        document.getElementById('arc-heading-slider').addEventListener('input', (e) => {
+            arcHeading = parseFloat(e.target.value) || 0;
+            document.getElementById('arc-heading').value = arcHeading;
+            updateArcPanel();
+            draw();
+        });
+        document.getElementById('arc-btn-copy').addEventListener('click', () => {
+            const output = document.getElementById('arc-code').value;
+            if (output) {
+                navigator.clipboard.writeText(output).then(() => {
+                    const btn = document.getElementById('arc-btn-copy');
+                    btn.textContent = 'Copied!';
+                    setTimeout(() => { btn.textContent = 'Copy Code'; }, 2000);
+                });
+            }
+        });
 
         // Wheel diameter handler
 

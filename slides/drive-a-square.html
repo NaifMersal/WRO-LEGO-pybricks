@@ -9,7 +9,7 @@
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.9.38">
 
-  <meta name="dcterms.date" content="2026-09-14">
+  <meta name="dcterms.date" content="2026-09-28">
   <title>Drive a Square</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -202,12 +202,12 @@
 
 <section id="title-slide" data-background-image="../slides_template/assets/anim.svg" data-background-opacity="0.15" data-background-size="cover" class="quarto-title-block center">
   <h1 class="title">Drive a Square</h1>
-  <p class="subtitle">Day 3 · Robot Rockstars · SPIKE Prime + Pybricks</p>
+  <p class="subtitle">Session 6 · Lesson D3, part 2 · Robot Rockstars · SPIKE Prime + Pybricks</p>
 
 <div class="quarto-title-authors">
 </div>
 
-  <p class="date">2026-09-14</p>
+  <p class="date">2026-09-28</p>
 </section>
 <section>
 <section id="a.-warm-up" class="title-slide slide level1 sdaia-dark center" data-background-gradient="linear-gradient(135deg, #1C355E, #00C9A7)">
@@ -217,6 +217,10 @@
 <section id="where-we-left-off" class="slide level2">
 <h2>Where we left off</h2>
 <table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
 <thead>
 <tr class="header">
 <th>Yesterday</th>
@@ -231,6 +235,10 @@
 <tr class="even">
 <td>🧭 <strong>Blindfolded</strong></td>
 <td>no checking → it <strong>drifts</strong></td>
+</tr>
+<tr class="odd">
+<td>🔁 <strong>Until It’s True</strong></td>
+<td><code>while</code> keeps <strong>checking</strong>, and stops when the check turns False</td>
 </tr>
 </tbody>
 </table>
@@ -520,6 +528,7 @@
 <ul>
 <li>Run it: prints <strong>0, 1, 2, 3</strong>. Computers start counting at 0.</li>
 <li>Everything <strong>indented</strong> under the <code>for</code> is <em>inside</em> the loop.</li>
+<li>Same two rules as <code>while</code>: a <strong>colon</strong> on the header, the body <strong>pushed in</strong>.</li>
 </ul>
 <div class="fragment fade-up">
 <div class="cardbox teal">
@@ -527,71 +536,17 @@
 </div>
 </div>
 </section>
-<section id="bug-hunt-the-missing-colon" class="slide level2">
-<h2>🐛 Bug hunt: the missing colon</h2>
-<div class="qbox">
-<p><span class="qtitle">This <code>for</code> loop won’t even start. Pybricks flags the <strong>first line</strong> in red. What’s missing?</span></p>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a><span class="cf">for</span> side <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">4</span>)</span>
-<span id="cb4-2"><a></a>    left.run_angle(SPEED, SIDE_ANGLE, wait<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb4-3"><a></a>    right.run_angle(SPEED, SIDE_ANGLE)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="fragment fade-up">
-<div class="cardbox coral">
-<p><code>SyntaxError</code>: no <strong>colon</strong>. Every repeat header ends in <code>:</code>, which says <em>“block starts here.”</em> Fix: <code>for side in range(4):</code></p>
-</div>
-</div>
-<aside class="notes">
-<p>The colon is invisible until it’s missing — run it live so the red SyntaxError lands on the <code>for</code> line. Make the habit loud: say “colon” out loud every time you type a <code>for</code> or <code>while</code> header this week. This is the #1 typo of the day; naming it now saves ten rescues later.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="bug-hunt-the-runaway-line" class="slide level2">
-<h2>🐛 Bug hunt: the runaway line</h2>
-<div class="qbox">
-<p><span class="qtitle">The colon’s there now… and it <em>still</em> won’t run. Read the error. It points at <strong>line 2.</strong></span></p>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a><span class="cf">for</span> side <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">4</span>):</span>
-<span id="cb5-2"><a></a>left.run_angle(SPEED, SIDE_ANGLE, wait<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb5-3"><a></a>right.run_angle(SPEED, SIDE_ANGLE)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="fragment fade-up">
-<div class="cardbox coral">
-<p><code>IndentationError</code>: lines inside a loop must be <strong>pushed in</strong> (one Tab). No indent, no “inside.” The spaces tell Python what repeats.</p>
-</div>
-</div>
-<aside class="notes">
-<p>Indentation-as-meaning is the single biggest beginner hurdle — spend a beat. Show both side by side: flush-left (crashes) vs.&nbsp;indented (runs). Then the sneaky version if time allows: indent <strong>only</strong> line 2 — no crash, but the right wheel fires once, outside the loop. “It ran but it’s wrong” is scarier than a crash, and that’s exactly the lesson.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
 <section id="the-square-one-corner-four-times" class="slide level2">
 <h2>The square: one corner, four times</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" data-code-line-numbers="|1-3|5-9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a>SIDE_ANGLE <span class="op">=</span> <span class="dv">391</span>    <span class="co"># same constants as before…</span></span>
-<span id="cb6-2"><a></a>TURN_ANGLE <span class="op">=</span> <span class="dv">131</span></span>
-<span id="cb6-3"><a></a>SPEED <span class="op">=</span> <span class="dv">400</span></span>
-<span id="cb6-4"><a></a></span>
-<span id="cb6-5"><a></a><span class="cf">for</span> side <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">4</span>):</span>
-<span id="cb6-6"><a></a>    left.run_angle(SPEED, SIDE_ANGLE, wait<span class="op">=</span><span class="va">False</span>)    <span class="co"># counted → sides are solid</span></span>
-<span id="cb6-7"><a></a>    right.run_angle(SPEED, SIDE_ANGLE)</span>
-<span id="cb6-8"><a></a>    left.run_angle(SPEED, TURN_ANGLE, wait<span class="op">=</span><span class="va">False</span>)    <span class="co"># wheels roll opposite ways…</span></span>
-<span id="cb6-9"><a></a>    right.run_angle(SPEED, <span class="op">-</span>TURN_ANGLE)              <span class="co"># …so the robot spins in place</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" data-code-line-numbers="|1-3|5-9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a>SIDE_ANGLE <span class="op">=</span> <span class="dv">391</span>    <span class="co"># same constants as before…</span></span>
+<span id="cb4-2"><a></a>TURN_ANGLE <span class="op">=</span> <span class="dv">131</span></span>
+<span id="cb4-3"><a></a>SPEED <span class="op">=</span> <span class="dv">400</span></span>
+<span id="cb4-4"><a></a></span>
+<span id="cb4-5"><a></a><span class="cf">for</span> side <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">4</span>):</span>
+<span id="cb4-6"><a></a>    left.run_angle(SPEED, SIDE_ANGLE, wait<span class="op">=</span><span class="va">False</span>)    <span class="co"># counted → sides are solid</span></span>
+<span id="cb4-7"><a></a>    right.run_angle(SPEED, SIDE_ANGLE)</span>
+<span id="cb4-8"><a></a>    left.run_angle(SPEED, TURN_ANGLE, wait<span class="op">=</span><span class="va">False</span>)    <span class="co"># wheels roll opposite ways…</span></span>
+<span id="cb4-9"><a></a>    right.run_angle(SPEED, <span class="op">-</span>TURN_ANGLE)              <span class="co"># …so the robot spins in place</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>~16 lines → 8. Octagon? <code>range(8)</code> plus one new corner number: <strong>two edits</strong>.</p>
 <p>Now mark your start with tape. Run it <strong>three times</strong>. <strong>Where does it finish?</strong></p>
 <aside class="notes">
@@ -745,11 +700,11 @@
 </section>
 <section id="lab-feel-the-gyro" class="slide level2">
 <h2>Lab: feel the gyro 🖐️</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" data-code-line-numbers="|1|3-5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a>hub.imu.reset_heading(<span class="dv">0</span>)        <span class="co"># "THIS way is zero"</span></span>
-<span id="cb7-2"><a></a></span>
-<span id="cb7-3"><a></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">100</span>):            <span class="co"># ~10 seconds of just… feeling</span></span>
-<span id="cb7-4"><a></a>    <span class="bu">print</span>(hub.imu.heading())</span>
-<span id="cb7-5"><a></a>    wait(<span class="dv">100</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" data-code-line-numbers="|1|3-5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a>hub.imu.reset_heading(<span class="dv">0</span>)        <span class="co"># "THIS way is zero"</span></span>
+<span id="cb5-2"><a></a></span>
+<span id="cb5-3"><a></a><span class="cf">for</span> _ <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">100</span>):            <span class="co"># ~10 seconds of just… feeling</span></span>
+<span id="cb5-4"><a></a>    <span class="bu">print</span>(hub.imu.heading())</span>
+<span id="cb5-5"><a></a>    wait(<span class="dv">100</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>Pick the robot up. <strong>Twist it</strong> left, right, all the way around. The numbers follow your hands. <strong>No motor moved.</strong></li>
 <li>Spin one slow full circle → <strong>360</strong>. Keep going → <strong>720</strong>!</li>
@@ -767,6 +722,36 @@
 <p><strong>0.</strong> Heading is <em>net</em> turning: +90 − 90 = 0. A compass needle, not a step counter.</p>
 </div>
 </div>
+</section>
+<section id="which-way-and-how-far" class="slide level2">
+<h2>Which way, and how far? ➕➖</h2>
+<pre><code>  -20    -10     0     +10    +20
+   ◀──── left ───┼─── right ────▶</code></pre>
+<ul>
+<li><code>heading()</code> reads <strong>+8</strong>: the nose swung <strong>right</strong>, 8°.</li>
+<li>It reads <strong>−5</strong>: the nose swung <strong>left</strong>, 5°.</li>
+<li>The <strong>sign</strong> says which way. The number says how far.</li>
+</ul>
+<div class="fragment fade-up">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a><span class="bu">print</span>(<span class="bu">abs</span>(<span class="op">-</span><span class="dv">5</span>))    <span class="co"># 5</span></span>
+<span id="cb7-2"><a></a><span class="bu">print</span>(<span class="bu">abs</span>(<span class="dv">8</span>))     <span class="co"># 8</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cardbox teal">
+<p><code>abs()</code> throws the sign away and keeps <strong>how far</strong>. “How far off am I?” is <code>abs(heading)</code>, whichever way you missed.</p>
+</div>
+</div>
+<aside class="notes">
+<p>Five minutes, and it is the day’s only arithmetic detour (decision #55): the gyro is the first thing in the course that hands back a signed number, so the number line lands here, not later. Draw the line on the board and walk a finger along it: twist the robot a little right, read +8, point at +8; a little left, read −5, point at −5. Then ask: “which miss is bigger, +8 or −5?” and let the room argue about whether −5 is “smaller”. <code>abs()</code> settles it. The P-controller will lean on signed error without re-teaching it, and Shape Shifter’s closure gap is exactly <code>abs()</code> of the final heading miss, so name that at the gate.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section></section>
 <section>
 <section id="d.-steer-with-it" class="title-slide slide level1 sdaia-dark center" data-background-gradient="linear-gradient(135deg, #1C355E, #00C9A7)">
@@ -781,17 +766,17 @@
 </div>
 <div class="fragment fade-up">
 <div class="cardbox purple">
-<p>“Spin. <strong>Keep watching</strong> the heading. The instant it says 90, <strong>stop</strong>.” A turn that <em>watches itself</em>. New trick: repeating <em>while</em> something is true.</p>
+<p>“Spin. <strong>Keep watching</strong> the heading. The instant it says 90, <strong>stop</strong>.” A turn that <em>watches itself</em>. You already own the loop for that.</p>
 </div>
 </div>
 </section>
-<section id="new-trick-while" class="slide level2">
-<h2>New trick: <code>while</code></h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" data-code-line-numbers="|1|2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a><span class="cf">while</span> hub.imu.heading() <span class="op">&lt;</span> <span class="dv">90</span>:   <span class="co"># as long as this check is TRUE…</span></span>
+<section id="you-already-own-while" class="slide level2">
+<h2>You already own <code>while</code></h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" data-code-line-numbers="|1|2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a><span class="cf">while</span> hub.imu.heading() <span class="op">&lt;</span> <span class="dv">90</span>:   <span class="co"># last session: left.angle() &lt; 360</span></span>
 <span id="cb8-2"><a></a>    wait(<span class="dv">5</span>)                     <span class="co"># …wait 5 ms, then check again</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
+<li>Same loop as <em>Until It’s True</em>. The check now reads the <strong>gyro</strong>, not the wheel.</li>
 <li><code>for</code> repeats a <em>known</em> count. <code>while</code> repeats <strong>while a check is true</strong>.</li>
-<li>This loop does nothing but <strong>watch</strong>, hundreds of gyro checks per second.</li>
 </ul>
 <div class="fragment fade-up">
 <div class="cardbox teal">
@@ -899,8 +884,8 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="pro-move-targets-that-climb" class="slide level2 smaller">
-<h2>Pro move: targets that climb 🧗</h2>
+<section id="stretch-targets-that-climb" class="slide level2 smaller">
+<h2>Stretch: targets that climb 🧗</h2>
 <div class="qbox">
 <p><span class="qtitle">Each corner resets heading to 0. But heading <em>keeps counting</em>: 360, 450, 720… What if you never reset, and aim corner 1 at <strong>90</strong>, corner 2 at <strong>180</strong>, corner 3 at <strong>270</strong>?</span></p>
 <p>Where would the <em>coast</em> go?</p>
@@ -1095,7 +1080,7 @@
 <li>Pro question: which drifts more, 3 fat corners or 8 skinny ones? Watch your traces and keep the answer for tomorrow.</li>
 </ul>
 <aside class="notes">
-<p>Uses exactly today’s material: <code>for</code> + <code>range</code>, the watched-turn <code>while</code>, 360 ÷ n, and heading — no <code>def</code>; that arrives tomorrow. The 60-second edit window is the point: a loop makes a new shape a two-number change, so the octagon call separates loopers from pasters on the clock. The closure gap keeps the coast visible — 8 corners × ~4° beats 3 × ~4°, so the octagon drifts more; squads that <em>see</em> that are already leaning into tomorrow’s cure. Coach scorecard: edit discipline (two calm edits vs.&nbsp;a rewrite), 360 ÷ n reasoning without a calculator, and who re-tapes and re-tests between calls.</p>
+<p>Uses exactly today’s material: <code>for</code> + <code>range</code>, the watched-turn <code>while</code>, 360 ÷ n, heading, and <code>abs()</code> for the closure gap — no <code>def</code>; that arrives tomorrow. The 60-second edit window is the point: a loop makes a new shape a two-number change, so the octagon call separates loopers from pasters on the clock. The closure gap keeps the coast visible — 8 corners × ~4° beats 3 × ~4°, so the octagon drifts more; squads that <em>see</em> that are already leaning into tomorrow’s cure. Coach scorecard: edit discipline (two calm edits vs.&nbsp;a rewrite), 360 ÷ n reasoning without a calculator, and who re-tapes and re-tests between calls.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1124,7 +1109,7 @@
 </div>
 </div>
 <div class="fragment fade-up">
-<p>Tomorrow: the coast meets its cure, which is to arrive <em>slowly</em>. Then the cure gets a brain: <strong>speed that shrinks with the error</strong>. One formula, and it has a name every roboticist knows.</p>
+<p>Next: <em>Cure the Coast</em>. Arrive slowly and name the move with <code>def</code>. A full writing-practice session follows before we add P control.</p>
 </div>
 
 

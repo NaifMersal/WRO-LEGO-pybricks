@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.9.38">
 
   <meta name="dcterms.date" content="2026-09-28">
-  <title>The Beam Balance</title>
+  <title>Until It’s True</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -201,8 +201,8 @@
     <div class="slides">
 
 <section id="title-slide" data-background-image="../slides_template/assets/anim.svg" data-background-opacity="0.15" data-background-size="cover" class="quarto-title-block center">
-  <h1 class="title">The Beam Balance</h1>
-  <p class="subtitle">Session 4 · Lesson D2, part 2 · Robot Rockstars · SPIKE Prime + Pybricks</p>
+  <h1 class="title">Until It’s True</h1>
+  <p class="subtitle">Session 5 · Lesson D3, part 1 · Robot Rockstars · SPIKE Prime + Pybricks</p>
 
 <div class="quarto-title-authors">
 </div>
@@ -210,195 +210,28 @@
   <p class="date">2026-09-28</p>
 </section>
 <section>
-<section id="a.-where-we-stopped" class="title-slide slide level1 sdaia-dark center" data-background-gradient="linear-gradient(135deg, #1C355E, #00C9A7)">
-<h1>A. Where We Stopped</h1>
-<p>You got <strong>1304°</strong> out of me. Today you learn to get it <strong>yourself</strong>, for any distance.</p>
+<section id="a.-the-question" class="title-slide slide level1 sdaia-dark center" data-background-gradient="linear-gradient(135deg, #1C355E, #00C9A7)">
+<h1>A. The Question</h1>
+<p>Some jobs have no fixed time. Only a <strong>finish line</strong>. 🏁</p>
 </section>
-<section id="yesterdays-two-numbers" class="slide level2">
-<h2>Yesterday’s two numbers</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><strong>What you measured</strong></p>
-<ul>
-<li>One wheel turn rolls <strong>27.6 cm</strong></li>
-<li><span class="math inline">\(C = \pi \times d\)</span>, from unrolling the rope</li>
-</ul>
-</div><div class="column" style="width:50%;">
-<p><strong>What I handed you</strong></p>
-<ul>
-<li><span class="math inline">\(360 \div 27.6 \approx 13.04°\)</span> per cm</li>
-<li><span class="math inline">\(100 \times 13.04 \approx 1304°\)</span></li>
-</ul>
-</div></div>
-<div class="fragment">
-<div class="cardbox">
-<p>Be honest: you <strong>followed</strong> that. You did not <strong>invent</strong> it. So what happens on the mat in Week 4 when the number isn’t 100 cm, but 42 cm, then 17, then 63? You need the <strong>tool</strong>, not the answer. 🧰</p>
-</div>
-<p>⏱️ <strong>Time: 5 minutes</strong> · no laptops yet</p>
-</div>
-</section>
-<section id="same-symbol-two-jobs" class="slide level2">
-<h2>Same symbol, two jobs</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<h3 id="in-python">In Python ➡️</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a>speed <span class="op">=</span> <span class="dv">200</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>“<strong>Put</strong> 200 in the room called speed.”</p>
-<p>An <strong>arrow</strong>. It <em>does</em> something.</p>
-</div><div class="column" style="width:50%;">
-<h3 id="on-paper">On paper ⚖️</h3>
-<p><span class="math display">\[27.6 \times t = 30\]</span></p>
-<p>“These two weigh <strong>the same</strong>.”</p>
-<p>A <strong>balance</strong>. It <em>states</em> something.</p>
-</div></div>
-<div class="fragment fade-up">
-<div class="cardbox purple">
-<p>Today is all about the <strong>paper</strong> one. Every time you see <code>=</code> on the whiteboard for the next hour, picture a beam with two pans, and picture it <strong>tipping</strong> the moment you cheat.</p>
-</div>
-</div>
-<aside class="notes">
-<p>This distinction is the single most common source of confusion when beginners meet algebra alongside a first programming language, and this cohort is meeting both in the same week. Say it out loud, then keep pointing at it: the whiteboard <code>=</code> and the editor <code>=</code> are different animals wearing the same costume. Do not skip the callout — the arcade recap re-tests exactly this.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section></section>
-<section>
-<section id="b.-build-the-beam" class="title-slide slide level1 sdaia-dark center" data-background-gradient="linear-gradient(135deg, #1C355E, #FF7A5C)">
-<h1>B. Build the Beam</h1>
-<p>Unplugged. Real objects, real tipping. <strong>No screens in this section.</strong></p>
-</section>
-<section id="the-prop" class="slide level2">
-<h2>The prop</h2>
-<div class="callout callout-important callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>What’s on the table</strong></p>
-</div>
-<div class="callout-content">
-<p>A balance (or a ruler resting on a pencil), and <strong>bricks as fruit</strong>:</p>
-<ul>
-<li>🍊 <strong>orange</strong> = one 2×4 brick, <em>our unit</em></li>
-<li>🍌 <strong>banana</strong> = two bricks stuck together</li>
-<li>🍉 <strong>melon</strong> = three bricks stuck together</li>
-</ul>
-</div>
-</div>
-</div>
-<ul>
-<li>Everything today is counted <strong>in oranges</strong>. A banana is worth 2. A melon is worth 3.</li>
-<li>The students don’t know those numbers yet. <strong>They work them out from the beam.</strong></li>
-</ul>
-<aside class="notes">
-<p>Coach prep: if no pan balance is in the kit, a 30 cm ruler across a round pencil works, or draw the beam on the whiteboard and place bricks in two taped-off “pans” while you declare level/tipped. A physical tip is worth a lot here — the whole lesson runs on the memory of watching it fall. Do NOT reveal banana=2 and melon=3; those are the answers to sections D and F. Build the fruit ahead of time so bricks can’t be counted at a glance — tape over the studs if your group is sharp-eyed.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section></section>
-<section>
-<section id="c.-take-one-off-each-side" class="title-slide slide level1 sdaia-dark center" data-background-gradient="linear-gradient(135deg, #1C355E, #625D9C)">
-<h1>C. Take One Off Each Side</h1>
-<p>The first move. It has a name you already know.</p>
-</section>
-<section id="oranges-balance-6-apples" class="slide level2">
-<h2>6 oranges balance 6 apples</h2>
+<section id="drive-until-the-black-line" class="slide level2">
+<h2>Drive until the black line</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a>left.run(<span class="dv">300</span>)</span>
+<span id="cb1-2"><a></a>wait(????)     <span class="co"># how long??</span></span>
+<span id="cb1-3"><a></a>left.stop()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="qbox">
-<p><span class="qtitle">🍊🍊🍊🍊🍊🍊 &nbsp;⚖️&nbsp; 🍏🍏🍏🍏🍏🍏</span></p>
-<p>I take <strong>one orange</strong> off the left and <strong>one apple</strong> off the right. Hands up: does it <strong>tip</strong>, or stay <strong>level</strong>?</p>
+<p><span class="qtitle">How long do you wait before <code>stop()</code>?</span></p>
 </div>
 <div class="fragment fade-up">
 <div class="cardbox teal">
-<p><strong>Level.</strong> Take the same away from both sides and the beam doesn’t care. That is what <strong>subtraction</strong> means on a balance. Do it four more times and you are down to <strong>1 🍊 = 1 🍏</strong>.</p>
+<p>Nobody knows. So don’t guess: <strong>keep checking.</strong> Keep driving <em>while</em> the line is not there yet.</p>
 </div>
 </div>
-<p>⏱️ <strong>Time: 6 minutes</strong></p>
-</section>
-<section id="now-the-other-direction" class="slide level2">
-<h2>Now the other direction</h2>
-<ul>
-<li>Put <strong>one orange back</strong> on the left and <strong>one apple back</strong> on the right → still level. That’s <strong>plus</strong>.</li>
-<li>Put one orange on the left <strong>only</strong> → 💥 <strong>it tips.</strong> Everyone sees it.</li>
-</ul>
 <div class="fragment fade-up">
-<div class="cardbox purple">
-<h3>
-The rule, first draft
-</h3>
-<p><strong>Whatever you do to one side, do to the other side too.</strong></p>
-<p>Write it on the board. We are going to catch it lying in about four minutes. 🕵️</p>
-</div>
+<p>The robot’s eye comes later. Today the finish line is a <strong>wheel angle</strong>.</p>
 </div>
 <aside class="notes">
-<p>Deliberately let them write down the sloppy version. The rule as stated here is the one almost every textbook gives, and it is exactly wrong enough to break in section D. Break it → feel it → fix it applies to <em>rules</em>, not just code.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section></section>
-<section>
-<section id="d.-the-rule-breaks" class="title-slide slide level1 sdaia-dark center" data-background-gradient="linear-gradient(135deg, #1C355E, #FF7A5C)">
-<h1>D. 🔥 The Rule Breaks</h1>
-<p>Same move. Same rule. The beam falls over.</p>
-</section>
-<section id="new-puzzle-6-oranges-balance-3-bananas" class="slide level2">
-<h2>New puzzle: 6 oranges balance 3 bananas</h2>
-<div class="qbox">
-<p><span class="qtitle">🍊🍊🍊🍊🍊🍊 &nbsp;⚖️&nbsp; 🍌🍌🍌</span></p>
-<p>Follow <strong>your own rule</strong>. Take <strong>one thing</strong> off each side. Still level?</p>
-</div>
-<div class="fragment fade-up">
-<div class="cardbox">
-<h3>
-💥 It tips. Hard.
-</h3>
-<p>Five oranges on the left. Two bananas on the right. <strong>Let them watch it fall before you say a word.</strong></p>
-</div>
-</div>
-<p>⏱️ <strong>Time: 10 minutes</strong></p>
-</section>
-<section id="so-why-did-it-work-the-first-time" class="slide level2">
-<h2>So why did it work the <em>first</em> time?</h2>
-<ul>
-<li class="fragment">6 oranges balanced 6 <strong>apples</strong>. Same count on both sides…</li>
-<li class="fragment">…so <strong>one apple had to weigh exactly one orange.</strong> The beam told us that for free.</li>
-<li class="fragment">Removing 1 orange and 1 apple removed <strong>the same weight</strong> from each pan. ✅</li>
-<li class="fragment">But a <strong>banana is heavier</strong> than an orange. Removing one of each removed <strong>different weights</strong>. ❌</li>
-</ul>
-<div class="fragment fade-up">
-<div class="cardbox teal">
-<h3>
-The rule, final version
-</h3>
-<p>Do the same <strong>amount</strong> to both sides, <strong>not</strong> the same <strong>number of objects</strong>.</p>
-</div>
-</div>
-<aside class="notes">
-<p>This is the highest-value slide in the deck. The object-vs-amount confusion is the exact failure that shows up years later as “I cancelled the x from both sides.” Land it now, cheaply, with bricks. If a student objects that they can’t know a banana weighs 2 oranges yet — perfect, that’s section F’s job, and you should say so out loud: “hold that complaint, you’re about to be able to answer it.”</p>
+<p>Let them answer with a number first. Someone will say “2000”, someone “3500”. Ask: what if the robot starts further back? What if the battery is low? The time changes every run, so no number is right. That is the whole reason <code>while</code> exists: it repeats until something becomes true, however long that takes. Keep this slide to two minutes. This session assumes only D2 (imports, <code>Motor</code>, <code>run_angle</code>, variables). The next slide hands them the five motor words the loops need, and no <code>for</code> loop is needed anywhere; <code>for</code> arrives in <em>Drive a Square</em>.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -411,294 +244,45 @@ The rule, final version
           display:block!important;
       }</style></aside>
 </section>
-<section id="bench-it-find-the-banana" class="slide level2">
-<h2>🧪 Bench it: find the banana</h2>
-<ul>
-<li>6 🍊 = 3 🍌. <strong>Take away one banana from the right.</strong> What must you take off the left to keep it level?</li>
-<li>Try 1 orange. Tips. Try 2 oranges. <strong>Level.</strong></li>
-</ul>
-<div class="fragment fade-up">
-<div class="cardbox purple">
-<p><strong>One banana = two oranges</strong>, and nobody told you. You <em>weighed</em> it. The beam is a machine for finding things out. 🔍</p>
-</div>
-</div>
-</section></section>
-<section>
-<section id="e.-multiplication-is-just-adding" class="title-slide slide level1 sdaia-dark center" data-background-gradient="linear-gradient(135deg, #1C355E, #00C9A7)">
-<h1>E. Multiplication Is Just Adding</h1>
-<p>Before we can multiply a beam, we should agree what multiplying <strong>is</strong>.</p>
-</section>
-<section id="what-3-apples-actually-means" class="slide level2">
-<h2>What “3 apples” actually means</h2>
-<p><span class="math display">\[3 \text{ apples} \;=\; \text{apple} + \text{apple} + \text{apple}\]</span></p>
-<div class="fragment">
-<p><span class="math display">\[3 \times 2 \;=\; 2 + 2 + 2 \;=\; 6\]</span></p>
-<div class="fragment fade-up">
-<div class="cardbox teal">
-<p><strong>Multiplication is a shortcut for adding the same thing over and over.</strong> That’s the whole definition.</p>
-</div>
-</div>
-<p>⏱️ <strong>Time: 10 minutes</strong></p>
-</div>
-</section>
-<section id="but-is-3-times-2-the-same-as-2-times-3" class="slide level2">
-<h2>But is <span class="math inline">\(3 \times 2\)</span> the same as <span class="math inline">\(2 \times 3\)</span>?</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><strong>3 rows of 2</strong></p>
-<pre><code>● ●
-● ●
-● ●</code></pre>
-<p><span class="math inline">\(2 + 2 + 2 = 6\)</span></p>
-</div><div class="column" style="width:50%;">
-<p><strong>2 rows of 3</strong></p>
-<pre><code>● ● ●
-● ● ●</code></pre>
-<p><span class="math inline">\(3 + 3 = 6\)</span></p>
-</div></div>
-<div class="fragment fade-up">
-<div class="cardbox purple">
-<h3>
-Turn the paper sideways 🔄
-</h3>
-<p>It’s the <strong>same dots</strong>. Nobody added one, nobody took one away. You just <strong>rotated it</strong>. That’s why the order never matters.</p>
-</div>
-</div>
-<aside class="notes">
-<p>Hand out squared paper or use bricks in a rectangle and physically rotate it 90°. This beats every algebraic argument for commutativity at this age: it is a <em>proof they can see</em>, and it takes eight seconds. Resist the temptation to prove it by splitting numbers into ones — that argument is correct but it loses the room.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="multiply-the-whole-beam" class="slide level2">
-<h2>Multiply the whole beam</h2>
-<div class="qbox">
-<p><span class="qtitle">2 oranges balance 1 banana. &nbsp; <strong>Double both pans.</strong> &nbsp; Still level?</span></p>
-</div>
-<div class="fragment fade-up">
-<ul>
-<li><span class="math inline">\(2\,🍊 = 1\,🍌\)</span> &nbsp;→&nbsp; <span class="math inline">\(4\,🍊 = 2\,🍌\)</span> ✅</li>
-<li>Triple it: <span class="math inline">\(6\,🍊 = 3\,🍌\)</span>. <strong>That’s the puzzle from section D.</strong> Same beam all along.</li>
-</ul>
-</div>
-<div class="fragment fade-up">
-<div class="cardbox teal">
-<p>You can <strong>multiply both sides</strong> by anything and the beam stays level, because you did the same amount to each. Multiply one side only and it tips, same as always.</p>
-</div>
-</div>
-</section></section>
-<section>
-<section id="f.-sharing-the-beam" class="title-slide slide level1 sdaia-dark center" data-background-gradient="linear-gradient(135deg, #1C355E, #625D9C)">
-<h1>F. Sharing the Beam</h1>
-<p>The move that gets you <strong>what you actually want</strong>.</p>
-</section>
-<section id="what-is-one-melon-worth" class="slide level2">
-<h2>What is ONE melon worth?</h2>
-<div class="qbox">
-<p><span class="qtitle">🍉🍉 &nbsp;⚖️&nbsp; 🍊🍊🍊🍊🍊🍊</span></p>
-<p>Two melons balance six oranges. I don’t want two melons. <strong>I want one.</strong></p>
-</div>
-<div class="fragment fade-up">
-<h3 id="split-both-pans-into-2-equal-groups">Split both pans into 2 equal groups</h3>
-<p><span class="math display">\[\frac{2\,🍉}{2} = \frac{6\,🍊}{2} \qquad\Longrightarrow\qquad 1\,🍉 = 3\,🍊\]</span></p>
-</div>
-<div class="fragment fade-up">
-<div class="cardbox teal">
-<p>That’s <strong>division</strong>. And notice what just happened: you got the beam down to <strong>one of the thing you were asking about</strong>. That is what grown-ups call <strong>solving</strong>. You’ve been doing it for ten minutes. 🎓</p>
-</div>
-</div>
-<p>⏱️ <strong>Time: 12 minutes</strong></p>
-</section>
-<section id="the-move-you-will-use-for-the-rest-of-your-life" class="slide level2">
-<h2>The move you will use for the rest of your life</h2>
-<div class="cardbox purple">
-<h3>
-To find <strong>one</strong> of something
-</h3>
-<p>Divide <strong>both</strong> sides by <strong>how many you’ve got</strong>.</p>
-</div>
-<div class="fragment fade-up">
-<ul>
-<li>Stuck with 2 melons? Divide both sides by <strong>2</strong>.</li>
-<li>Stuck with 5 melons? Divide both sides by <strong>5</strong>.</li>
-<li>Stuck with <strong>27.6 of something</strong>? …you can already see where this is going. 👀</li>
-</ul>
-</div>
-<aside class="notes">
-<p>Do not present division as “the opposite of multiplication” and then re-derive the melon result separately — that spends the budget twice on one idea. Division IS the isolate-the-unknown move, taught in one breath. The last bullet is the hinge into section G; pause on it and let someone say 27.6 out loud before you advance.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section></section>
-<section>
-<section id="g.-now-do-it-to-the-robot" class="title-slide slide level1 sdaia-dark center" data-background-gradient="linear-gradient(135deg, #1C355E, #00C9A7)">
-<h1>G. Now Do It to the Robot</h1>
-<p>Same beam. The fruit is just wearing a different costume.</p>
-</section>
-<section id="the-real-question" class="slide level2">
-<h2>The real question</h2>
-<div class="qbox">
-<p><span class="qtitle">One wheel turn rolls <strong>27.6 cm</strong>. You want to drive <strong>30 cm</strong>. How many <strong>motor degrees</strong>?</span></p>
-</div>
-<div class="fragment fade-up">
-<p>Call the number of turns <span class="math inline">\(t\)</span>. That’s the thing you don’t know yet.</p>
-<p><span class="math display">\[27.6 \times t \;=\; 30\]</span></p>
-<p><strong>“27.6 oranges’ worth of turns balances 30.”</strong> It’s the melon puzzle with worse handwriting.</p>
-</div>
-<aside class="notes">
-<p>Insist that they name the unknown <em>before</em> touching it. “The thing I don’t know yet gets a letter” is the entire conceptual leap into algebra, and it costs nothing here because the beam has already made the unknown feel like a physical object sitting in a pan.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="solve-it-on-the-beam" class="slide level2">
-<h2>Solve it on the beam</h2>
-<ul>
-<li class="fragment">I’m stuck with <strong>27.6</strong> of them. Divide <strong>both</strong> sides by 27.6: <span class="math display">\[t = \frac{30}{27.6} \approx 1.087 \text{ turns}\]</span></li>
-<li class="fragment">But the motor doesn’t count turns, it counts <strong>degrees</strong>. One turn is <strong>360°</strong>. So multiply <strong>both</strong> sides by 360: <span class="math display">\[360 \times t = 360 \times 1.087 \approx \mathbf{391°}\]</span></li>
-</ul>
-<div class="fragment fade-up">
-<div class="cardbox teal">
-<p>Two moves. ÷ 27.6 on both sides, × 360 on both sides. <strong>Nobody handed you 391.</strong> ✅</p>
-</div>
-</div>
-</section>
-<section id="write-your-own-formula" class="slide level2">
-<h2>Write your own formula</h2>
-<div class="cardbox purple">
-<p><span class="math display">\[\text{degrees} \;=\; \frac{\text{distance}}{27.6} \times 360\]</span></p>
-</div>
-<div class="fragment fade-up">
-<h3 id="or-for-any-wheel-on-earth">Or, for any wheel on Earth</h3>
-<p><span class="math display">\[\text{degrees} \;=\; \frac{\text{distance}}{\pi \times d} \times 360\]</span></p>
-<p>Put <strong>any</strong> distance in. Get degrees out. This is the tool. 🧰</p>
-</div>
-</section>
-<section id="same-answer-two-roads" class="slide level2">
-<h2>Same answer, two roads</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><strong>Yesterday: the recipe</strong></p>
-<p><span class="math inline">\(360 \div 27.6 \approx 13.04°\)</span>/cm</p>
-<p><span class="math inline">\(30 \times 13.04 \approx 391°\)</span></p>
-</div><div class="column" style="width:50%;">
-<p><strong>Today: the beam</strong></p>
-<p><span class="math inline">\(t = 30 \div 27.6 \approx 1.087\)</span></p>
-<p><span class="math inline">\(1.087 \times 360 \approx 391°\)</span></p>
-</div></div>
-<div class="fragment fade-up">
-<div class="cardbox teal">
-<p><strong>Identical.</strong> Yesterday’s shortcut was this beam with the working rubbed out. Now you know why it’s allowed, and you can rebuild it when you forget it. 🔁</p>
-</div>
-</div>
-</section>
-<section id="prove-it-on-three-distances" class="slide level2">
-<h2>🎯 Prove it on three distances</h2>
-<div class="callout callout-important callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>At your bench</strong></p>
-</div>
-<div class="callout-content">
-<p>Do all three <strong>on paper first</strong>, then run them and tape-measure.</p>
+<section id="five-new-words" class="slide level2">
+<h2>Five new words 🔤</h2>
 <table class="caption-top">
 <thead>
 <tr class="header">
-<th style="text-align: left;">Distance</th>
-<th style="text-align: left;">Your degrees</th>
-<th style="text-align: left;">Measured</th>
+<th style="text-align: left;">Code</th>
+<th style="text-align: left;">What it does</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">100 cm</td>
-<td style="text-align: left;">?</td>
-<td style="text-align: left;"></td>
+<td style="text-align: left;"><code>left.run(300)</code></td>
+<td style="text-align: left;">start turning at 300 °/s, <strong>and keep going</strong></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">42 cm</td>
-<td style="text-align: left;">?</td>
-<td style="text-align: left;"></td>
+<td style="text-align: left;"><code>left.stop()</code></td>
+<td style="text-align: left;">stop turning</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">17 cm</td>
-<td style="text-align: left;">?</td>
-<td style="text-align: left;"></td>
+<td style="text-align: left;"><code>left.reset_angle(0)</code></td>
+<td style="text-align: left;">call this spot <strong>0°</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>left.angle()</code></td>
+<td style="text-align: left;">how far it has turned since 0°</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>print(x)</code></td>
+<td style="text-align: left;">show <code>x</code> in the console</td>
 </tr>
 </tbody>
 </table>
-</div>
-</div>
-</div>
 <div class="fragment fade-up">
-<p>Answers: <strong>1304°</strong>, <strong>548°</strong>, <strong>222°</strong>. Notice 1304. That’s yesterday’s number, and today it’s <strong>yours</strong>.</p>
+<div class="cardbox purple">
+<p><code>run_angle</code> stops by itself. <code>run</code> <strong>never</strong> does. Something else has to call <code>stop()</code>, at the right moment.</p>
 </div>
-<p>⏱️ <strong>Time: 12 minutes</strong></p>
-<aside class="notes">
-<p>Rounding: 42/27.6 × 360 = 547.8, and 17/27.6 × 360 = 221.7. Accept anything within a degree or two — the point is the method, and the encoder can’t tell the difference anyway. Expect the measured column to be slightly short on every row; that’s backlash and coast, which is D3’s and D4’s business, not a mistake in their algebra. Say so, or they’ll distrust the maths they just built.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="todays-gate" class="slide level2">
-<h2>Today’s gate</h2>
-<div class="callout callout-important callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>You’re done when…</strong></p>
-</div>
-<div class="callout-content">
-<ul>
-<li>You can take a beam from <span class="math inline">\(27.6 \times t = 30\)</span> to <strong>391°</strong> with <strong>no help</strong></li>
-<li>You can explain why removing <strong>one object</strong> from each side of <span class="math inline">\(6\,🍊 = 3\,🍌\)</span> makes it <strong>tip</strong></li>
-<li>You can produce the degrees for a distance <strong>I make up on the spot</strong></li>
-</ul>
-</div>
-</div>
-</div>
-<div class="fragment fade-up">
-<p>Next: <em>Until It’s True</em>. Your program learns to keep checking a wheel angle. 🔁</p>
 </div>
 <aside class="notes">
-<p>Gate leg two is the one to actually check per student; legs one and three will pass for students who have merely memorised a recipe, and leg two won’t. Ask it as a one-line oral question at the bench. Then introduce Until It’s True: the encoder gives the program a finish line it can keep checking. The square and gyro follow after that loop lesson.</p>
+<p>Two minutes, no robots yet. <code>run_angle</code> from D2 is “go this far, then stop”; <code>run</code> is “go, and I will tell you when to stop”. That missing “when” is the whole session. <code>print</code> is new too: point at the console pane in the Pybricks editor so they know where the numbers will appear. If someone asks how <code>run_angle</code> knows when to stop: “it runs a loop just like the one you are about to write”. That is true, and it is a good hook.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -712,32 +296,64 @@ To find <strong>one</strong> of something
       }</style></aside>
 </section></section>
 <section>
-<section id="explore-at-home" class="title-slide slide level1 sdaia-dark center" data-background-gradient="linear-gradient(135deg, #1C355E, #9B8EC0)">
-<h1>🏠 Explore at Home</h1>
-<p>Optional replays. <strong>Nothing tomorrow depends on these.</strong> 🎮</p>
+<section id="b.-watch-a-loop-think" class="title-slide slide level1 sdaia-dark center" data-background-gradient="linear-gradient(135deg, #1C355E, #625D9C)">
+<h1>B. Watch a Loop Think</h1>
+<p>Step through it <strong>one line at a time</strong>. 👣</p>
 </section>
-<section id="the-catch-up-lab" class="slide level2">
-<h2>🏠 The Catch-Up Lab ⚖️</h2>
-<div class="callout callout-important callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
+<section id="meet-while" class="slide level2">
+<h2>Meet <code>while</code></h2>
+<p>Predict: <strong>how many lines will it print?</strong> Then press Step.</p>
+<style>
+.reveal .wl-code{background:var(--sim-ground);border:1px solid var(--sim-line);border-radius:12px;padding:10px 12px;font-family:var(--sim-mono);font-size:25px;line-height:1.5;color:var(--sdaia-navy);min-width:470px;}
+.reveal .wl-ln{white-space:pre;padding:0 10px;border-left:5px solid transparent;border-radius:6px;opacity:.75;}
+.reveal .wl-ln.on{opacity:1;border-left-color:var(--sdaia-coral);background:rgba(255,213,0,.30);font-weight:700;}
+.reveal .wl-ln.gone{opacity:.45;text-decoration:line-through;color:var(--sdaia-coral);}
+.reveal .wl-side{display:flex;flex-direction:column;gap:12px;width:440px;}
+.reveal .wl-lamp{font-family:var(--sim-mono);font-size:23px;font-weight:700;padding:8px 12px;border-radius:10px;border:2px solid var(--sim-line);background:#fff;color:var(--sdaia-navy);text-align:center;}
+.reveal .wl-lamp.t{border-color:var(--sdaia-teal);background:rgba(0,201,167,.12);color:#00866f;}
+.reveal .wl-lamp.f{border-color:var(--sdaia-coral);background:rgba(233,104,82,.12);color:var(--sdaia-coral);}
+.reveal .wl-stats{display:flex;justify-content:space-between;font-size:22px;color:var(--sdaia-navy);}
+.reveal .wl-stats b{font-family:var(--sim-mono);font-size:26px;}
+.reveal .wl-con{background:#1C355E;color:#e8f0fa;font-family:var(--sim-mono);font-size:21px;line-height:1.35;border-radius:10px;padding:8px 14px;height:190px;overflow:hidden;white-space:pre;}
+.reveal .wl-con::before{content:"console";display:block;font-size:16px;color:#9fb3cc;margin-bottom:2px;}
+.reveal .wl-wheel{display:flex;align-items:center;gap:12px;}
+.reveal .wl-track{position:relative;height:34px;background:var(--sim-ground);border:1px solid var(--sim-line);border-radius:8px;margin-top:4px;}
+.reveal .wl-fill{position:absolute;left:0;top:0;bottom:0;width:0;background:rgba(0,201,167,.25);border-radius:8px 0 0 8px;}
+.reveal .wl-finish{position:absolute;top:-6px;bottom:-6px;width:4px;background:var(--sdaia-coral);border-radius:2px;}
+.reveal .wl-dot{position:absolute;top:12px;width:9px;height:9px;margin-left:-4px;border-radius:50%;background:var(--sdaia-teal);}
+.reveal .wl-dot.f{background:var(--sdaia-coral);width:13px;height:13px;margin-left:-6px;top:10px;}
+.reveal .wl-scale{display:flex;justify-content:space-between;font-size:17px;color:#55627a;font-family:var(--sim-mono);}
+.reveal .wl-mono{font-family:var(--sim-mono);}
+</style>
+<div class="sim">
+  <div class="sim-controls">
+    <button class="sim-btn teal" data-sim="wlStep" data-sim-arg="s1">⏭ Step</button>
+    <button class="sim-btn" data-sim="wlRun" data-sim-arg="s1">▶ Run</button>
+    <button class="sim-btn ghost" data-sim="wlReset" data-sim-arg="s1">↺ Reset</button>
+  </div>
+  <div class="sim-stage">
+    <div class="wl-code">
+      <div class="wl-ln" id="s1L0">count = 0</div>
+      <div class="wl-ln" id="s1L1">while count &lt; <span id="s1N">3</span>:</div>
+      <div class="wl-ln" id="s1L2">    print(count)</div>
+      <div class="wl-ln" id="s1L3">    count = count + 1</div>
+      <div class="wl-ln" id="s1L4">print("done")</div>
+    </div>
+    <div class="wl-side">
+      <div class="wl-lamp" id="s1Lamp">check: not yet</div>
+      <div class="wl-stats"><span>count <b id="s1Count">?</b></span><span>body ran <b id="s1Runs">0</b> times</span></div>
+      <div class="wl-con" id="s1Con"></div>
+    </div>
+  </div>
+  <div class="sim-msg" id="s1Msg"></div>
 </div>
-<p><strong>If you missed this session, start here</strong></p>
-</div>
-<div class="callout-content">
-<p><a href="../interactives/beam-balance-catchup.html"><strong>⚖️ Open the Beam Balance Catch-Up Lab →</strong></a></p>
-<p>The whole lesson, on your own, in about 45 minutes. Every beam move is locked behind a <strong>tip-or-level prediction</strong>, so you still get to break the rule yourself instead of watching someone else break it. No robot needed until the last step.</p>
+<div class="fragment fade-up">
+<div class="cardbox purple">
+<p><strong>Check → body → jump back → check again.</strong> It leaves the moment the check says False.</p>
 </div>
 </div>
-</div>
-<ul>
-<li><strong>Missed the class?</strong> Work all 13 steps. It ends with the same gate you’d have been asked at the bench.</li>
-<li><strong>Were you here?</strong> Jump to the last step, the free-play beam with every button unlocked.</li>
-</ul>
 <aside class="notes">
-<p>This replaces the old three-button appendix sim, which existed in two hand-maintained copies (here and in <code>recap-arcade.html</code>) and has now drifted into one file, iframed. Per #22 the <strong>live</strong> lesson stays unplugged — bricks on a real balance — and this is the make-up route for an absent student plus optional replay for everyone else. Its beam runs honest arithmetic (<code>count × true-worth</code> per pan) and renders the pans as <em>countable fruit</em>, which is what makes object-vs-amount visible: 6 🍊 and 3 🍌 sit level while looking nothing alike. The robot puzzle deliberately can’t draw 27.6 wheels, so that pan degrades to <code>27.6 × t</code> — the abstraction step, shown rather than asserted. If you send an absent student here, still check gate leg two orally when they’re back; the lab makes them type it and self-mark, which is weaker than you asking.</p>
+<p>Collect predictions on the board before anyone presses anything: “3”, “4”, “2” are all common. Then Step slowly and have the room say each line out loud before you press. The lamp on the right is the heart of it: every time the highlight lands on the <code>while</code> line, the check is asked again and the lamp shows the answer. Point out the jump back up after <code>count = count + 1</code>, which is the only thing that makes a loop a loop. It prints 0, 1, 2, then “done”: four lines, and the body ran 3 times. The fourth check is the one people forget: it is the False that lets the program leave.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -750,18 +366,632 @@ To find <strong>one</strong> of something
           display:block!important;
       }</style></aside>
 </section>
-<section id="take-it-further" class="slide level2">
-<h2>🏠 Take it further</h2>
-<ul>
-<li>Invent a fruit worth <strong>4</strong> oranges. Write a beam for it. Can a friend solve it?</li>
-<li><span class="math inline">\(5\,🍉 = ?\,🍊\)</span>. You know one melon is 3 oranges, so multiply both sides.</li>
-<li>Work <strong>backwards</strong>: your robot drove <strong>391°</strong>. How far did it go? Same beam, other direction.</li>
-</ul>
+<section id="how-many-times" class="slide level2">
+<h2>How many times?</h2>
+<p>Change the number. <strong>Predict the prints first.</strong></p>
+<div class="sim">
+  <div class="sim-controls">
+    <button class="sim-btn small on" data-sim="wlSet" data-sim-arg="s2:lt3"><span class="wl-mono">&lt; 3</span></button>
+    <button class="sim-btn small ghost" data-sim="wlSet" data-sim-arg="s2:lt5"><span class="wl-mono">&lt; 5</span></button>
+    <button class="sim-btn small ghost" data-sim="wlSet" data-sim-arg="s2:lt0"><span class="wl-mono">&lt; 0</span></button>
+    <span class="sim-tag">·</span>
+    <button class="sim-btn teal small" data-sim="wlStep" data-sim-arg="s2">⏭ Step</button>
+    <button class="sim-btn small" data-sim="wlRun" data-sim-arg="s2">▶ Run</button>
+    <button class="sim-btn ghost small" data-sim="wlReset" data-sim-arg="s2">↺ Reset</button>
+  </div>
+  <div class="sim-stage">
+    <div class="wl-code">
+      <div class="wl-ln" id="s2L0">count = 0</div>
+      <div class="wl-ln" id="s2L1">while count &lt; <span id="s2N">3</span>:</div>
+      <div class="wl-ln" id="s2L2">    print(count)</div>
+      <div class="wl-ln" id="s2L3">    count = count + 1</div>
+      <div class="wl-ln" id="s2L4">print("done")</div>
+    </div>
+    <div class="wl-side">
+      <div class="wl-lamp" id="s2Lamp">check: not yet</div>
+      <div class="wl-stats"><span>count <b id="s2Count">?</b></span><span>body ran <b id="s2Runs">0</b> times</span></div>
+      <div class="wl-con" id="s2Con"></div>
+    </div>
+  </div>
+  <div class="sim-msg" id="s2Msg"></div>
+</div>
+<div class="fragment fade-up">
+<div class="cardbox teal">
+<p>With <code>&lt; 0</code> the body runs <strong>zero</strong> times. The check always comes <strong>first</strong>.</p>
+</div>
+</div>
+<aside class="notes">
+<p>Go <code>&lt; 5</code> first (easy win: five prints), then <code>&lt; 0</code>. Most students predict one print for <code>&lt; 0</code> because “the loop runs at least once”. It does not: the very first check is <code>0 &lt; 0</code>, which is False, so Python skips the body and goes straight to “done”. Say the rule: a <code>while</code> asks before it acts. This matters on the robot: if the wheel is already past the finish line, a <code>while</code> drive does nothing at all, which is correct.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="bug-hunt-the-missing-colon" class="slide level2">
+<h2>🐛 Bug hunt: the missing colon</h2>
+<div class="qbox">
+<p><span class="qtitle">This loop won’t even start. Pybricks flags the <strong>first line</strong> in red. What’s missing?</span></p>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a>count <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb2-2"><a></a><span class="cf">while</span> count <span class="op">&lt;</span> <span class="dv">3</span></span>
+<span id="cb2-3"><a></a>    <span class="bu">print</span>(count)</span>
+<span id="cb2-4"><a></a>    count <span class="op">=</span> count <span class="op">+</span> <span class="dv">1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment fade-up">
+<div class="cardbox coral">
+<p><code>SyntaxError</code>: no <strong>colon</strong>. Every loop header ends in <code>:</code>, which says <em>“the block starts here.”</em> Fix: <code>while count &lt; 3:</code></p>
+</div>
+</div>
+<aside class="notes">
+<p>The colon is invisible until it’s missing. Type it live so the red SyntaxError lands on the <code>while</code> line. Make the habit loud: say “colon” out loud every time anyone types a loop header this week. It is the number-one typo of the session, and <code>for</code> will have exactly the same rule in <em>Drive a Square</em>.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="bug-hunt-the-runaway-line" class="slide level2">
+<h2>🐛 Bug hunt: the runaway line</h2>
+<div class="qbox">
+<p><span class="qtitle">The colon is back, and it <em>still</em> won’t run. The error points at <strong>line 3</strong>.</span></p>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a>count <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb3-2"><a></a><span class="cf">while</span> count <span class="op">&lt;</span> <span class="dv">3</span>:</span>
+<span id="cb3-3"><a></a><span class="bu">print</span>(count)</span>
+<span id="cb3-4"><a></a>count <span class="op">=</span> count <span class="op">+</span> <span class="dv">1</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment fade-up">
+<div class="cardbox coral">
+<p><code>IndentationError</code>: lines inside a loop must be <strong>pushed in</strong> (one Tab). The spaces tell Python what repeats.</p>
+</div>
+</div>
+<aside class="notes">
+<p>Indentation-as-meaning is the single biggest beginner hurdle, so spend a beat. Show flush-left (crashes) next to indented (runs). Then the sneaky version: indent <strong>only</strong> <code>print(count)</code>. No crash, but <code>count = count + 1</code> now sits outside the loop, so the body never changes what the check reads. That is exactly the next slide, so let the frozen console land and go straight on.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="break-it-the-loop-that-never-ends" class="slide level2">
+<h2>Break it: the loop that never ends 🥶</h2>
+<p>Delete one line. <strong>Predict, then Run.</strong></p>
+<div class="sim">
+  <div class="sim-controls">
+    <button class="sim-btn small on" data-sim="wlSet" data-sim-arg="s3:inc"><span class="wl-mono">count = count + 1</span> ✓</button>
+    <button class="sim-btn small ghost" data-sim="wlSet" data-sim-arg="s3:noinc">delete it ✂️</button>
+    <span class="sim-tag">·</span>
+    <button class="sim-btn small" data-sim="wlRun" data-sim-arg="s3">▶ Run</button>
+    <button class="sim-btn coral small" data-sim="wlHalt" data-sim-arg="s3">⏹ Stop</button>
+    <button class="sim-btn ghost small" data-sim="wlReset" data-sim-arg="s3">↺ Reset</button>
+  </div>
+  <div class="sim-stage">
+    <div class="wl-code">
+      <div class="wl-ln" id="s3L0">count = 0</div>
+      <div class="wl-ln" id="s3L1">while count &lt; <span id="s3N">3</span>:</div>
+      <div class="wl-ln" id="s3L2">    print(count)</div>
+      <div class="wl-ln" id="s3L3">    count = count + 1</div>
+      <div class="wl-ln" id="s3L4">print("done")</div>
+    </div>
+    <div class="wl-side">
+      <div class="wl-lamp" id="s3Lamp">check: not yet</div>
+      <div class="wl-stats"><span>count <b id="s3Count">?</b></span><span>body ran <b id="s3Runs">0</b> times</span></div>
+      <div class="wl-con" id="s3Con"></div>
+    </div>
+  </div>
+  <div class="sim-msg" id="s3Msg"></div>
+</div>
+<div class="fragment fade-up">
+<div class="cardbox coral">
+<p>The check reads <code>count</code>. Nothing changes <code>count</code>. <strong>The body must change what the check reads.</strong></p>
+</div>
+</div>
+<aside class="notes">
+<p>Run it once with the line in place (it ends), then delete it and run again. Let it spin: the counter races, the console floods with 0s, and the check number climbs into the hundreds. Ask: “when will it stop?” (Never.) Press Stop and tie it to the hub: on the robot, the centre button is your Stop. Then the rule on the card. Every frozen loop they will ever write breaks this rule: the check is waiting for a change that nothing in the body makes. On the robot, the “change” usually comes from the world: a wheel turning, a gyro moving. That is the next section.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section id="c.-now-with-a-wheel" class="title-slide slide level1 sdaia-dark center" data-background-gradient="linear-gradient(135deg, #1C355E, #FF7A5C)">
+<h1>C. Now With a Wheel</h1>
+<p>Same loop. Now the check reads a <strong>motor</strong>. ⚙️</p>
+</section>
+<section id="drive-to-the-finish-line" class="slide level2">
+<h2>Drive to the finish line 🏁</h2>
+<p>Two full turns = <strong>720°</strong>. Where will the wheel stop?</p>
+<div class="sim">
+  <div class="sim-controls">
+    <button class="sim-btn" data-sim="wlWheel" data-sim-arg="w1">▶ Run</button>
+    <button class="sim-btn ghost" data-sim="wlWheelReset" data-sim-arg="w1">↺ Reset</button>
+  </div>
+  <div class="sim-stage">
+    <div class="wl-code">
+      <div class="wl-ln" id="w1L0">left.reset_angle(0)</div>
+      <div class="wl-ln" id="w1L1">left.run(300)</div>
+      <div class="wl-ln" id="w1L2">while left.angle() &lt; 720:</div>
+      <div class="wl-ln" id="w1L3">    wait(<span id="w1W">10</span>)</div>
+      <div class="wl-ln" id="w1L4">left.stop()</div>
+    </div>
+    <div class="wl-side">
+      <div class="wl-wheel">
+        <svg width="120" height="120" viewbox="-50 -50 100 100">
+          <circle r="44" fill="#1C355E"></circle><circle r="30" fill="#eef3f8"></circle>
+          <g id="w1Spin"><rect x="-4" y="-30" width="8" height="60" fill="#625D9C"></rect><rect x="-30" y="-4" width="60" height="8" fill="#625D9C"></rect><circle cy="-37" r="5" fill="#FFD500"></circle></g>
+        </svg>
+        <div class="wl-stats" style="flex-direction:column;gap:4px;"><span>angle <b id="w1Ang">0</b>°</span><span>checks <b id="w1Chk">0</b></span></div>
+      </div>
+      <div class="wl-lamp" id="w1Lamp">check: not yet</div>
+      <div>
+        <div class="wl-track"><div class="wl-fill" id="w1Fill"></div><div class="wl-finish" style="left:72%"></div><div id="w1Dots"></div></div>
+        <div class="wl-scale"><span>0°</span><span>720° 🏁</span><span>1000°</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="sim-msg" id="w1Msg"></div>
+</div>
+<aside class="notes">
+<p>Same four ideas as the counter: something to read (<code>left.angle()</code>), a check (<code>&lt; 720</code>), a body (<code>wait(10)</code>), and a change. The difference is who makes the change: not a line of code, but the motor, which keeps turning on its own because <code>left.run(300)</code> started it before the loop. The body only waits. Each dot on the track is one check, and at <code>wait(10)</code> they are so close together they look like a solid line. It stops at 720 exactly. Keep that number in mind: slide 3 of this section breaks it.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="break-it-the-wheel-that-never-moves" class="slide level2">
+<h2>Break it: the wheel that never moves 😴</h2>
+<p>Someone deleted a line. <strong>What happens now?</strong></p>
+<div class="sim">
+  <div class="sim-controls">
+    <button class="sim-btn small on" data-sim="wlWheelSet" data-sim-arg="w2:run"><span class="wl-mono">left.run(300)</span> ✓</button>
+    <button class="sim-btn small ghost" data-sim="wlWheelSet" data-sim-arg="w2:norun">delete it ✂️</button>
+    <span class="sim-tag">·</span>
+    <button class="sim-btn small" data-sim="wlWheel" data-sim-arg="w2">▶ Run</button>
+    <button class="sim-btn coral small" data-sim="wlWheelHalt" data-sim-arg="w2">⏹ Stop</button>
+    <button class="sim-btn ghost small" data-sim="wlWheelReset" data-sim-arg="w2">↺ Reset</button>
+  </div>
+  <div class="sim-stage">
+    <div class="wl-code">
+      <div class="wl-ln" id="w2L0">left.reset_angle(0)</div>
+      <div class="wl-ln" id="w2L1">left.run(300)</div>
+      <div class="wl-ln" id="w2L2">while left.angle() &lt; 720:</div>
+      <div class="wl-ln" id="w2L3">    wait(<span id="w2W">10</span>)</div>
+      <div class="wl-ln" id="w2L4">left.stop()</div>
+    </div>
+    <div class="wl-side">
+      <div class="wl-wheel">
+        <svg width="120" height="120" viewbox="-50 -50 100 100">
+          <circle r="44" fill="#1C355E"></circle><circle r="30" fill="#eef3f8"></circle>
+          <g id="w2Spin"><rect x="-4" y="-30" width="8" height="60" fill="#625D9C"></rect><rect x="-30" y="-4" width="60" height="8" fill="#625D9C"></rect><circle cy="-37" r="5" fill="#FFD500"></circle></g>
+        </svg>
+        <div class="wl-stats" style="flex-direction:column;gap:4px;"><span>angle <b id="w2Ang">0</b>°</span><span>checks <b id="w2Chk">0</b></span></div>
+      </div>
+      <div class="wl-lamp" id="w2Lamp">check: not yet</div>
+      <div>
+        <div class="wl-track"><div class="wl-fill" id="w2Fill"></div><div class="wl-finish" style="left:72%"></div><div id="w2Dots"></div></div>
+        <div class="wl-scale"><span>0°</span><span>720° 🏁</span><span>1000°</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="sim-msg" id="w2Msg"></div>
+</div>
+<div class="fragment fade-up">
+<div class="cardbox coral">
+<p>No <code>run</code>, no turning. <code>left.angle()</code> stays 0, so the check stays True <strong>forever</strong>. Same bug as the counter.</p>
+</div>
+</div>
+<aside class="notes">
+<p>This is the robot version of the frozen counter, and it is the most common real bug of the week: the program “hangs”, the robot sits still, and students think the hub crashed. It did not crash; it is checking hundreds of times a second, and the answer never changes. Ask “what should change the angle?” and let them find the missing <code>run</code>. On the real hub, the centre button stops it.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="break-it-the-check-only-happens-at-the-top" class="slide level2">
+<h2>Break it: the check only happens at the top ⏱️</h2>
+<p>Make the wait longer. <strong>Predict where it stops.</strong></p>
+<div class="sim">
+  <div class="sim-controls">
+    <button class="sim-btn small on" data-sim="wlWheelSet" data-sim-arg="w3:w10"><span class="wl-mono">wait(10)</span></button>
+    <button class="sim-btn small ghost" data-sim="wlWheelSet" data-sim-arg="w3:w250"><span class="wl-mono">wait(250)</span></button>
+    <button class="sim-btn small ghost" data-sim="wlWheelSet" data-sim-arg="w3:w1000"><span class="wl-mono">wait(1000)</span></button>
+    <span class="sim-tag">·</span>
+    <button class="sim-btn small" data-sim="wlWheel" data-sim-arg="w3">▶ Run</button>
+    <button class="sim-btn ghost small" data-sim="wlWheelReset" data-sim-arg="w3">↺ Reset</button>
+  </div>
+  <div class="sim-stage">
+    <div class="wl-code">
+      <div class="wl-ln" id="w3L0">left.reset_angle(0)</div>
+      <div class="wl-ln" id="w3L1">left.run(300)</div>
+      <div class="wl-ln" id="w3L2">while left.angle() &lt; 720:</div>
+      <div class="wl-ln" id="w3L3">    wait(<span id="w3W">10</span>)</div>
+      <div class="wl-ln" id="w3L4">left.stop()</div>
+    </div>
+    <div class="wl-side">
+      <div class="wl-wheel">
+        <svg width="120" height="120" viewbox="-50 -50 100 100">
+          <circle r="44" fill="#1C355E"></circle><circle r="30" fill="#eef3f8"></circle>
+          <g id="w3Spin"><rect x="-4" y="-30" width="8" height="60" fill="#625D9C"></rect><rect x="-30" y="-4" width="60" height="8" fill="#625D9C"></rect><circle cy="-37" r="5" fill="#FFD500"></circle></g>
+        </svg>
+        <div class="wl-stats" style="flex-direction:column;gap:4px;"><span>angle <b id="w3Ang">0</b>°</span><span>checks <b id="w3Chk">0</b></span></div>
+      </div>
+      <div class="wl-lamp" id="w3Lamp">check: not yet</div>
+      <div>
+        <div class="wl-track"><div class="wl-fill" id="w3Fill"></div><div class="wl-finish" style="left:72%"></div><div id="w3Dots"></div></div>
+        <div class="wl-scale"><span>0°</span><span>720° 🏁</span><span>1000°</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="sim-msg" id="w3Msg"></div>
+</div>
 <div class="fragment fade-up">
 <div class="cardbox purple">
-<p>The beam works both ways. That’s the point of a <strong>balance</strong>: it never cared which side you started from. ⚖️</p>
+<p>The loop only looks at the top. Between checks the wheel keeps going. <strong>Short wait, sharp stop.</strong></p>
 </div>
 </div>
+<aside class="notes">
+<p>Take a prediction for each wait before running it. Most students expect every version to stop at 720, because “the code says 720”. Run 10 ms (720), then 250 ms (750, 30° late), then 1000 ms (900, a full 180° late). The dots on the track are the only moments the loop was looking: at <code>wait(1000)</code> it checks at 0, 300, 600 and 900, and it cannot notice the finish line in between. The check only happens at the top of the loop, and a long body means long blind spots. That is why every robot loop in this course keeps its body short, <code>wait(10)</code> or less. The sim ignores momentum on purpose; the bench slide brings it back.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section id="d.-on-purpose" class="title-slide slide level1 sdaia-dark center" data-background-gradient="linear-gradient(135deg, #1C355E, #00C9A7)">
+<h1>D. On Purpose</h1>
+<p>One loop that never ends <strong>on purpose</strong>, then your own wheel. ♾️</p>
+</section>
+<section id="forever-on-purpose" class="slide level2">
+<h2>Forever, on purpose ♾️</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a><span class="cf">while</span> <span class="va">True</span>:</span>
+<span id="cb4-2"><a></a>    <span class="bu">print</span>(left.angle())</span>
+<span id="cb4-3"><a></a>    wait(<span class="dv">100</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>True</code> is a check that can never be False. The hub’s <strong>centre button</strong> ends it.</p>
+<div class="fragment fade-up">
+<div class="cardbox teal">
+<p>Patrols and line followers work this way: <strong>keep going until a human says stop.</strong></p>
+</div>
+</div>
+<aside class="notes">
+<p>Short slide. The frozen loops earlier were accidents; this one is a choice. It is also the best debugging tool they have: run it, turn the wheel by hand and watch the angle stream. Have one student try it on a robot now if time allows. Later decks (line following, patrol) put real work inside <code>while True</code>.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="bench-stop-at-one-turn" class="slide level2">
+<h2>Bench: stop at one turn 🤖</h2>
+<div class="columns">
+<div class="column" style="width:64%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" data-code-line-numbers="|5|6-9|10-11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a><span class="im">from</span> pybricks.pupdevices <span class="im">import</span> Motor</span>
+<span id="cb5-2"><a></a><span class="im">from</span> pybricks.parameters <span class="im">import</span> Port</span>
+<span id="cb5-3"><a></a><span class="im">from</span> pybricks.tools <span class="im">import</span> wait</span>
+<span id="cb5-4"><a></a>left <span class="op">=</span> Motor(Port.F)     <span class="co"># yours</span></span>
+<span id="cb5-5"><a></a>left.reset_angle(<span class="dv">0</span>)</span>
+<span id="cb5-6"><a></a>left.run(<span class="dv">300</span>)</span>
+<span id="cb5-7"><a></a><span class="cf">while</span> left.angle() <span class="op">&lt;</span> <span class="dv">360</span>:</span>
+<span id="cb5-8"><a></a>    wait(<span class="dv">10</span>)</span>
+<span id="cb5-9"><a></a>left.stop()</span>
+<span id="cb5-10"><a></a>wait(<span class="dv">500</span>)</span>
+<span id="cb5-11"><a></a><span class="bu">print</span>(left.angle())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:36%;">
+<ol type="1">
+<li>Run it. <strong>What does it print?</strong></li>
+<li>Make it <strong>3 turns</strong>.</li>
+<li><strong>Halve the speed.</strong> Does the extra shrink?</li>
+</ol>
+<div class="fragment fade-up">
+<div class="cardbox coral">
+<p>The sim stopped right on the line. Yours went <strong>past</strong>. The loop caught 360 on time, so who stole the extra degrees? <strong>Hold that thought</strong> for <em>Drive a Square</em>.</p>
+</div>
+</div>
+</div></div>
+<aside class="notes">
+<p>Robots out, one wheel lifted off the table or the robot on its back so it does not drive away. Expect prints like 370 to 390 at speed 300: the loop caught the finish line within a few degrees, then the wheel coasted. The <code>wait(500)</code> before the print lets the coast finish, otherwise they read the angle mid-coast. Halving the speed should shrink the extra, which proves it is not the loop. Coach knowledge only: it is momentum. <strong>Do not name it today.</strong> <em>Drive a Square</em> names it on the gyro (“it printed 94, who’s guilty?”), and that reveal only works if the room has not heard the word yet. If a team gets a frozen program, send them back to the two “break it” slides: is the check reading something that changes? Port F follows the course robot; students change it to match their own build. <code>Direction</code> is left out on purpose: a lone wheel counts positive degrees for <code>run(300)</code> whichever way it is mounted.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="youre-done-when" class="slide level2">
+<h2>You’re done when…</h2>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Done when</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li>You can <strong>predict</strong> how many times any <code>while</code> body runs (zero counts)</li>
+<li>You can <strong>fix</strong> a loop that never ends, and say what never changed</li>
+<li>You can <strong>fix</strong> a missing colon or a runaway line</li>
+<li>Your wheel <strong>stops at one turn</strong>, and you can say the extra is <strong>not</strong> the loop’s fault</li>
+</ul>
+</div>
+</div>
+</div>
+<aside class="notes">
+<p>Check each leg orally at the bench. For leg one, write <code>while count &lt; 4:</code> with <code>count = 1</code> on the board and ask for the number of prints (3). For leg two, show a <code>while left.angle() &lt; 360: wait(10)</code> with no <code>run</code> above it and ask what is wrong. For leg three, hand them a header with no colon and a body typed flush-left. For leg four, ask why the printed angle is bigger than 360: “the wheel kept going after <code>stop()</code>” is a pass; the word <em>momentum</em> waits for <em>Drive a Square</em>.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+<script>
+(function(){
+  /* ---------- The counter stepper (s1, s2, s3) ---------- */
+  var S = {
+    s1: {n:3, inc:true},
+    s2: {n:3, inc:true},
+    s3: {n:3, inc:true}
+  };
+  function fresh(k){
+    var s = S[k];
+    s.pc = 0; s.count = null; s.runs = 0; s.checks = 0; s.out = []; s.done = false; s.last = -1;
+  }
+  function hi(k, line){
+    for(var i=0;i<5;i++){ var e = SIM.el(k+'L'+i); if(e) e.classList.toggle('on', i===line); }
+  }
+  function draw(k){
+    var s = S[k];
+    hi(k, s.last);
+    SIM.text(k+'Count', s.count===null ? '?' : String(s.count));
+    SIM.text(k+'Runs', String(s.runs));
+    SIM.text(k+'Con', s.out.slice(-6).join('\n'));
+  }
+  function lamp(k, text, val){
+    var e = SIM.el(k+'Lamp'); if(!e) return;
+    e.textContent = text;
+    e.classList.remove('t','f');
+    if(val===true) e.classList.add('t');
+    if(val===false) e.classList.add('f');
+  }
+  function reset(k){
+    SIM.stop(k);
+    fresh(k);
+    var s = S[k];
+    SIM.text(k+'N', String(s.n));
+    var l3 = SIM.el(k+'L3');
+    if(l3){
+      l3.textContent = s.inc ? '    count = count + 1' : '    # count = count + 1';
+      l3.classList.toggle('gone', !s.inc);
+    }
+    lamp(k, 'check: not yet', null);
+    SIM.msg(k+'Msg', '', null);
+    draw(k);
+  }
+  /* One line of the program. Returns true when the program has ended. */
+  function step(k){
+    var s = S[k];
+    if(s.done) return true;
+    var line = s.pc;
+    if(line===0){ s.count = 0; s.pc = 1; }
+    else if(line===1){
+      s.checks++;
+      var ok = s.count < s.n;
+      lamp(k, 'check #'+s.checks+':  '+s.count+' < '+s.n+'  →  '+(ok?'True':'False'), ok);
+      s.pc = ok ? 2 : 4;
+      if(!s.inc && s.checks > 4) SIM.msg(k+'Msg', 'Still True. Check #'+s.checks+'. Nothing in the body changes <code>count</code>.', 'bad');
+    }
+    else if(line===2){ s.out.push(String(s.count)); s.runs++; s.pc = s.inc ? 3 : 1; }
+    else if(line===3){ s.count = s.count + 1; s.pc = 1; }
+    else if(line===4){
+      s.out.push('done'); s.done = true;
+      if(s.runs===0) SIM.msg(k+'Msg', 'The first check was False, so the body ran 0 times.', 'note');
+      else SIM.msg(k+'Msg', 'The body ran '+s.runs+' times. Check #'+s.checks+' said False, so the loop ended.', 'good');
+    }
+    s.last = line;
+    draw(k);
+    return s.done;
+  }
+  SIM.def('wlStep', function(k){ SIM.stop(k); step(k); });   // after "done", Reset starts over
+  SIM.def('wlReset', function(k){ reset(k); });
+  SIM.def('wlHalt', function(k){
+    if(!S[k].done && S[k].pc!==0){
+      SIM.stop(k);
+      SIM.msg(k+'Msg', 'You stopped it at check #'+S[k].checks+'. On the hub, the centre button does this.', 'note');
+    }
+  });
+  SIM.def('wlRun', function(k){
+    reset(k);
+    var s = S[k], acc = 0, rate = 4;
+    SIM.loop(k, {
+      dt: 0.01,
+      step: function(dt){
+        acc += dt * rate;
+        if(!s.inc) rate = Math.min(rate * 1.004, 60);   // the runaway speeds up
+        while(acc >= 1){
+          acc -= 1;
+          if(step(k)) return true;
+          if(s.checks >= 999){
+            SIM.msg(k+'Msg', 'We stopped it at check #999. The robot never would have.', 'bad');
+            return true;
+          }
+        }
+        return false;
+      }
+    });
+  });
+  SIM.def('wlSet', function(arg, btn){
+    var p = String(arg).split(':'), k = p[0], v = p[1], s = S[k];
+    if(v.slice(0,2)==='lt') s.n = Number(v.slice(2));
+    if(v==='inc') s.inc = true;
+    if(v==='noinc') s.inc = false;
+    if(btn && btn.parentNode){
+      btn.parentNode.querySelectorAll('[data-sim="wlSet"]').forEach(function(b){
+        b.classList.toggle('on', b===btn); b.classList.toggle('ghost', b!==btn);
+      });
+    }
+    reset(k);
+  });
+  ['s1','s2','s3'].forEach(reset);
+
+  /* ---------- The wheel (w1, w2, w3) ---------- */
+  var SPEED = 300, FINISH = 720, SCALE = 1000;
+  var W = {
+    w1: {w:10, run:true},
+    w2: {w:10, run:true},
+    w3: {w:10, run:true}
+  };
+  function pct(a){ return Math.min(a, SCALE) / SCALE * 100; }
+  function wheelDraw(k, ang, checks){
+    SIM.tf(k+'Spin', 'rotate('+(ang % 360).toFixed(1)+')');
+    SIM.text(k+'Ang', String(Math.round(ang)));
+    SIM.text(k+'Chk', String(checks));
+    var f = SIM.el(k+'Fill'); if(f) f.style.width = pct(ang)+'%';
+  }
+  function dot(k, a, ok){
+    var box = SIM.el(k+'Dots'); if(!box) return;
+    var d = document.createElement('div');
+    d.className = ok ? 'wl-dot' : 'wl-dot f';
+    d.style.left = pct(a)+'%';
+    box.appendChild(d);
+  }
+  function wheelReset(k){
+    SIM.stop(k);
+    var s = W[k];
+    SIM.text(k+'W', String(s.w));
+    var l1 = SIM.el(k+'L1');
+    if(l1){
+      l1.textContent = s.run ? 'left.run(300)' : '# left.run(300)';
+      l1.classList.toggle('gone', !s.run);
+    }
+    for(var i=0;i<5;i++){ var e = SIM.el(k+'L'+i); if(e) e.classList.remove('on'); }
+    var box = SIM.el(k+'Dots'); if(box) box.innerHTML = '';
+    lamp(k, 'check: not yet', null);
+    SIM.msg(k+'Msg', '', null);
+    wheelDraw(k, 0, 0);
+  }
+  SIM.def('wlWheelReset', function(k){ wheelReset(k); });
+  SIM.def('wlWheelHalt', function(k){
+    if(W[k].live){
+      SIM.stop(k); W[k].live = false;
+      SIM.msg(k+'Msg', 'You stopped it. The angle never moved, so the check was always True.', 'note');
+    }
+  });
+  SIM.def('wlWheelSet', function(arg, btn){
+    var p = String(arg).split(':'), k = p[0], v = p[1], s = W[k];
+    if(v==='run') s.run = true;
+    if(v==='norun') s.run = false;
+    if(v.charAt(0)==='w') s.w = Number(v.slice(1));
+    if(btn && btn.parentNode){
+      btn.parentNode.querySelectorAll('[data-sim="wlWheelSet"]').forEach(function(b){
+        b.classList.toggle('on', b===btn); b.classList.toggle('ghost', b!==btn);
+      });
+    }
+    wheelReset(k);
+  });
+  SIM.def('wlWheel', function(k){
+    wheelReset(k);
+    var s = W[k], t = 0, n = 0, ang = 0, checks = 0, stopAt = null;
+    s.live = true;
+    var speed = s.run ? SPEED : 0;
+    SIM.loop(k, {
+      dt: 0.005,
+      step: function(dt){
+        // Checks happen at t = n * wait. Integer maths keeps 720 exactly 720.
+        if(t >= n * s.w / 1000){
+          var a = speed * n * s.w / 1000;
+          checks++;
+          var ok = a < FINISH;
+          dot(k, a, ok);
+          lamp(k, 'check #'+checks+':  '+Math.round(a)+' < '+FINISH+'  →  '+(ok?'True':'False'), ok);
+          if(!ok){ stopAt = a; ang = a; return true; }
+          n++;
+          if(!s.run && t > 6){ return true; }
+        }
+        t += dt;
+        ang = speed * t;
+        return false;
+      },
+      draw: function(){
+        wheelDraw(k, ang, checks);
+        hi(k, stopAt===null ? 3 : 4);
+        if(!s.run && checks > 5 && stopAt===null) SIM.msg(k+'Msg', 'Still True. The wheel is not turning, so the angle never changes.', 'bad');
+      },
+      done: function(){
+        s.live = false;
+        if(stopAt===null){
+          SIM.msg(k+'Msg', 'We stopped it after '+checks+' checks. The robot never would have.', 'bad');
+          return;
+        }
+        var over = Math.round(stopAt - FINISH), gap = SPEED * s.w / 1000;
+        if(over===0) SIM.msg(k+'Msg', 'Stopped at '+Math.round(stopAt)+'°, right on the line. Checks were '+gap+'° apart.', 'good');
+        else SIM.msg(k+'Msg', 'Stopped at '+Math.round(stopAt)+'°: '+over+'° past the line. Checks were '+gap+'° apart.', 'bad');
+      }
+    });
+  });
+  ['w1','w2','w3'].forEach(wheelReset);
+})();
+</script>
 
 
 </section></section>

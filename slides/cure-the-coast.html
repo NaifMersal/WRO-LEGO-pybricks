@@ -10,7 +10,7 @@
   <meta name="generator" content="quarto-1.9.38">
 
   <meta name="dcterms.date" content="2026-09-28">
-  <title>The Beam Balance</title>
+  <title>Cure the Coast</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -201,8 +201,8 @@
     <div class="slides">
 
 <section id="title-slide" data-background-image="../slides_template/assets/anim.svg" data-background-opacity="0.15" data-background-size="cover" class="quarto-title-block center">
-  <h1 class="title">The Beam Balance</h1>
-  <p class="subtitle">Session 4 · Lesson D2, part 2 · Robot Rockstars · SPIKE Prime + Pybricks</p>
+  <h1 class="title">Cure the Coast</h1>
+  <p class="subtitle">Session 7 · Lesson D4a · Robot Rockstars · SPIKE Prime + Pybricks</p>
 
 <div class="quarto-title-authors">
 </div>
@@ -210,459 +210,61 @@
   <p class="date">2026-09-28</p>
 </section>
 <section>
-<section id="a.-where-we-stopped" class="title-slide slide level1 sdaia-dark center" data-background-gradient="linear-gradient(135deg, #1C355E, #00C9A7)">
-<h1>A. Where We Stopped</h1>
-<p>You got <strong>1304°</strong> out of me. Today you learn to get it <strong>yourself</strong>, for any distance.</p>
+<section id="a.-warm-up" class="title-slide slide level1 sdaia-dark center" data-background-gradient="linear-gradient(135deg, #1C355E, #00C9A7)">
+<h1>A. Warm-Up</h1>
+<p>Yesterday your turn <em>watched itself</em>, then coasted to 94 with the guilty party named. Today: the cure, and your first <code>def</code>.</p>
 </section>
-<section id="yesterdays-two-numbers" class="slide level2">
-<h2>Yesterday’s two numbers</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><strong>What you measured</strong></p>
-<ul>
-<li>One wheel turn rolls <strong>27.6 cm</strong></li>
-<li><span class="math inline">\(C = \pi \times d\)</span>, from unrolling the rope</li>
-</ul>
-</div><div class="column" style="width:50%;">
-<p><strong>What I handed you</strong></p>
-<ul>
-<li><span class="math inline">\(360 \div 27.6 \approx 13.04°\)</span> per cm</li>
-<li><span class="math inline">\(100 \times 13.04 \approx 1304°\)</span></li>
-</ul>
-</div></div>
-<div class="fragment">
-<div class="cardbox">
-<p>Be honest: you <strong>followed</strong> that. You did not <strong>invent</strong> it. So what happens on the mat in Week 4 when the number isn’t 100 cm, but 42 cm, then 17, then 63? You need the <strong>tool</strong>, not the answer. 🧰</p>
-</div>
-<p>⏱️ <strong>Time: 5 minutes</strong> · no laptops yet</p>
-</div>
-</section>
-<section id="same-symbol-two-jobs" class="slide level2">
-<h2>Same symbol, two jobs</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<h3 id="in-python">In Python ➡️</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a>speed <span class="op">=</span> <span class="dv">200</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>“<strong>Put</strong> 200 in the room called speed.”</p>
-<p>An <strong>arrow</strong>. It <em>does</em> something.</p>
-</div><div class="column" style="width:50%;">
-<h3 id="on-paper">On paper ⚖️</h3>
-<p><span class="math display">\[27.6 \times t = 30\]</span></p>
-<p>“These two weigh <strong>the same</strong>.”</p>
-<p>A <strong>balance</strong>. It <em>states</em> something.</p>
-</div></div>
-<div class="fragment fade-up">
-<div class="cardbox purple">
-<p>Today is all about the <strong>paper</strong> one. Every time you see <code>=</code> on the whiteboard for the next hour, picture a beam with two pans, and picture it <strong>tipping</strong> the moment you cheat.</p>
-</div>
-</div>
-<aside class="notes">
-<p>This distinction is the single most common source of confusion when beginners meet algebra alongside a first programming language, and this cohort is meeting both in the same week. Say it out loud, then keep pointing at it: the whiteboard <code>=</code> and the editor <code>=</code> are different animals wearing the same costume. Do not skip the callout — the arcade recap re-tests exactly this.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section></section>
-<section>
-<section id="b.-build-the-beam" class="title-slide slide level1 sdaia-dark center" data-background-gradient="linear-gradient(135deg, #1C355E, #FF7A5C)">
-<h1>B. Build the Beam</h1>
-<p>Unplugged. Real objects, real tipping. <strong>No screens in this section.</strong></p>
-</section>
-<section id="the-prop" class="slide level2">
-<h2>The prop</h2>
-<div class="callout callout-important callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>What’s on the table</strong></p>
-</div>
-<div class="callout-content">
-<p>A balance (or a ruler resting on a pencil), and <strong>bricks as fruit</strong>:</p>
-<ul>
-<li>🍊 <strong>orange</strong> = one 2×4 brick, <em>our unit</em></li>
-<li>🍌 <strong>banana</strong> = two bricks stuck together</li>
-<li>🍉 <strong>melon</strong> = three bricks stuck together</li>
-</ul>
-</div>
-</div>
-</div>
-<ul>
-<li>Everything today is counted <strong>in oranges</strong>. A banana is worth 2. A melon is worth 3.</li>
-<li>The students don’t know those numbers yet. <strong>They work them out from the beam.</strong></li>
-</ul>
-<aside class="notes">
-<p>Coach prep: if no pan balance is in the kit, a 30 cm ruler across a round pencil works, or draw the beam on the whiteboard and place bricks in two taped-off “pans” while you declare level/tipped. A physical tip is worth a lot here — the whole lesson runs on the memory of watching it fall. Do NOT reveal banana=2 and melon=3; those are the answers to sections D and F. Build the fruit ahead of time so bricks can’t be counted at a glance — tape over the studs if your group is sharp-eyed.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section></section>
-<section>
-<section id="c.-take-one-off-each-side" class="title-slide slide level1 sdaia-dark center" data-background-gradient="linear-gradient(135deg, #1C355E, #625D9C)">
-<h1>C. Take One Off Each Side</h1>
-<p>The first move. It has a name you already know.</p>
-</section>
-<section id="oranges-balance-6-apples" class="slide level2">
-<h2>6 oranges balance 6 apples</h2>
-<div class="qbox">
-<p><span class="qtitle">🍊🍊🍊🍊🍊🍊 &nbsp;⚖️&nbsp; 🍏🍏🍏🍏🍏🍏</span></p>
-<p>I take <strong>one orange</strong> off the left and <strong>one apple</strong> off the right. Hands up: does it <strong>tip</strong>, or stay <strong>level</strong>?</p>
-</div>
-<div class="fragment fade-up">
-<div class="cardbox teal">
-<p><strong>Level.</strong> Take the same away from both sides and the beam doesn’t care. That is what <strong>subtraction</strong> means on a balance. Do it four more times and you are down to <strong>1 🍊 = 1 🍏</strong>.</p>
-</div>
-</div>
-<p>⏱️ <strong>Time: 6 minutes</strong></p>
-</section>
-<section id="now-the-other-direction" class="slide level2">
-<h2>Now the other direction</h2>
-<ul>
-<li>Put <strong>one orange back</strong> on the left and <strong>one apple back</strong> on the right → still level. That’s <strong>plus</strong>.</li>
-<li>Put one orange on the left <strong>only</strong> → 💥 <strong>it tips.</strong> Everyone sees it.</li>
-</ul>
-<div class="fragment fade-up">
-<div class="cardbox purple">
-<h3>
-The rule, first draft
-</h3>
-<p><strong>Whatever you do to one side, do to the other side too.</strong></p>
-<p>Write it on the board. We are going to catch it lying in about four minutes. 🕵️</p>
-</div>
-</div>
-<aside class="notes">
-<p>Deliberately let them write down the sloppy version. The rule as stated here is the one almost every textbook gives, and it is exactly wrong enough to break in section D. Break it → feel it → fix it applies to <em>rules</em>, not just code.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section></section>
-<section>
-<section id="d.-the-rule-breaks" class="title-slide slide level1 sdaia-dark center" data-background-gradient="linear-gradient(135deg, #1C355E, #FF7A5C)">
-<h1>D. 🔥 The Rule Breaks</h1>
-<p>Same move. Same rule. The beam falls over.</p>
-</section>
-<section id="new-puzzle-6-oranges-balance-3-bananas" class="slide level2">
-<h2>New puzzle: 6 oranges balance 3 bananas</h2>
-<div class="qbox">
-<p><span class="qtitle">🍊🍊🍊🍊🍊🍊 &nbsp;⚖️&nbsp; 🍌🍌🍌</span></p>
-<p>Follow <strong>your own rule</strong>. Take <strong>one thing</strong> off each side. Still level?</p>
-</div>
-<div class="fragment fade-up">
-<div class="cardbox">
-<h3>
-💥 It tips. Hard.
-</h3>
-<p>Five oranges on the left. Two bananas on the right. <strong>Let them watch it fall before you say a word.</strong></p>
-</div>
-</div>
-<p>⏱️ <strong>Time: 10 minutes</strong></p>
-</section>
-<section id="so-why-did-it-work-the-first-time" class="slide level2">
-<h2>So why did it work the <em>first</em> time?</h2>
-<ul>
-<li class="fragment">6 oranges balanced 6 <strong>apples</strong>. Same count on both sides…</li>
-<li class="fragment">…so <strong>one apple had to weigh exactly one orange.</strong> The beam told us that for free.</li>
-<li class="fragment">Removing 1 orange and 1 apple removed <strong>the same weight</strong> from each pan. ✅</li>
-<li class="fragment">But a <strong>banana is heavier</strong> than an orange. Removing one of each removed <strong>different weights</strong>. ❌</li>
-</ul>
-<div class="fragment fade-up">
-<div class="cardbox teal">
-<h3>
-The rule, final version
-</h3>
-<p>Do the same <strong>amount</strong> to both sides, <strong>not</strong> the same <strong>number of objects</strong>.</p>
-</div>
-</div>
-<aside class="notes">
-<p>This is the highest-value slide in the deck. The object-vs-amount confusion is the exact failure that shows up years later as “I cancelled the x from both sides.” Land it now, cheaply, with bricks. If a student objects that they can’t know a banana weighs 2 oranges yet — perfect, that’s section F’s job, and you should say so out loud: “hold that complaint, you’re about to be able to answer it.”</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="bench-it-find-the-banana" class="slide level2">
-<h2>🧪 Bench it: find the banana</h2>
-<ul>
-<li>6 🍊 = 3 🍌. <strong>Take away one banana from the right.</strong> What must you take off the left to keep it level?</li>
-<li>Try 1 orange. Tips. Try 2 oranges. <strong>Level.</strong></li>
-</ul>
-<div class="fragment fade-up">
-<div class="cardbox purple">
-<p><strong>One banana = two oranges</strong>, and nobody told you. You <em>weighed</em> it. The beam is a machine for finding things out. 🔍</p>
-</div>
-</div>
-</section></section>
-<section>
-<section id="e.-multiplication-is-just-adding" class="title-slide slide level1 sdaia-dark center" data-background-gradient="linear-gradient(135deg, #1C355E, #00C9A7)">
-<h1>E. Multiplication Is Just Adding</h1>
-<p>Before we can multiply a beam, we should agree what multiplying <strong>is</strong>.</p>
-</section>
-<section id="what-3-apples-actually-means" class="slide level2">
-<h2>What “3 apples” actually means</h2>
-<p><span class="math display">\[3 \text{ apples} \;=\; \text{apple} + \text{apple} + \text{apple}\]</span></p>
-<div class="fragment">
-<p><span class="math display">\[3 \times 2 \;=\; 2 + 2 + 2 \;=\; 6\]</span></p>
-<div class="fragment fade-up">
-<div class="cardbox teal">
-<p><strong>Multiplication is a shortcut for adding the same thing over and over.</strong> That’s the whole definition.</p>
-</div>
-</div>
-<p>⏱️ <strong>Time: 10 minutes</strong></p>
-</div>
-</section>
-<section id="but-is-3-times-2-the-same-as-2-times-3" class="slide level2">
-<h2>But is <span class="math inline">\(3 \times 2\)</span> the same as <span class="math inline">\(2 \times 3\)</span>?</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><strong>3 rows of 2</strong></p>
-<pre><code>● ●
-● ●
-● ●</code></pre>
-<p><span class="math inline">\(2 + 2 + 2 = 6\)</span></p>
-</div><div class="column" style="width:50%;">
-<p><strong>2 rows of 3</strong></p>
-<pre><code>● ● ●
-● ● ●</code></pre>
-<p><span class="math inline">\(3 + 3 = 6\)</span></p>
-</div></div>
-<div class="fragment fade-up">
-<div class="cardbox purple">
-<h3>
-Turn the paper sideways 🔄
-</h3>
-<p>It’s the <strong>same dots</strong>. Nobody added one, nobody took one away. You just <strong>rotated it</strong>. That’s why the order never matters.</p>
-</div>
-</div>
-<aside class="notes">
-<p>Hand out squared paper or use bricks in a rectangle and physically rotate it 90°. This beats every algebraic argument for commutativity at this age: it is a <em>proof they can see</em>, and it takes eight seconds. Resist the temptation to prove it by splitting numbers into ones — that argument is correct but it loses the room.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="multiply-the-whole-beam" class="slide level2">
-<h2>Multiply the whole beam</h2>
-<div class="qbox">
-<p><span class="qtitle">2 oranges balance 1 banana. &nbsp; <strong>Double both pans.</strong> &nbsp; Still level?</span></p>
-</div>
-<div class="fragment fade-up">
-<ul>
-<li><span class="math inline">\(2\,🍊 = 1\,🍌\)</span> &nbsp;→&nbsp; <span class="math inline">\(4\,🍊 = 2\,🍌\)</span> ✅</li>
-<li>Triple it: <span class="math inline">\(6\,🍊 = 3\,🍌\)</span>. <strong>That’s the puzzle from section D.</strong> Same beam all along.</li>
-</ul>
-</div>
-<div class="fragment fade-up">
-<div class="cardbox teal">
-<p>You can <strong>multiply both sides</strong> by anything and the beam stays level, because you did the same amount to each. Multiply one side only and it tips, same as always.</p>
-</div>
-</div>
-</section></section>
-<section>
-<section id="f.-sharing-the-beam" class="title-slide slide level1 sdaia-dark center" data-background-gradient="linear-gradient(135deg, #1C355E, #625D9C)">
-<h1>F. Sharing the Beam</h1>
-<p>The move that gets you <strong>what you actually want</strong>.</p>
-</section>
-<section id="what-is-one-melon-worth" class="slide level2">
-<h2>What is ONE melon worth?</h2>
-<div class="qbox">
-<p><span class="qtitle">🍉🍉 &nbsp;⚖️&nbsp; 🍊🍊🍊🍊🍊🍊</span></p>
-<p>Two melons balance six oranges. I don’t want two melons. <strong>I want one.</strong></p>
-</div>
-<div class="fragment fade-up">
-<h3 id="split-both-pans-into-2-equal-groups">Split both pans into 2 equal groups</h3>
-<p><span class="math display">\[\frac{2\,🍉}{2} = \frac{6\,🍊}{2} \qquad\Longrightarrow\qquad 1\,🍉 = 3\,🍊\]</span></p>
-</div>
-<div class="fragment fade-up">
-<div class="cardbox teal">
-<p>That’s <strong>division</strong>. And notice what just happened: you got the beam down to <strong>one of the thing you were asking about</strong>. That is what grown-ups call <strong>solving</strong>. You’ve been doing it for ten minutes. 🎓</p>
-</div>
-</div>
-<p>⏱️ <strong>Time: 12 minutes</strong></p>
-</section>
-<section id="the-move-you-will-use-for-the-rest-of-your-life" class="slide level2">
-<h2>The move you will use for the rest of your life</h2>
-<div class="cardbox purple">
-<h3>
-To find <strong>one</strong> of something
-</h3>
-<p>Divide <strong>both</strong> sides by <strong>how many you’ve got</strong>.</p>
-</div>
-<div class="fragment fade-up">
-<ul>
-<li>Stuck with 2 melons? Divide both sides by <strong>2</strong>.</li>
-<li>Stuck with 5 melons? Divide both sides by <strong>5</strong>.</li>
-<li>Stuck with <strong>27.6 of something</strong>? …you can already see where this is going. 👀</li>
-</ul>
-</div>
-<aside class="notes">
-<p>Do not present division as “the opposite of multiplication” and then re-derive the melon result separately — that spends the budget twice on one idea. Division IS the isolate-the-unknown move, taught in one breath. The last bullet is the hinge into section G; pause on it and let someone say 27.6 out loud before you advance.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section></section>
-<section>
-<section id="g.-now-do-it-to-the-robot" class="title-slide slide level1 sdaia-dark center" data-background-gradient="linear-gradient(135deg, #1C355E, #00C9A7)">
-<h1>G. Now Do It to the Robot</h1>
-<p>Same beam. The fruit is just wearing a different costume.</p>
-</section>
-<section id="the-real-question" class="slide level2">
-<h2>The real question</h2>
-<div class="qbox">
-<p><span class="qtitle">One wheel turn rolls <strong>27.6 cm</strong>. You want to drive <strong>30 cm</strong>. How many <strong>motor degrees</strong>?</span></p>
-</div>
-<div class="fragment fade-up">
-<p>Call the number of turns <span class="math inline">\(t\)</span>. That’s the thing you don’t know yet.</p>
-<p><span class="math display">\[27.6 \times t \;=\; 30\]</span></p>
-<p><strong>“27.6 oranges’ worth of turns balances 30.”</strong> It’s the melon puzzle with worse handwriting.</p>
-</div>
-<aside class="notes">
-<p>Insist that they name the unknown <em>before</em> touching it. “The thing I don’t know yet gets a letter” is the entire conceptual leap into algebra, and it costs nothing here because the beam has already made the unknown feel like a physical object sitting in a pan.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="solve-it-on-the-beam" class="slide level2">
-<h2>Solve it on the beam</h2>
-<ul>
-<li class="fragment">I’m stuck with <strong>27.6</strong> of them. Divide <strong>both</strong> sides by 27.6: <span class="math display">\[t = \frac{30}{27.6} \approx 1.087 \text{ turns}\]</span></li>
-<li class="fragment">But the motor doesn’t count turns, it counts <strong>degrees</strong>. One turn is <strong>360°</strong>. So multiply <strong>both</strong> sides by 360: <span class="math display">\[360 \times t = 360 \times 1.087 \approx \mathbf{391°}\]</span></li>
-</ul>
-<div class="fragment fade-up">
-<div class="cardbox teal">
-<p>Two moves. ÷ 27.6 on both sides, × 360 on both sides. <strong>Nobody handed you 391.</strong> ✅</p>
-</div>
-</div>
-</section>
-<section id="write-your-own-formula" class="slide level2">
-<h2>Write your own formula</h2>
-<div class="cardbox purple">
-<p><span class="math display">\[\text{degrees} \;=\; \frac{\text{distance}}{27.6} \times 360\]</span></p>
-</div>
-<div class="fragment fade-up">
-<h3 id="or-for-any-wheel-on-earth">Or, for any wheel on Earth</h3>
-<p><span class="math display">\[\text{degrees} \;=\; \frac{\text{distance}}{\pi \times d} \times 360\]</span></p>
-<p>Put <strong>any</strong> distance in. Get degrees out. This is the tool. 🧰</p>
-</div>
-</section>
-<section id="same-answer-two-roads" class="slide level2">
-<h2>Same answer, two roads</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p><strong>Yesterday: the recipe</strong></p>
-<p><span class="math inline">\(360 \div 27.6 \approx 13.04°\)</span>/cm</p>
-<p><span class="math inline">\(30 \times 13.04 \approx 391°\)</span></p>
-</div><div class="column" style="width:50%;">
-<p><strong>Today: the beam</strong></p>
-<p><span class="math inline">\(t = 30 \div 27.6 \approx 1.087\)</span></p>
-<p><span class="math inline">\(1.087 \times 360 \approx 391°\)</span></p>
-</div></div>
-<div class="fragment fade-up">
-<div class="cardbox teal">
-<p><strong>Identical.</strong> Yesterday’s shortcut was this beam with the working rubbed out. Now you know why it’s allowed, and you can rebuild it when you forget it. 🔁</p>
-</div>
-</div>
-</section>
-<section id="prove-it-on-three-distances" class="slide level2">
-<h2>🎯 Prove it on three distances</h2>
-<div class="callout callout-important callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>At your bench</strong></p>
-</div>
-<div class="callout-content">
-<p>Do all three <strong>on paper first</strong>, then run them and tape-measure.</p>
+<section id="where-we-left-off" class="slide level2">
+<h2>Where we left off</h2>
 <table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
 <thead>
 <tr class="header">
-<th style="text-align: left;">Distance</th>
-<th style="text-align: left;">Your degrees</th>
-<th style="text-align: left;">Measured</th>
+<th>Yesterday</th>
+<th>The trick</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">100 cm</td>
-<td style="text-align: left;">?</td>
-<td style="text-align: left;"></td>
+<td>🧭 <strong>heading</strong></td>
+<td>one number for “which way”: net turning since <code>reset_heading(0)</code></td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">42 cm</td>
-<td style="text-align: left;">?</td>
-<td style="text-align: left;"></td>
+<td>👀 the <strong>watched turn</strong></td>
+<td>spin · watch <code>heading()</code> · stop <em>at</em> the target, with <code>while</code></td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">17 cm</td>
-<td style="text-align: left;">?</td>
-<td style="text-align: left;"></td>
+<td>🔁 <strong>loops, nested</strong></td>
+<td><code>for</code> draws the shape, <code>while</code> lands the corner, 360 ÷ sides</td>
+</tr>
+<tr class="even">
+<td>🚨 the <strong>open case</strong></td>
+<td>it printed <strong>94</strong>. Guilty party: <em>momentum</em>. Diagnosed, not cured</td>
 </tr>
 </tbody>
 </table>
-</div>
-</div>
-</div>
 <div class="fragment fade-up">
-<p>Answers: <strong>1304°</strong>, <strong>548°</strong>, <strong>222°</strong>. Notice 1304. That’s yesterday’s number, and today it’s <strong>yours</strong>.</p>
+<p>🤔 Shape Shifter’s traces told the same story: every corner a few degrees hot, and the octagon paid 8 times. Today the coast meets its cure.</p>
 </div>
-<p>⏱️ <strong>Time: 12 minutes</strong></p>
+<p>⏱️ <strong>Time: 10 minutes</strong></p>
+</section>
+<section id="setup-same-bench" class="slide level2">
+<h2>Setup: same bench</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-code-line-numbers="|1-4|6-8|10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="im">from</span> pybricks.hubs <span class="im">import</span> PrimeHub</span>
+<span id="cb1-2"><a></a><span class="im">from</span> pybricks.pupdevices <span class="im">import</span> Motor</span>
+<span id="cb1-3"><a></a><span class="im">from</span> pybricks.parameters <span class="im">import</span> Port, Direction</span>
+<span id="cb1-4"><a></a><span class="im">from</span> pybricks.tools <span class="im">import</span> wait</span>
+<span id="cb1-5"><a></a></span>
+<span id="cb1-6"><a></a>hub <span class="op">=</span> PrimeHub()</span>
+<span id="cb1-7"><a></a>left <span class="op">=</span> Motor(Port.F, Direction.COUNTERCLOCKWISE)   <span class="co"># yours</span></span>
+<span id="cb1-8"><a></a>right <span class="op">=</span> Motor(Port.B)                              <span class="co"># yours</span></span>
+<span id="cb1-9"><a></a></span>
+<span id="cb1-10"><a></a><span class="co"># your watched turn from yesterday goes here. It still coasts to ~94, for now.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <aside class="notes">
-<p>Rounding: 42/27.6 × 360 = 547.8, and 17/27.6 × 360 = 221.7. Accept anything within a degree or two — the point is the method, and the encoder can’t tell the difference anyway. Expect the measured column to be slightly short on every row; that’s backlash and coast, which is D3’s and D4’s business, not a mistake in their algebra. Say so, or they’ll distrust the maths they just built.</p>
+<p>Everyone starts from their own D3 file — imports plus their watched-turn lines. Recap by asking, not telling: “walk me through your watched turn line by line — and who was guilty for the 94?” — two or three students, one loop. Do NOT preview the fix; the next act builds it from the coast they already diagnosed.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -674,6 +276,256 @@ To find <strong>one</strong> of something
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
+</section></section>
+<section>
+<section id="b.-the-cure-arrive-slowly" class="title-slide slide level1 sdaia-dark center" data-background-gradient="linear-gradient(135deg, #1C355E, #00C9A7)">
+<h1>B. The Cure: Arrive Slowly</h1>
+<p>Momentum needs <em>speed</em> to steal degrees. So give it none at the end.</p>
+</section>
+<section id="feel-the-fix-arrive-slowly" class="slide level2">
+<h2>Feel the fix: arrive slowly</h2>
+<div style="text-align:center;font-size:17px;color:#5b6678;margin-bottom:2px;">🚗 that's your <b>robot seen from above</b>: nose up = heading 0°. The judge calls: turn right to the <b style="color:#00AE8D;">90° tick</b>.</div>
+<div style="display:flex;justify-content:center;align-items:flex-start;gap:80px;">
+  <div style="text-align:center;">
+    <div style="font-weight:800;color:#1C355E;font-size:23px;">🚀 Full speed all the way</div>
+    <svg width="210" height="210" viewbox="-110 -110 220 220" style="margin:6px auto;display:block;">
+      <circle r="86" fill="#eef3f8" stroke="#1C355E" stroke-width="6"></circle>
+      <line x1="86" y1="0" x2="102" y2="0" stroke="#00C9A7" stroke-width="6"></line>
+      <text x="92" y="-12" font-size="17" fill="#00C9A7" font-weight="700">90°</text>
+      <path id="odArc" d="M 86 0 A 86 86 0 0 1 85.4 10.5" fill="none" stroke="#E96852" stroke-width="7" stroke-linecap="round" opacity="0"></path>
+      <g id="odN1">
+        <use href="#sim-bot" style="--bot:#FF7A5C"></use>
+      </g>
+    </svg>
+    <div style="font-size:24px;font-weight:800;color:#FF7A5C;"><span id="odV1">0</span>° <span id="odS1" style="font-size:17px;"></span></div>
+  </div>
+  <div style="display:flex;flex-direction:column;justify-content:center;height:240px;">
+    <button class="sim-btn teal" data-sim="raceDials">▶ Turn to 90°</button>
+  </div>
+  <div style="text-align:center;">
+    <div style="font-weight:800;color:#1C355E;font-size:23px;">🐢 Fast, then crawl</div>
+    <svg width="210" height="210" viewbox="-110 -110 220 220" style="margin:6px auto;display:block;">
+      <circle r="86" fill="#eef3f8" stroke="#1C355E" stroke-width="6"></circle>
+      <line x1="86" y1="0" x2="102" y2="0" stroke="#00C9A7" stroke-width="6"></line>
+      <text x="92" y="-12" font-size="17" fill="#00C9A7" font-weight="700">90°</text>
+      <g id="odN2">
+        <use href="#sim-bot" style="--bot:#00C9A7"></use>
+      </g>
+    </svg>
+    <div style="font-size:24px;font-weight:800;color:#00C9A7;"><span id="odV2">0</span>° <span id="odS2" style="font-size:17px;"></span></div>
+  </div>
+</div>
+<script>
+var odRAF = null;
+function raceDials(){
+  if(odRAF) cancelAnimationFrame(odRAF);
+  var t0 = performance.now();
+  SIM.el('odArc').setAttribute('opacity','0');
+  SIM.el('odS1').textContent = '';
+  SIM.el('odS2').textContent = '';
+  function pose(el, val, deg){
+    SIM.el(el).setAttribute('transform','rotate('+deg.toFixed(1)+')');
+    SIM.el(val).textContent = Math.round(deg);
+  }
+  function step(now){
+    var t = (now-t0)/1000;
+    // Dial 1: 180°/s to 90, then coast +7° over 0.45 s (ease-out)
+    var a1;
+    if(t < 0.5) a1 = 180*t;
+    else { var c = Math.min((t-0.5)/0.45, 1); a1 = 90 + 7*(1-(1-c)*(1-c)); }
+    // Dial 2: 180°/s to 60, then 35°/s to 90, dead stop
+    var a2;
+    if(t < 0.3333) a2 = 180*t;
+    else a2 = Math.min(60 + 35*(t-0.3333), 90);
+    pose('odN1','odV1',a1);
+    pose('odN2','odV2',a2);
+    if(t < 1.4){ odRAF = requestAnimationFrame(step); }
+    else {
+      odRAF = null;
+      SIM.el('odArc').setAttribute('opacity','1');
+      var s1 = SIM.el('odS1'); s1.textContent = '· coasted past 😬'; s1.style.color = '#E96852';
+      var s2 = SIM.el('odS2'); s2.textContent = '· parked on it 🎯'; s2.style.color = '#00AE8D';
+    }
+  }
+  odRAF = requestAnimationFrame(step);
+}
+
+/* Registered for the kit: these are plain function declarations, so
+   they were never assigned to window and nothing else picks them up. */
+SIM.def('raceDials', raceDials);
+</script>
+<div class="fragment fade-up">
+<div class="cardbox purple">
+<p>Same target. Same gyro. The only difference: the 🐢 arrives <strong>slowly</strong>, so there’s nothing left to coast. Fast when far, slow when close.</p>
+</div>
+</div>
+</section>
+<section id="the-fix-in-code" class="slide level2">
+<h2>The fix, in code</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2" data-code-line-numbers="|1|2|3-5|6-8|9|11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a><span class="kw">def</span> gyro_turn(target):                        <span class="co"># def = name a move once, use it forever</span></span>
+<span id="cb2-2"><a></a>    hub.imu.reset_heading(<span class="dv">0</span>)</span>
+<span id="cb2-3"><a></a>    left.run(<span class="dv">200</span>)<span class="op">;</span> right.run(<span class="op">-</span><span class="dv">200</span>)            <span class="co"># fast for the long haul…</span></span>
+<span id="cb2-4"><a></a>    <span class="cf">while</span> hub.imu.heading() <span class="op">&lt;</span> target <span class="op">-</span> <span class="dv">30</span>:</span>
+<span id="cb2-5"><a></a>        wait(<span class="dv">5</span>)</span>
+<span id="cb2-6"><a></a>    left.run(<span class="dv">50</span>)<span class="op">;</span> right.run(<span class="op">-</span><span class="dv">50</span>)              <span class="co"># …crawl the last 30°</span></span>
+<span id="cb2-7"><a></a>    <span class="cf">while</span> hub.imu.heading() <span class="op">&lt;</span> target:</span>
+<span id="cb2-8"><a></a>        wait(<span class="dv">5</span>)</span>
+<span id="cb2-9"><a></a>    left.stop()<span class="op">;</span> right.stop()</span>
+<span id="cb2-10"><a></a></span>
+<span id="cb2-11"><a></a>gyro_turn(<span class="dv">90</span>)     <span class="co"># or gyro_turn(45), gyro_turn(180)…</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment fade-up">
+<div class="cardbox purple">
+<p>Two speeds, two <code>while</code>s: <strong>fast for the long haul, crawl the last 30°</strong>, so momentum arrives with nothing left to steal. And line 1: <code>def</code> <strong>names the move once</strong>, and every call replays it.</p>
+</div>
+</div>
+<aside class="notes">
+<p>First <code>def</code> of the bootcamp — land it hard: a function is a <em>named move</em>, exactly like <code>run_angle</code> is someone else’s named move. This version handles right turns (positive targets); if a kid asks about left turns, brilliant — flip the two <code>run</code> signs and the <code>&lt;</code> to <code>&gt;</code>, or park it as a challenge. The constants 200/50/30 are the raw material the afternoon interrogates; they get promoted into the <code>ROBOT FACTS</code> block at D8. Demo on the next slide — walk the highlights here first.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="one-recipe-card-many-calls" class="slide level2">
+<h2>One recipe card, many calls 📝</h2>
+<div class="sim">
+  <div style="display:flex;justify-content:center;align-items:center;gap:10px;margin-bottom:8px;">
+    <span style="font-size:18px;color:#1C355E;font-weight:700;">call the one recipe:</span>
+    <button class="sim-btn teal small" data-sim="rcCall" data-sim-arg="45">gyro_turn(45)</button>
+    <button class="sim-btn purple small" data-sim="rcCall" data-sim-arg="90">gyro_turn(90)</button>
+    <button class="sim-btn coral small" data-sim="rcCall" data-sim-arg="180">gyro_turn(180)</button>
+  </div>
+  <div style="display:flex;justify-content:center;align-items:center;gap:48px;">
+    <div id="rcCard" style="font-family:Consolas,monospace;font-size:16px;color:#1C355E;background:#eef3f8;border-radius:12px;border-left:5px solid #625D9C;padding:12px 18px;transition:box-shadow .15s,transform .15s;">
+      <div style="font-weight:800;color:#625D9C;margin-bottom:4px;">📝 one recipe card</div>
+      <div>def gyro_turn(target):</div>
+      <div>&nbsp;&nbsp;fast … then crawl</div>
+      <div>&nbsp;&nbsp;stop at the target</div>
+    </div>
+    <div style="text-align:center;">
+      <svg width="170" height="170" viewbox="-100 -100 200 200" style="display:block;">
+        <circle r="82" fill="#eef3f8" stroke="#1C355E" stroke-width="5"></circle>
+        <g id="rcTick" opacity="0"><line x1="0" y1="-82" x2="0" y2="-98" stroke="#00AE8D" stroke-width="6"></line></g>
+        <g id="rcNeedle">
+          <use href="#sim-bot" style="--bot:#625D9C"></use>
+        </g>
+      </svg>
+      <div style="font-family:Consolas,monospace;font-size:18px;color:#1C355E;">landed <span id="rcLand" style="font-weight:800;">–</span>°</div>
+      <div style="font-size:15px;color:#625D9C;">calls made: <b><span id="rcN">0</span></b> · recipes written: <b>1</b></div>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  var T=0, h=0, phase='idle', raf=null, last=null, n=0;
+  function step(now){
+    var dt = last ? Math.min((now-last)/1000,0.05) : 0.016; last=now;
+    if(phase==='fast'){ h += 300*dt; if(h >= T-30) phase='crawl'; }
+    else if(phase==='crawl'){ h += 70*dt; if(h >= T){ h=T; phase='settle'; } }
+    SIM.el('rcNeedle').setAttribute('transform','rotate('+h.toFixed(1)+')');
+    SIM.el('rcLand').textContent = Math.round(h);
+    if(phase==='settle'){ SIM.el('rcLand').style.color='#00AE8D'; raf=null; return; }
+    raf=requestAnimationFrame(step);
+  }
+  SIM.def('rcCall', function(t){
+    T=t; h=0; phase='fast'; last=null;
+    n++; SIM.el('rcN').textContent=n;
+    SIM.el('rcLand').style.color='#1C355E';
+    SIM.el('rcTick').setAttribute('transform','rotate('+T+')');
+    SIM.el('rcTick').setAttribute('opacity','1');
+    var c=SIM.el('rcCard');
+    c.style.boxShadow='0 0 0 3px #625D9C'; c.style.transform='scale(1.03)';
+    setTimeout(function(){ c.style.boxShadow='none'; c.style.transform='scale(1)'; },220);
+    if(raf) cancelAnimationFrame(raf);
+    raf=requestAnimationFrame(step);
+  });
+})();
+</script>
+<div class="fragment fade-up">
+<div class="cardbox purple">
+<p><strong>The 94 is cured</strong>, and you just wrote your first robot <em>move</em>: one recipe card, any number of calls, and the 🚗 parks on every tick.</p>
+</div>
+</div>
+<div class="fragment fade-up">
+<div class="cardbox teal">
+<p>Can you beat two speeds? Imagine speed <strong>shrinking as the degrees-left shrink</strong>. Hold on to that idea. It comes due soon. 😏</p>
+</div>
+</div>
+<aside class="notes">
+<p>Run the demo BEFORE any fragment: click all three calls, watch the same recipe card flash and the car park on three different ticks — that <em>is</em> the def/call story, animated. Only then reveal the cards. The teal teaser plants the smarter fix (push proportional to distance-left) — do NOT name it: it gets built and <em>named</em> in <em>The Drive That Heals Itself</em> (D4c) as the start of the PID story.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="bug-hunt-the-silent-robot" class="slide level2">
+<h2>🐛 Bug hunt: the silent robot</h2>
+<div class="qbox">
+<p><span class="qtitle">No red error. No crash. The robot just… <strong>sits there.</strong> The code looks perfect. What did we forget?</span></p>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a><span class="kw">def</span> gyro_turn(target):</span>
+<span id="cb3-2"><a></a>    hub.imu.reset_heading(<span class="dv">0</span>)</span>
+<span id="cb3-3"><a></a>    left.run(<span class="dv">200</span>)<span class="op">;</span> right.run(<span class="op">-</span><span class="dv">200</span>)</span>
+<span id="cb3-4"><a></a>    <span class="cf">while</span> hub.imu.heading() <span class="op">&lt;</span> target:</span>
+<span id="cb3-5"><a></a>        wait(<span class="dv">5</span>)</span>
+<span id="cb3-6"><a></a>    left.stop()<span class="op">;</span> right.stop()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment fade-up">
+<div class="cardbox coral">
+<p><code>def</code> only <strong>writes</strong> the recipe, it never cooks it. Nothing happens until you <strong>call</strong> the move by name: add <code>gyro_turn(90)</code> below. Defining a move and <em>using</em> a move are two separate steps.</p>
+</div>
+</div>
+<aside class="notes">
+<p>The most instructive bug of the week — no error to read, so the robot’s stillness <em>is</em> the message. Elicit first: “if the code is right, why no movement?” Draw the split on the board — <code>def …:</code> writes the recipe card, <code>gyro_turn(90)</code> hands it to the cook. Leads straight into the bench lab, where they call it three times.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="bench-check-tune-your-crawl" class="slide level2">
+<h2>Bench check: tune your crawl 🎯</h2>
+<ul>
+<li>Build <code>gyro_turn</code>, then judge-call yourself: <strong>90° · 45° · 180°</strong>, printing the landing each time.</li>
+<li>Tune <strong>200 / 50 / 30</strong> until 90° lands within a degree or two. Write your three numbers on a sticky note. They’re about to testify.</li>
+</ul>
+<p>⏱️ <strong>Time: 20 minutes</strong></p>
+<aside class="notes">
+<p><em>Perfect Pivot</em>, folded into a bench lab: the cure is verified on 90°, but nobody is asked (yet) whether one tuning serves all three calls — that tension is the next act’s job. Make every squad physically write their three numbers down; the race lab reads them straight back.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section id="d.-gate" class="title-slide slide level1 sdaia-dark center" data-background-gradient="linear-gradient(135deg, #1C355E, #00C9A7)">
+<h1>D. Gate</h1>
+<p>One move, one name, any angle. 🏷️</p>
 </section>
 <section id="todays-gate" class="slide level2">
 <h2>Today’s gate</h2>
@@ -683,22 +535,18 @@ To find <strong>one</strong> of something
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>You’re done when…</strong></p>
+<p><strong>You’re done today when…</strong></p>
 </div>
 <div class="callout-content">
-<ul>
-<li>You can take a beam from <span class="math inline">\(27.6 \times t = 30\)</span> to <strong>391°</strong> with <strong>no help</strong></li>
-<li>You can explain why removing <strong>one object</strong> from each side of <span class="math inline">\(6\,🍊 = 3\,🍌\)</span> makes it <strong>tip</strong></li>
-<li>You can produce the degrees for a distance <strong>I make up on the spot</strong></li>
-</ul>
+<p>Your <code>gyro_turn</code> lands <strong>90°</strong> within a degree or two, you can call it with <strong>any</strong> target, and you can say the difference between <strong>defining</strong> a move and <strong>calling</strong> it.</p>
 </div>
 </div>
 </div>
 <div class="fragment fade-up">
-<p>Next: <em>Until It’s True</em>. Your program learns to keep checking a wheel angle. 🔁</p>
+<p>Next: <em>Write It Yourself</em>. No new ideas. Three new problems, and you solve them with <code>def</code>.</p>
 </div>
 <aside class="notes">
-<p>Gate leg two is the one to actually check per student; legs one and three will pass for students who have merely memorised a recipe, and leg two won’t. Ask it as a one-line oral question at the bench. Then introduce Until It’s True: the encoder gives the program a finish line it can keep checking. The square and gyro follow after that loop lesson.</p>
+<p>The gate is the plan’s D4a floor: writes a <code>def</code> and calls it. Check the define-vs-call leg orally: point at a <code>def</code> with no call under it and ask “what does the robot do?” (nothing). Nothing else is taught today on purpose (decision #55): no parameter beyond <code>target</code>, no defaults, no P. The sticky note with their three numbers goes home in their pocket; <em>The Drive That Heals Itself</em> reads it back.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -710,58 +558,6 @@ To find <strong>one</strong> of something
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
-</section></section>
-<section>
-<section id="explore-at-home" class="title-slide slide level1 sdaia-dark center" data-background-gradient="linear-gradient(135deg, #1C355E, #9B8EC0)">
-<h1>🏠 Explore at Home</h1>
-<p>Optional replays. <strong>Nothing tomorrow depends on these.</strong> 🎮</p>
-</section>
-<section id="the-catch-up-lab" class="slide level2">
-<h2>🏠 The Catch-Up Lab ⚖️</h2>
-<div class="callout callout-important callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>If you missed this session, start here</strong></p>
-</div>
-<div class="callout-content">
-<p><a href="../interactives/beam-balance-catchup.html"><strong>⚖️ Open the Beam Balance Catch-Up Lab →</strong></a></p>
-<p>The whole lesson, on your own, in about 45 minutes. Every beam move is locked behind a <strong>tip-or-level prediction</strong>, so you still get to break the rule yourself instead of watching someone else break it. No robot needed until the last step.</p>
-</div>
-</div>
-</div>
-<ul>
-<li><strong>Missed the class?</strong> Work all 13 steps. It ends with the same gate you’d have been asked at the bench.</li>
-<li><strong>Were you here?</strong> Jump to the last step, the free-play beam with every button unlocked.</li>
-</ul>
-<aside class="notes">
-<p>This replaces the old three-button appendix sim, which existed in two hand-maintained copies (here and in <code>recap-arcade.html</code>) and has now drifted into one file, iframed. Per #22 the <strong>live</strong> lesson stays unplugged — bricks on a real balance — and this is the make-up route for an absent student plus optional replay for everyone else. Its beam runs honest arithmetic (<code>count × true-worth</code> per pan) and renders the pans as <em>countable fruit</em>, which is what makes object-vs-amount visible: 6 🍊 and 3 🍌 sit level while looking nothing alike. The robot puzzle deliberately can’t draw 27.6 wheels, so that pan degrades to <code>27.6 × t</code> — the abstraction step, shown rather than asserted. If you send an absent student here, still check gate leg two orally when they’re back; the lab makes them type it and self-mark, which is weaker than you asking.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="take-it-further" class="slide level2">
-<h2>🏠 Take it further</h2>
-<ul>
-<li>Invent a fruit worth <strong>4</strong> oranges. Write a beam for it. Can a friend solve it?</li>
-<li><span class="math inline">\(5\,🍉 = ?\,🍊\)</span>. You know one melon is 3 oranges, so multiply both sides.</li>
-<li>Work <strong>backwards</strong>: your robot drove <strong>391°</strong>. How far did it go? Same beam, other direction.</li>
-</ul>
-<div class="fragment fade-up">
-<div class="cardbox purple">
-<p>The beam works both ways. That’s the point of a <strong>balance</strong>: it never cared which side you started from. ⚖️</p>
-</div>
-</div>
 
 
 </section></section>

@@ -9,7 +9,7 @@
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.9.38">
 
-  <meta name="dcterms.date" content="2026-09-14">
+  <meta name="dcterms.date" content="2026-09-28">
   <title>Name Your Moves</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -202,17 +202,17 @@
 
 <section id="title-slide" data-background-image="../slides_template/assets/anim.svg" data-background-opacity="0.15" data-background-size="cover" class="quarto-title-block center">
   <h1 class="title">Name Your Moves</h1>
-  <p class="subtitle">Day 5 · Robot Rockstars · SPIKE Prime + Pybricks</p>
+  <p class="subtitle">Session 10 · Lesson D5 · Robot Rockstars · SPIKE Prime + Pybricks</p>
 
 <div class="quarto-title-authors">
 </div>
 
-  <p class="date">2026-09-14</p>
+  <p class="date">2026-09-28</p>
 </section>
 <section>
 <section id="a.-warm-up" class="title-slide slide level1 sdaia-dark center" data-background-gradient="linear-gradient(135deg, #1C355E, #00C9A7)">
 <h1>A. Warm-Up</h1>
-<p>Yesterday you built <strong>P</strong> (<code>error × KP</code>). Today: complete PID, then build your own motion library. 📦</p>
+<p>Yesterday you built <strong>P</strong> (<code>error × KP</code>). Today: add D braking, then build your own motion library. I is an optional demonstration. 📦</p>
 <script>
 /* The one 5 ms tick of the turn-to-90 sim (kd = 0 -> pure P), shared by both
    PID sims on this deck. This is curriculum physics rather than shared chrome,
@@ -258,7 +258,7 @@ SIM.pidTick = function (s, kd) {
 </table>
 <div class="fragment fade-up">
 <ul>
-<li>Today’s two letters fix both cracks: <strong>D</strong> and <strong>I</strong></li>
+<li><strong>D</strong> addresses the overshoot; an optional <strong>I</strong> demo explores the leftover error</li>
 <li>Then every move gets a <strong>name</strong> in your own library 📦</li>
 </ul>
 </div>
@@ -401,7 +401,7 @@ Why P overshoots
       <div style="text-align:center;font-size:12px;color:#625D9C;font-weight:800;">↻ back to ASK again</div>
     </div>
     <div id="brCodeCol" style="display:block;background:#f7f9fc;border:1px solid #dbe2ea;border-radius:12px;padding:8px 10px;font-family:Consolas,monospace;font-size:12.5px;line-height:1.5;color:#1C355E;">
-<div id="brC0" class="brln">def gyro_turn_p(target, kp=4):</div>
+<div id="brC0" class="brln">def gyro_turn_p(target, kp):</div>
 <div id="brC1" class="brln">    hub.imu.reset_heading(0)</div>
 <div id="brC2" class="brln">    while abs(target - hub.imu.heading()) &gt; 1:</div>
 <div id="brC3" class="brln">        error = target - hub.imu.heading()</div>
@@ -448,7 +448,7 @@ Why P overshoots
   function doBeat(){
     if(s.done) return;
     var pc=s.pc;
-    if(pc===0){ s.h=0; drawBot(); msg('called <b>gyro_turn_p(90, kp='+kp+')</b> (target 90°)'); s.pc=1; }
+    if(pc===0){ s.h=0; drawBot(); msg('called <b>gyro_turn_p(90, '+kp+')</b> (target 90°)'); s.pc=1; }
     else if(pc===1){
       var gap=Math.abs(90-s.h);
       row('brRGap',gap.toFixed(1),1);
@@ -560,7 +560,7 @@ Why P overshoots
 </section>
 <section id="name-it-d-damps" class="slide level2 code-shrink">
 <h2>Name it: D damps 🛑</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-code-line-numbers="|1|3|4|5|6-7|8|10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="kw">def</span> gyro_turn_pd(target, kp<span class="op">=</span><span class="dv">4</span>, kd<span class="op">=</span><span class="fl">0.5</span>):</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" data-code-line-numbers="|1|3|4|5|6-7|8|10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="kw">def</span> gyro_turn_pd(target, kp, kd):</span>
 <span id="cb1-2"><a></a>    hub.imu.reset_heading(<span class="dv">0</span>)</span>
 <span id="cb1-3"><a></a>    last_error <span class="op">=</span> target</span>
 <span id="cb1-4"><a></a>    <span class="cf">while</span> <span class="bu">abs</span>(target <span class="op">-</span> hub.imu.heading()) <span class="op">&gt;</span> <span class="dv">1</span>:</span>
@@ -598,7 +598,7 @@ D (Derivative)
 </div></div>
 </div>
 <aside class="notes">
-<p>Focus on the three new lines: remember last error, subtract to get rate of change, and combine into the motor command. When closing fast on the target, error shrinks each loop pass, making <code>change</code> negative. Multiplying by <code>kd</code> subtracts power, giving a smooth deceleration right into 90°.</p>
+<p>Call it with all three numbers, for example <code>gyro_turn_pd(90, 4, 0.5)</code>. Defaults arrive in the library section. Focus on the three new lines: remember last error, subtract to get rate of change, and combine into the motor command. When closing fast on the target, error shrinks each loop pass, making <code>change</code> negative. Multiplying by <code>kd</code> subtracts power, giving a smooth deceleration right into 90°.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -634,7 +634,7 @@ D (Derivative)
       <div id="bdB4" class="brBeat"><span class="be">😴</span><span><b>BLINK</b><span class="d">wait 5 ms</span></span></div>
     </div>
     <div style="background:#f7f9fc;border:1px solid #dbe2ea;border-radius:12px;padding:8px 10px;font-family:Consolas,monospace;font-size:12px;line-height:1.45;color:#1C355E;">
-<div id="bdC0" class="brln">def gyro_turn_pd(target, kp=4, kd=0.5):</div>
+<div id="bdC0" class="brln">def gyro_turn_pd(target, kp, kd):</div>
 <div id="bdC1" class="brln">    hub.imu.reset_heading(0)</div>
 <div id="bdC2" class="brln">    last_error = target</div>
 <div id="bdC3" class="brln">    while abs(target - hub.imu.heading()) &gt; 1:</div>
@@ -686,7 +686,7 @@ D (Derivative)
   function doBeat(){
     if(s.done) return;
     var pc=s.pc;
-    if(pc===0){ s.h=0; s.lastErr=90; drawBot(); msg('called <b>gyro_turn_pd(90, kp='+kp+', kd='+kd+')</b>'); s.pc=1; }
+    if(pc===0){ s.h=0; s.lastErr=90; drawBot(); msg('called <b>gyro_turn_pd(90, '+kp+', '+kd+')</b>'); s.pc=1; }
     else if(pc===1){
       var gap=Math.abs(90-s.h);
       row('bdRGap',gap.toFixed(1),1);
@@ -904,8 +904,8 @@ D (Derivative)
           display:block!important;
       }</style></aside>
 </section>
-<section id="the-last-letter-i-coach-demo" class="slide level2">
-<h2>The last letter: I (Coach Demo) 🧲</h2>
+<section id="optional-i-coach-demo" class="slide level2">
+<h2>Optional: I (Coach Demo) 🧲</h2>
 <div class="qbox">
 <p><span class="qtitle">Add physical friction or a lean to one side. Why does P stop short and stay there?</span></p>
 </div>
@@ -1006,7 +1006,7 @@ D (Derivative)
 </div></div>
 </div>
 <aside class="notes">
-<p>Coach demo only; not a required implementation for students. When a small error remains, <code>KP * error</code> is too small to overcome friction, so the robot sits parked short. The integral term adds up the leftover error every millisecond. As time passes, the accumulator grows until it breaks through friction and hits target.</p>
+<p>Optional coach demo: skip it when bench practice needs the time. Neither implementation nor explanation of I is gated. When a small error remains, <code>KP * error</code> is too small to overcome friction, so the robot sits parked short. The integral term adds up the leftover error every millisecond. As time passes, the accumulator grows until it breaks through friction and hits target.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1019,8 +1019,8 @@ D (Derivative)
           display:block!important;
       }</style></aside>
 </section>
-<section id="you-own-all-three-letters" class="slide level2">
-<h2>You own all three letters 🏆</h2>
+<section id="optional-the-three-pid-terms" class="slide level2">
+<h2>Optional: the three PID terms 🏆</h2>
 <div style="text-align:center;margin:10px 0 4px 0;">
   <div style="font-size:64px;font-weight:800;letter-spacing:6px;">
     <span style="color:#00AE8D;">P</span> · <span style="color:#625D9C;">I</span> · <span style="color:#E96852;">D</span>
@@ -1048,7 +1048,7 @@ D (Derivative)
 </ul>
 </div>
 <aside class="notes">
-<p>Let the acronym land. Students have built P and D themselves and seen I solve steady friction. All three read error in complementary ways. Transition to the afternoon: packaging these formulas into a reusable module.</p>
+<p>Use this summary only when the optional I demonstration ran. Otherwise move straight to the library section. Students have built P and D themselves; the optional I demo shows a third use of error. The library work and gate depend on P and D.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1113,7 +1113,7 @@ D (Derivative)
 </ul>
 </div>
 <aside class="notes">
-<p>Have squads think about copying loop code 4 or 5 times in a single mission file. If they need to change the KP value or fix a calculation, they must remember to edit all four copies. Introducing functions and modules solves duplicate code.</p>
+<p>Students already own functions. Use the pasted loops as a quick retrieval check: which of their functions replaces each block? Then ask what happens when two different program files each contain their own copy of that function. A shared module is the new step today.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1145,11 +1145,110 @@ D (Derivative)
 <ul>
 <li><strong>Constants at the top:</strong> ports, tuning numbers, and wheel sizes</li>
 <li><strong>Functions below:</strong> the moves you call in your missions</li>
-<li>Main program stays clean: <code>from movements import drive_straight, turn</code></li>
+<li>Main program stays clean: <code>import movements as move</code>, then <code>move.turn(90)</code></li>
+<li>The <code>move.</code> says <strong>which file to open</strong> when a verb misbehaves</li>
 </ul>
 </div>
 <aside class="notes">
-<p>Walk through creating <code>movements.py</code> alongside the main mission script. Keeping constants at the top makes tuning easy and central. All functions inside the library share these settings.</p>
+<p>Walk through creating <code>movements.py</code> alongside the main mission script. The import is always named (decision #64): <code>import movements as move</code>, never <code>from movements import …</code> and never a star. Every call in the mission file then reads <code>move.drive_straight(300)</code>, and the prefix tells a debugging student which file to open. Inside <code>movements.py</code> the verbs call each other bare, because there they are at home. Keeping constants at the top makes tuning easy and central. All functions inside the library share these settings.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="knobs-with-defaults" class="slide level2 smaller">
+<h2>Knobs with defaults 🎛️</h2>
+<p>You have been passing all three numbers: <code>gyro_turn_pd(90, 4, 0.5)</code>. Once your gains are tuned, most calls can reuse them.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a><span class="kw">def</span> gyro_turn_pd(target, kp<span class="op">=</span><span class="dv">4</span>, kd<span class="op">=</span><span class="fl">0.5</span>):</span>
+<span id="cb3-2"><a></a>    ...  <span class="co"># the same PD body</span></span>
+<span id="cb3-3"><a></a></span>
+<span id="cb3-4"><a></a>gyro_turn_pd(<span class="dv">90</span>)              <span class="co"># uses 4 and 0.5</span></span>
+<span id="cb3-5"><a></a>gyro_turn_pd(<span class="dv">90</span>, kd<span class="op">=</span><span class="dv">0</span>)        <span class="co"># change one knob for this call</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment fade-up">
+<div class="cardbox teal">
+<p>An <code>=</code> in the header gives a <strong>default</strong>. A named argument overrides it for <strong>one call</strong>. <code>target</code> has no default, so every call must supply it.</p>
+</div>
+</div>
+<aside class="notes">
+<p>Predict each call before revealing the card. Then ask what <code>gyro_turn_pd(kd=0)</code> is missing: the target. This is the first explanation of defaults. In the next verb, <code>absolute=False</code> will be another default; <code>speed=400</code> does the same job for the straight. Keep the initial PD lesson on plain parameters so syntax does not compete with derivative reasoning.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="turn-by-or-turn-to" class="slide level2">
+<h2>Turn by, or turn to? 🧭</h2>
+<p>Start facing <strong>30°</strong>. Act out each instruction twice.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Instruction</th>
+<th style="text-align: left;">First landing</th>
+<th style="text-align: left;">Second landing</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Turn <strong>by</strong> 90°</td>
+<td style="text-align: left;">120°</td>
+<td style="text-align: left;">210°</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Turn <strong>to</strong> 90°</td>
+<td style="text-align: left;">90°</td>
+<td style="text-align: left;">90°</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment fade-up">
+<div class="cardbox purple">
+<p>Our verb uses <code>absolute=True</code> for <strong>to this heading</strong>. Its default, <code>absolute=False</code>, means <strong>by this amount</strong>. The code needs to choose between those two targets.</p>
+</div>
+</div>
+<aside class="notes">
+<p>Have a student turn their body or a robot by hand before the code appears. The next slide uses the first if/else to implement the choice they have just demonstrated. The interactive turn slide then checks it on repeated calls.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="new-word-if" class="slide level2">
+<h2>New word: <code>if</code> 🛣️</h2>
+<div class="qbox">
+<p><span class="qtitle">Your turn verb needs to ask <strong>one</strong> question: turn <strong>by</strong> 90, or turn <strong>to</strong> 90?</span></p>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" data-code-line-numbers="|1|2|3-4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a><span class="cf">if</span> absolute:</span>
+<span id="cb4-2"><a></a>    target <span class="op">=</span> angle                       <span class="co"># road 1: absolute is True</span></span>
+<span id="cb4-3"><a></a><span class="cf">else</span>:</span>
+<span id="cb4-4"><a></a>    target <span class="op">=</span> hub.imu.heading() <span class="op">+</span> angle   <span class="co"># road 2: absolute is False</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment fade-up">
+<div class="cardbox teal">
+<p><code>if</code> asks a True or False question <strong>once</strong>, then takes <strong>one</strong> road. Same colon, same indent as <code>while</code>. The difference: <code>while</code> asks again and again.</p>
+</div>
+</div>
+<aside class="notes">
+<p>Two minutes: this is the course’s first <code>if</code> (decision #65), and it arrives because <code>turn</code> needs a fork, not because it is on a syllabus. Ask “which road runs for <code>turn(90)</code>?” and “for <code>turn(90, absolute=True)</code>?” before the reveal. The contrast with <code>while</code> is the point: they already own a True/False check at the top of a block; <code>if</code> is that check run once, with no jump back. <code>elif</code> waits for the line day, where the eye has more than two answers.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1164,21 +1263,21 @@ D (Derivative)
 </section>
 <section id="verb-1-turn-by-or-to" class="slide level2 code-shrink">
 <h2>Verb #1: <code>turn</code>, by or to</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a><span class="kw">def</span> turn(angle, absolute<span class="op">=</span><span class="va">False</span>, kp<span class="op">=</span><span class="dv">4</span>, kd<span class="op">=</span><span class="fl">0.5</span>):</span>
-<span id="cb3-2"><a></a>    <span class="co">"""PD gyro turn. BY this many degrees, or TO this heading."""</span></span>
-<span id="cb3-3"><a></a>    <span class="cf">if</span> absolute:</span>
-<span id="cb3-4"><a></a>        target <span class="op">=</span> angle                      <span class="co"># face this heading on the mat</span></span>
-<span id="cb3-5"><a></a>    <span class="cf">else</span>:</span>
-<span id="cb3-6"><a></a>        target <span class="op">=</span> hub.imu.heading() <span class="op">+</span> angle  <span class="co"># add to where the nose points</span></span>
-<span id="cb3-7"><a></a>    ...   <span class="co"># same PD loop as gyro_turn_pd, now chasing target</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a><span class="kw">def</span> turn(angle, absolute<span class="op">=</span><span class="va">False</span>, kp<span class="op">=</span><span class="dv">4</span>, kd<span class="op">=</span><span class="fl">0.5</span>):</span>
+<span id="cb5-2"><a></a>    <span class="co">"""PD gyro turn. BY this many degrees, or TO this heading."""</span></span>
+<span id="cb5-3"><a></a>    <span class="cf">if</span> absolute:</span>
+<span id="cb5-4"><a></a>        target <span class="op">=</span> angle                      <span class="co"># face this heading on the mat</span></span>
+<span id="cb5-5"><a></a>    <span class="cf">else</span>:</span>
+<span id="cb5-6"><a></a>        target <span class="op">=</span> hub.imu.heading() <span class="op">+</span> angle  <span class="co"># add to where the nose points</span></span>
+<span id="cb5-7"><a></a>    ...   <span class="co"># same PD loop as gyro_turn_pd, now chasing target</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="qbox">
 <p><span class="qtitle">Press each button <strong>twice</strong>. Which one moves the robot both times?</span></p>
 </div>
 <div class="sim">
   <div style="display:flex;justify-content:center;align-items:center;gap:10px;margin-bottom:6px;">
     <span style="font-size:18px;color:#1C355E;font-weight:700;">call your verb:</span>
-    <button class="sim-btn coral" data-sim="tvTurn" data-sim-arg="false">▶ turn(90)</button>
-    <button class="sim-btn teal" data-sim="tvTurn" data-sim-arg="true">▶ turn(90, absolute=True)</button>
+    <button class="sim-btn coral" data-sim="tvTurn" data-sim-arg="false">▶ move.turn(90)</button>
+    <button class="sim-btn teal" data-sim="tvTurn" data-sim-arg="true">▶ move.turn(90, absolute=True)</button>
     <button class="sim-btn ghost small" data-sim="tvReset">↺ crooked start</button>
   </div>
   <div class="sim-stage">
@@ -1278,16 +1377,16 @@ D (Derivative)
 </section>
 <section id="verb-2-drive_straight-with-finish-line" class="slide level2 code-shrink">
 <h2>Verb #2: <code>drive_straight</code> (With Finish Line)</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" data-code-line-numbers="|1|3|5|6-8|9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a><span class="kw">def</span> drive_straight(distance_mm, speed<span class="op">=</span><span class="dv">400</span>):</span>
-<span id="cb4-2"><a></a>    <span class="co">"""Drive distance_mm while holding gyro heading."""</span></span>
-<span id="cb4-3"><a></a>    heading <span class="op">=</span> hub.imu.heading()                    <span class="co"># lock current heading</span></span>
-<span id="cb4-4"><a></a>    finish <span class="op">=</span> left.angle() <span class="op">+</span> distance_mm <span class="op">*</span> DEG_PER_MM</span>
-<span id="cb4-5"><a></a>    <span class="cf">while</span> left.angle() <span class="op">&lt;</span> finish:                   <span class="co"># encoder finish line</span></span>
-<span id="cb4-6"><a></a>        error <span class="op">=</span> hub.imu.heading() <span class="op">-</span> heading        <span class="co"># gyro correction</span></span>
-<span id="cb4-7"><a></a>        left.run(speed <span class="op">-</span> KP <span class="op">*</span> error)</span>
-<span id="cb4-8"><a></a>        right.run(speed <span class="op">+</span> KP <span class="op">*</span> error)</span>
-<span id="cb4-9"><a></a>        wait(<span class="dv">5</span>)</span>
-<span id="cb4-10"><a></a>    left.stop()<span class="op">;</span> right.stop()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" data-code-line-numbers="|1|3|5|6-8|9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a><span class="kw">def</span> drive_straight(distance_mm, speed<span class="op">=</span><span class="dv">400</span>):</span>
+<span id="cb6-2"><a></a>    <span class="co">"""Drive forward distance_mm while holding heading."""</span></span>
+<span id="cb6-3"><a></a>    heading <span class="op">=</span> hub.imu.heading()                    <span class="co"># lock current heading</span></span>
+<span id="cb6-4"><a></a>    finish <span class="op">=</span> left.angle() <span class="op">+</span> distance_mm <span class="op">*</span> DEG_PER_MM</span>
+<span id="cb6-5"><a></a>    <span class="cf">while</span> left.angle() <span class="op">&lt;</span> finish:                   <span class="co"># encoder finish line</span></span>
+<span id="cb6-6"><a></a>        error <span class="op">=</span> hub.imu.heading() <span class="op">-</span> heading        <span class="co"># gyro correction</span></span>
+<span id="cb6-7"><a></a>        left.run(speed <span class="op">-</span> KP <span class="op">*</span> error)</span>
+<span id="cb6-8"><a></a>        right.run(speed <span class="op">+</span> KP <span class="op">*</span> error)</span>
+<span id="cb6-9"><a></a>        wait(<span class="dv">5</span>)</span>
+<span id="cb6-10"><a></a>    left.stop()<span class="op">;</span> right.stop()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment fade-up">
 <ul>
 <li>The wheel counters work out the <strong>finish line</strong></li>
@@ -1296,7 +1395,7 @@ D (Derivative)
 </ul>
 </div>
 <aside class="notes">
-<p>Combine motor encoders with the gyro. Motor encoders determine forward distance; the gyro detects and counters yaw drift. Notice that <code>speed=400</code> in the function header is a default parameter.</p>
+<p>This first version accepts forward distances only. The wall lesson adds the sign choice for backing off before it uses a negative distance. Combine motor encoders with the gyro. Motor encoders determine forward distance; the gyro detects and counters yaw drift. Notice that <code>speed=400</code> in the function header is a default parameter.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1309,149 +1408,16 @@ D (Derivative)
           display:block!important;
       }</style></aside>
 </section>
-<section id="knobs-with-defaults" class="slide level2 smaller">
-<h2>Knobs with defaults 🎛️</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" data-code-line-numbers="|1|2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a><span class="kw">def</span> turn(angle, absolute<span class="op">=</span><span class="va">False</span>, kp<span class="op">=</span><span class="dv">4</span>, kd<span class="op">=</span><span class="fl">0.5</span>):   <span class="co"># these have default values</span></span>
-<span id="cb5-2"><a></a><span class="kw">def</span> drive_straight(distance_mm, speed<span class="op">=</span><span class="dv">400</span>):  <span class="co"># speed has a default value</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="qbox">
-<p><span class="qtitle">Predict what happens: ① <code>turn(90, absolute=True)</code> &nbsp;|&nbsp; ② <code>turn(90, absolute=True, kd=0)</code> &nbsp;|&nbsp; ③ <code>drive_straight(300, speed=150)</code> &nbsp;|&nbsp; ④ <code>drive_straight(speed=150)</code></span></p>
-</div>
-<div class="fragment fade-up">
-<div class="columns">
-<div class="column" style="width:50%;">
-<div class="cardbox teal">
-<ul>
-<li><strong>①:</strong> Uses default values (<code>kp=4, kd=0.5</code>)</li>
-<li><strong>②:</strong> Disables derivative braking (<code>kd=0</code>) 🔔</li>
-</ul>
-</div>
-</div><div class="column" style="width:50%;">
-<div class="cardbox purple">
-<ul>
-<li><strong>③:</strong> Sets speed to 150 for this single call</li>
-<li><strong>④:</strong> 💥 <code>TypeError</code>: <code>distance_mm</code> has no default</li>
-</ul>
-</div>
-</div></div>
-</div>
-<aside class="notes">
-<p>Explain default arguments and keyword overrides. When a parameter has an <code>=</code> in the definition, callers can omit it to use the default value, or specify it explicitly to adjust that parameter for a specific maneuver. Required arguments without defaults must always be provided.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="two-homes-for-a-name" class="slide level2 smaller">
-<h2>Two homes for a name 🗺️</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" data-code-line-numbers="|1-3|5-7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a><span class="co"># Top of movements.py (GLOBAL)</span></span>
-<span id="cb6-2"><a></a>hub <span class="op">=</span> PrimeHub()</span>
-<span id="cb6-3"><a></a>KP <span class="op">=</span> <span class="dv">4</span></span>
-<span id="cb6-4"><a></a></span>
-<span id="cb6-5"><a></a><span class="kw">def</span> drive_straight(distance_mm, speed<span class="op">=</span><span class="dv">400</span>):</span>
-<span id="cb6-6"><a></a>    heading <span class="op">=</span> hub.imu.heading()              <span class="co"># LOCAL: created during call</span></span>
-<span id="cb6-7"><a></a>    error <span class="op">=</span> hub.imu.heading() <span class="op">-</span> heading      <span class="co"># LOCAL: deleted when call ends</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="fragment fade-up">
-<div class="columns">
-<div class="column" style="width:50%;">
-<div class="cardbox coral">
-<h3>
-Local variables
-</h3>
-<ul>
-<li>Created inside a function</li>
-<li>Gone the moment the function returns</li>
-<li><code>print(error)</code> outside → <code>NameError</code></li>
-</ul>
-</div>
-</div><div class="column" style="width:50%;">
-<div class="cardbox teal">
-<h3>
-Global constants
-</h3>
-<ul>
-<li>Defined at the top of the file</li>
-<li>Visible across all functions</li>
-<li>Update once to tune the entire robot</li>
-</ul>
-</div>
-</div></div>
-</div>
-<aside class="notes">
-<p>Contrast scope: variables defined inside a function exist only during that specific function call, preventing accidental variable collisions between different maneuvers. Variables defined at module top level remain available everywhere.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="break-it-the-tune-that-didnt-stick" class="slide level2">
-<h2>Break it: the tune that didn’t stick 🔥</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" data-code-line-numbers="|1-2|4-5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a><span class="kw">def</span> make_it_sharper():</span>
-<span id="cb7-2"><a></a>    KP <span class="op">=</span> <span class="dv">12</span>          <span class="co"># trying to tune the whole library...</span></span>
-<span id="cb7-3"><a></a></span>
-<span id="cb7-4"><a></a>make_it_sharper()</span>
-<span id="cb7-5"><a></a>drive_straight(<span class="dv">300</span>)  <span class="co"># ...still unchanged! 😤</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="fragment fade-up">
-<div class="columns">
-<div class="column" style="width:50%;">
-<div class="cardbox coral">
-<h3>
-Why it failed
-</h3>
-<ul>
-<li>Assigning inside <code>def</code> creates a <strong>local</strong> variable</li>
-<li>The global <code>KP</code> at the top was never touched</li>
-</ul>
-</div>
-</div><div class="column" style="width:50%;">
-<div class="cardbox teal">
-<h3>
-The rule
-</h3>
-<ul>
-<li><strong>Read</strong> globals from any function</li>
-<li><strong>Change</strong> tuning values only at the top of <code>movements.py</code></li>
-</ul>
-</div>
-</div></div>
-</div>
-<aside class="notes">
-<p>Assigning a variable inside a function creates a local variable in Python unless declared otherwise. Emphasize the clean pattern: never reassign constants inside functions; keep tuning values strictly in the constants block at the top of the file.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="the-square-in-four-names" class="slide level2">
-<h2>The square, in four names</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" data-code-line-numbers="|1|3-6|8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a><span class="im">from</span> movements <span class="im">import</span> drive_straight, turn</span>
-<span id="cb8-2"><a></a></span>
-<span id="cb8-3"><a></a><span class="kw">def</span> drive_square(side_mm):</span>
-<span id="cb8-4"><a></a>    <span class="cf">for</span> corner <span class="kw">in</span> [<span class="dv">90</span>, <span class="dv">180</span>, <span class="dv">270</span>, <span class="dv">360</span>]:</span>
-<span id="cb8-5"><a></a>        drive_straight(side_mm)</span>
-<span id="cb8-6"><a></a>        turn(corner, absolute<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb8-7"><a></a></span>
-<span id="cb8-8"><a></a>drive_square(<span class="dv">300</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="stretch-the-square-in-four-names" class="slide level2">
+<h2>Stretch: the square, in four names</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7" data-code-line-numbers="|1|3-6|8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a><span class="im">import</span> movements <span class="im">as</span> move</span>
+<span id="cb7-2"><a></a></span>
+<span id="cb7-3"><a></a><span class="kw">def</span> drive_square(side_mm):</span>
+<span id="cb7-4"><a></a>    <span class="cf">for</span> side <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">4</span>):</span>
+<span id="cb7-5"><a></a>        move.drive_straight(side_mm)</span>
+<span id="cb7-6"><a></a>        move.turn(<span class="dv">90</span> <span class="op">*</span> (side <span class="op">+</span> <span class="dv">1</span>), absolute<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb7-7"><a></a></span>
+<span id="cb7-8"><a></a>drive_square(<span class="dv">300</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="fragment fade-up">
 <ul>
 <li><strong>Absolute headings:</strong> 90°, 180°, 270°, 360°</li>
@@ -1460,7 +1426,7 @@ The rule
 </ul>
 </div>
 <aside class="notes">
-<p>Compare this against the Day 3 square. Because the corners are taken with <code>absolute=True</code> mat headings rather than relative turns, any angular error from wheel scrub is automatically corrected on the next corner.</p>
+<p>Optional extension after the core benchmarks. <code>side</code> takes 0, 1, 2, 3, so <code>90 * (side + 1)</code> produces 90, 180, 270, 360 using the familiar counted loop. Compare this against the earlier square. Because the corners are taken with <code>absolute=True</code> mat headings rather than relative turns, any angular error from wheel scrub is automatically corrected on the next corner.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1473,8 +1439,8 @@ The rule
           display:block!important;
       }</style></aside>
 </section>
-<section id="watch-the-square-snap-shut" class="slide level2">
-<h2>Watch the square snap shut 🔲</h2>
+<section id="stretch-watch-the-square-snap-shut" class="slide level2">
+<h2>Stretch: watch the square snap shut 🔲</h2>
 <div class="sim">
   <div class="sim-controls">
     <button class="sim-btn coral" data-sim="sqDrive" data-sim-arg="drift">▶ guessed turns</button>
@@ -1554,30 +1520,30 @@ The rule
 <tbody>
 <tr class="odd">
 <td>1️⃣ <strong>Ring on purpose</strong></td>
-<td>Run <code>turn(90, absolute=True, kd=0)</code> to see overshoot return 🔔</td>
+<td>Run <code>move.turn(90, absolute=True, kd=0)</code> to see overshoot return 🔔</td>
 </tr>
 <tr class="even">
 <td>2️⃣ <strong>Slow straight</strong></td>
 <td>Run one straight at half-speed with <code>speed=200</code></td>
 </tr>
 <tr class="odd">
-<td>3️⃣ <strong>Set square default</strong></td>
-<td>Give <code>drive_square(side_mm=300)</code> a default side length</td>
+<td>3️⃣ <strong>Code detective</strong> 🔎</td>
+<td>Identify where to change all straights vs one call</td>
 </tr>
 <tr class="even">
-<td>4️⃣ <strong>Code detective</strong> 🔎</td>
-<td>Identify where to change all straights vs one call</td>
+<td>⭐ <strong>Stretch: square default</strong></td>
+<td>Give <code>drive_square(side_mm=300)</code> a default side length</td>
 </tr>
 </tbody>
 </table>
 <div class="fragment fade-up">
 <ul>
 <li>⏱️ <strong>10 minutes with robots</strong></li>
-<li><strong>Check-off:</strong> Explain default, keyword argument, global, and local</li>
+<li><strong>Check-off:</strong> Explain default and keyword argument</li>
 </ul>
 </div>
 <aside class="notes">
-<p>Have squads test their parameters. Challenge 1 verifies that D damping was active. Challenge 2 exercises keyword arguments without modifying library source. Challenge 3 gives students practice writing default parameter syntax.</p>
+<p>Have squads test their parameters. Challenge 1 verifies that D damping was active. Challenge 2 exercises keyword arguments without modifying library source. Challenge 3 checks that students distinguish a library default from a keyword override at one call. The square-default stretch is only for students who completed the optional square.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1612,7 +1578,7 @@ The rule
 </div>
 <div class="sim">
   <div class="sim-controls">
-    <button class="sim-btn teal" data-sim="beRun">▶ drive_straight(1000)</button>
+    <button class="sim-btn teal" data-sim="beRun">▶ move.drive_straight(1000)</button>
     <button class="sim-btn ghost" id="beBtn" data-sim="beNudge">😈 evil nudge</button>
   </div>
   <svg width="820" height="180" viewbox="0 0 820 180" style="display:block;margin:0 auto;">
@@ -1683,11 +1649,12 @@ The rule
 </div>
 <div class="callout-content">
 <ol type="1">
-<li><code>drive_straight(1000)</code> lands within <strong>±2 cm</strong> of 1.0 m (10 runs)</li>
-<li><code>turn(…, absolute=True)</code> lands within <strong>±2°</strong> of target heading (10 runs)</li>
-<li><code>drive_square()</code> closes the square cleanly</li>
-<li>Can explain what <strong>D</strong> and <strong>I</strong> add to <strong>P</strong></li>
+<li><code>move.drive_straight(1000)</code> lands within <strong>±2 cm</strong> of 1.0 m (10 runs)</li>
+<li><code>move.turn(…, absolute=True)</code> lands within <strong>±2°</strong> of target heading (10 runs)</li>
+<li>Can explain how <strong>P</strong> and <strong>D</strong> affect the turn</li>
+<li>Can use a default and override it for one call</li>
 </ol>
+<p><strong>Stretch:</strong> close the square with <code>drive_square()</code>. <strong>I</strong> is an optional coach demonstration.</p>
 </div>
 </div>
 </div>
@@ -1695,7 +1662,7 @@ The rule
 <p>Next: <em>Line King</em>, following a line with the colour sensor. 👑</p>
 </div>
 <aside class="notes">
-<p>Benchmark evaluation: verify each squad’s straight driving and heading accuracy over 10 trials. Confirm students understand the roles of D and I.</p>
+<p>Benchmark evaluation: verify each squad’s straight driving and heading accuracy over 10 trials. Gate P and D, function calls, and parameter use. I and the square extension do not block progression. If time is tight, skip the I demonstration and the repeated controller simulations before cutting independent bench practice.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
