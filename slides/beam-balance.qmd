@@ -1,6 +1,6 @@
 ---
 title: "The Beam Balance"
-subtitle: "Day 2 · session 2 opener · Robot Rockstars · SPIKE Prime + Pybricks"
+subtitle: "Session 4 · Lesson D2, part 2 · Robot Rockstars · SPIKE Prime + Pybricks"
 date: today
 format: revealjs
 ---
@@ -423,11 +423,11 @@ Rounding: 42/27.6 × 360 = 547.8, and 17/27.6 × 360 = 221.7. Accept anything wi
 :::
 
 ::: {.fragment .fade-up}
-Next: your robot drives straight lines, and then we ask it to turn a corner. 📐
+Next: *Until It’s True*. Your program learns to keep checking a wheel angle. 🔁
 :::
 
 ::: {.notes}
-Gate leg two is the one to actually check per student; legs one and three will pass for students who have merely memorised a recipe, and leg two won't. Ask it as a one-line oral question at the bench. Then tease D3: the sides of the square will hold beautifully with today's degree maths, and the corners will still walk away — because a turn is not a distance.
+Gate leg two is the one to actually check per student; legs one and three will pass for students who have merely memorised a recipe, and leg two won't. Ask it as a one-line oral question at the bench. Then introduce Until It’s True: the encoder gives the program a finish line it can keep checking. The square and gyro follow after that loop lesson.
 :::
 
 # 🏠 Explore at Home {.sdaia-dark background-gradient="linear-gradient(135deg, #1C355E, #9B8EC0)"}

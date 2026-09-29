@@ -41,6 +41,13 @@
             <g id="motor-gear"></g>
             <g id="motor-rotor"><path d="M320 132v30m-15-15h30" stroke="#e8f5f3" stroke-width="4"/></g>
             <g id="transfer-gear"></g>
+            <g id="output-angle-indicator" fill="none" stroke-linecap="round">
+              <path d="M355 215h52" stroke="#8aa5ae" stroke-width="2" stroke-dasharray="4 4"/>
+              <path id="output-angle-arc" stroke="#9e176d" stroke-width="5"/>
+              <text x="412" y="207" fill="#64797e" font-size="14">0° home</text>
+            </g>
+            <text x="420" y="91" fill="#415b65" font-size="14" font-weight="700">OUTPUT FROM HOME</text>
+            <text id="output-angle-label" x="420" y="119" fill="#9e176d" font-size="24" font-weight="800">Home not set</text>
             <g id="ready-outline" fill="none" stroke="#869daf" stroke-width="19" stroke-dasharray="5 6" opacity=".6"><path id="ready-left"/><path id="ready-right"/></g>
             <g id="prop-shape"><rect id="prop-rect" rx="5" fill="#e76f4e" stroke="#b54a2e" stroke-width="2"/><path id="prop-cross" stroke="#fff2e9" stroke-width="3"/></g>
             <g id="object-shape" filter="url(#shadow)"><rect id="object-rect" rx="12" fill="#e3af4b" stroke="#bb872d" stroke-width="2"/><path id="object-stripe" stroke="#fce1a2" stroke-width="4"/><text id="object-label" text-anchor="middle" fill="#604716" font-size="14" font-weight="700">OBJECT</text></g>
@@ -54,11 +61,11 @@
 <div id="contact-description" class="contact-description"></div>
 <div class="task-block"><div class="task-label">Motor task</div><div id="task-description"></div></div>
 <div class="readings">
-<div class="reading"><div class="reading-label">Actual motor angle</div><div class="reading-value"><span id="actual-angle">0</span><small>°</small></div></div>
-<div class="reading" id="target-reading"><div class="reading-label">Requested target</div><div class="reading-value"><span id="target-angle">130</span><small>°</small></div></div>
+<div class="reading"><div class="reading-label">Output angle from home</div><div class="reading-value"><span id="actual-angle">0</span><small>°</small></div></div>
+<div class="reading" id="target-reading"><div class="reading-label">Requested output target</div><div class="reading-value"><span id="target-angle">72</span><small>°</small></div></div>
 <div class="reading torque"><div class="reading-label">Torque limit</div><div class="reading-value"><span id="torque-value">180</span><small>mNm</small></div><div class="reading-note">Setting, not jaw-tip force</div></div>
 </div>
-<div class="status-flags"><div id="stalled-row" class="status-flag" hidden><code>stalled()</code><strong id="stalled-value">False</strong></div><div id="done-row" class="status-flag" hidden><code>done()</code><strong id="done-value">False</strong></div></div>
+<div class="status-flags"><div id="stalled-row" class="status-flag" hidden><code>stalled()</code><strong id="stalled-value">False</strong></div><div id="load-row" class="status-flag" hidden><code>abs(load())</code><strong id="load-value">0</strong></div><div id="done-row" class="status-flag" hidden><code>done()</code><strong id="done-value">False</strong></div></div>
 </div>
 <div class="program-side">
 <div class="program-heading"><h3 id="program-label">Program</h3><span id="program-context"></span></div>

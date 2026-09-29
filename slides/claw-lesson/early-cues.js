@@ -1,6 +1,7 @@
 /* Saved slide cues for lesson stages 1–6. A cue with phases keeps the frames of
    the separate predict, observe and explain slides it replaces: each phase is one
    press. */
+const gearFacts = window.ClawEngine.FACTS;
 Object.assign(window.ClawPresentation.cues, {
   "motion": {
     "state": "motion-start",
@@ -45,6 +46,16 @@ Object.assign(window.ClawPresentation.cues, {
     "prompt": "Choose a direction. Run it, stop the motor, then reverse.",
     "controls": "direction"
   },
+  "gear-setup": {
+    "state": "motion-start",
+    "early": true,
+    "stage": 1,
+    "status": 0,
+    "console": "none",
+    "displayCode": `claw = Motor(\n    port=Port.${gearFacts.port},\n    positive_direction=Direction.${gearFacts.direction},\n    gears=[${gearFacts.motorTeeth}, ${gearFacts.outputTeeth}]\n)`,
+    "caption": "First: the motor gear. Last: the output gear. Later angle and speed commands use the output axle.",
+    "prompt": null
+  },
   "relative-near": {
     "state": "relative-near-start",
     "early": true,
@@ -56,7 +67,7 @@ Object.assign(window.ClawPresentation.cues, {
     "outline": true,
     "phases": [
       {
-        "title": "Open by 20 degrees",
+        "title": "Open by 15 degrees",
         "label": "Observe",
         "prompt": null,
         "stop": "complete"
@@ -65,7 +76,7 @@ Object.assign(window.ClawPresentation.cues, {
         "title": "This movement reaches the outline",
         "label": "Explain",
         "state": "relative-near-end",
-        "prompt": "We moved 20° toward opening from this starting position.",
+        "prompt": "We moved 15° toward opening from this starting position.",
         "stop": null
       }
     ]
@@ -208,10 +219,10 @@ Object.assign(window.ClawPresentation.cues, {
     "stage": 3,
     "status": 0,
     "console": "none",
-    "panel": "<table class=\"early-table\"><thead><tr><th>Start</th><th>Movement</th><th>Target</th></tr></thead><tbody><tr class=\"step\"><td>0°</td><td>+60°</td><td>60°</td></tr><tr class=\"step\"><td>30°</td><td>+30°</td><td>60°</td></tr></tbody></table>",
+    "panel": "<table class=\"early-table\"><thead><tr><th>Start</th><th>Movement</th><th>Target</th></tr></thead><tbody><tr class=\"step\"><td>0°</td><td>+45°</td><td>45°</td></tr><tr class=\"step\"><td>20°</td><td>+25°</td><td>45°</td></tr></tbody></table>",
     "outline": true,
     "targetVisible": true,
-    "outlineAngle": 60
+    "outlineAngle": 45
   },
   "ready-near": {
     "state": "ready-near-start",
@@ -221,10 +232,10 @@ Object.assign(window.ClawPresentation.cues, {
     "console": "none",
     "outline": true,
     "targetVisible": true,
-    "outlineAngle": 60,
+    "outlineAngle": 45,
     "phases": [
       {
-        "title": "Close to 60° measured from home",
+        "title": "Close to 45° measured from home",
         "label": "Observe",
         "console": "all",
         "stop": "complete"
@@ -239,7 +250,7 @@ Object.assign(window.ClawPresentation.cues, {
     "console": "none",
     "outline": true,
     "targetVisible": true,
-    "outlineAngle": 60,
+    "outlineAngle": 45,
     "phases": [
       {
         "title": "The target reaches the same opening",
@@ -257,7 +268,7 @@ Object.assign(window.ClawPresentation.cues, {
     "console": "none",
     "controls": "grip",
     "outline": true,
-    "outlineAngle": 60,
+    "outlineAngle": 45,
     "targetVisible": true
   },
   "contact-explain": {
@@ -267,7 +278,7 @@ Object.assign(window.ClawPresentation.cues, {
     "status": 0,
     "console": "none",
     "stepCode": true,
-    "prompt": "The wide object was already touched at 70°. At the same requested 80°, the narrower object is still untouched.",
+    "prompt": "The wide object was already touched near 52°. At the same requested 60°, the narrower object is still untouched.",
     "targetVisible": true
   },
   "eyes-closed": {

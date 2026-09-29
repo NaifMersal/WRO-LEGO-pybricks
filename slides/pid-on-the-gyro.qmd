@@ -1,32 +1,31 @@
 ---
 title: "The Drive That Heals Itself"
-subtitle: "Days 4a–4c · Robot Rockstars · SPIKE Prime + Pybricks"
+subtitle: "Session 9 · Lesson D4c · Robot Rockstars · SPIKE Prime + Pybricks"
 date: today
 format: revealjs
 ---
 
 # A. Warm-Up {.sdaia-dark background-gradient="linear-gradient(135deg, #1C355E, #00C9A7)"}
 
-Yesterday your turn *watched itself*, then coasted to 94 with the guilty party named. Today: the cure. Then the cure gets a brain.
+Your turn arrives slowly now. Today a stopwatch joins in, and the cure gets a brain.
 
 ## Where we left off
 
-| Yesterday | The trick |
+| Last two sessions | The trick |
 |---|---|
-| 🧭 **heading** | one number for "which way": net turning since `reset_heading(0)` |
-| 👀 the **watched turn** | spin · watch `heading()` · stop *at* the target, with `while` |
-| 🔁 **loops, nested** | `for` draws the shape, `while` lands the corner, 360 ÷ sides |
-| 🚨 the **open case** | it printed **94**. Guilty party: *momentum*. Diagnosed, not cured |
+| 🩹 **two speeds** | fast, then crawl the last 30°: the coast has nothing left to steal |
+| 📝 **`def`** | write the recipe once, then call it by name with any target |
+| ⌨️ **your own moves** | three new problems, solved with `def` and nothing new |
 
 ::: {.fragment .fade-up}
-🤔 Shape Shifter's traces told the same story: every corner a few degrees hot, and the octagon paid 8 times. Today the coast meets its cure.
+🤔 Your sticky note holds three numbers. Do they work for **every** angle?
 :::
 
 ⏱️ **Time: 10 minutes**
 
-## Setup: same bench, one new import
+## Setup: one new import
 
-```{.python code-line-numbers="|1-4|6-8|10"}
+```{.python code-line-numbers="|4|10"}
 from pybricks.hubs import PrimeHub
 from pybricks.pupdevices import Motor
 from pybricks.parameters import Port, Direction
@@ -36,238 +35,14 @@ hub = PrimeHub()
 left = Motor(Port.F, Direction.COUNTERCLOCKWISE)   # yours
 right = Motor(Port.B)                              # yours
 
-# your watched turn from yesterday goes here. It still coasts to ~94, for now.
+# your gyro_turn(target) from Cure the Coast goes here
 ```
 
 ::: {.notes}
-Everyone starts from their own D3 file — imports plus their watched-turn lines. `StopWatch` sneaks into the imports here; it gets used (and explained in one breath) in the race lab. Recap by asking, not telling: "walk me through your watched turn line by line — and who was guilty for the 94?" — two or three students, one loop. Do NOT preview the fix; the next act builds it from the coast they already diagnosed.
+Everyone starts from their own D4a file: imports plus their two-speed `gyro_turn`, tuned to the numbers on the sticky note. `StopWatch` is the only new import; it gets used (and explained in one breath) in the race lab. Recap by asking: "walk me through your `gyro_turn` line by line: where does it crawl, and why?" Do NOT preview the P-term.
 :::
 
-# B. The Cure: Arrive Slowly {.sdaia-dark background-gradient="linear-gradient(135deg, #1C355E, #00C9A7)"}
-
-Momentum needs *speed* to steal degrees. So give it none at the end.
-
-<!-- "Feel the fix" + "The fix, in code" moved here from slides/drive-a-square.qmd (D3) on 2026-07-06;
-     Perfect Pivot folded into the bench check below. See decision log #15 in the plan. -->
-
-## Feel the fix: arrive slowly
-
-```{=html}
-<div style="text-align:center;font-size:17px;color:#5b6678;margin-bottom:2px;">🚗 that's your <b>robot seen from above</b>: nose up = heading 0°. The judge calls: turn right to the <b style="color:#00AE8D;">90° tick</b>.</div>
-<div style="display:flex;justify-content:center;align-items:flex-start;gap:80px;">
-  <div style="text-align:center;">
-    <div style="font-weight:800;color:#1C355E;font-size:23px;">🚀 Full speed all the way</div>
-    <svg width="210" height="210" viewBox="-110 -110 220 220" style="margin:6px auto;display:block;">
-      <circle r="86" fill="#eef3f8" stroke="#1C355E" stroke-width="6"/>
-      <line x1="86" y1="0" x2="102" y2="0" stroke="#00C9A7" stroke-width="6"/>
-      <text x="92" y="-12" font-size="17" fill="#00C9A7" font-weight="700">90&#176;</text>
-      <path id="odArc" d="M 86 0 A 86 86 0 0 1 85.4 10.5" fill="none" stroke="#E96852" stroke-width="7" stroke-linecap="round" opacity="0"/>
-      <g id="odN1">
-        <use href="#sim-bot" style="--bot:#FF7A5C"/>
-      </g>
-    </svg>
-    <div style="font-size:24px;font-weight:800;color:#FF7A5C;"><span id="odV1">0</span>&#176; <span id="odS1" style="font-size:17px;"></span></div>
-  </div>
-  <div style="display:flex;flex-direction:column;justify-content:center;height:240px;">
-    <button class="sim-btn teal" data-sim="raceDials">▶ Turn to 90°</button>
-  </div>
-  <div style="text-align:center;">
-    <div style="font-weight:800;color:#1C355E;font-size:23px;">🐢 Fast, then crawl</div>
-    <svg width="210" height="210" viewBox="-110 -110 220 220" style="margin:6px auto;display:block;">
-      <circle r="86" fill="#eef3f8" stroke="#1C355E" stroke-width="6"/>
-      <line x1="86" y1="0" x2="102" y2="0" stroke="#00C9A7" stroke-width="6"/>
-      <text x="92" y="-12" font-size="17" fill="#00C9A7" font-weight="700">90&#176;</text>
-      <g id="odN2">
-        <use href="#sim-bot" style="--bot:#00C9A7"/>
-      </g>
-    </svg>
-    <div style="font-size:24px;font-weight:800;color:#00C9A7;"><span id="odV2">0</span>&#176; <span id="odS2" style="font-size:17px;"></span></div>
-  </div>
-</div>
-<script>
-var odRAF = null;
-function raceDials(){
-  if(odRAF) cancelAnimationFrame(odRAF);
-  var t0 = performance.now();
-  SIM.el('odArc').setAttribute('opacity','0');
-  SIM.el('odS1').textContent = '';
-  SIM.el('odS2').textContent = '';
-  function pose(el, val, deg){
-    SIM.el(el).setAttribute('transform','rotate('+deg.toFixed(1)+')');
-    SIM.el(val).textContent = Math.round(deg);
-  }
-  function step(now){
-    var t = (now-t0)/1000;
-    // Dial 1: 180°/s to 90, then coast +7° over 0.45 s (ease-out)
-    var a1;
-    if(t < 0.5) a1 = 180*t;
-    else { var c = Math.min((t-0.5)/0.45, 1); a1 = 90 + 7*(1-(1-c)*(1-c)); }
-    // Dial 2: 180°/s to 60, then 35°/s to 90, dead stop
-    var a2;
-    if(t < 0.3333) a2 = 180*t;
-    else a2 = Math.min(60 + 35*(t-0.3333), 90);
-    pose('odN1','odV1',a1);
-    pose('odN2','odV2',a2);
-    if(t < 1.4){ odRAF = requestAnimationFrame(step); }
-    else {
-      odRAF = null;
-      SIM.el('odArc').setAttribute('opacity','1');
-      var s1 = SIM.el('odS1'); s1.textContent = '· coasted past 😬'; s1.style.color = '#E96852';
-      var s2 = SIM.el('odS2'); s2.textContent = '· parked on it 🎯'; s2.style.color = '#00AE8D';
-    }
-  }
-  odRAF = requestAnimationFrame(step);
-}
-
-/* Registered for the kit: these are plain function declarations, so
-   they were never assigned to window and nothing else picks them up. */
-SIM.def('raceDials', raceDials);
-</script>
-```
-
-::: {.fragment .fade-up}
-::: {.cardbox .purple}
-Same target. Same gyro. The only difference: the 🐢 arrives **slowly**, so there's nothing left to coast. Fast when far, slow when close.
-:::
-:::
-
-## The fix, in code
-
-```{.python code-line-numbers="|1|2|3-5|6-8|9|11"}
-def gyro_turn(target):                        # def = name a move once, use it forever
-    hub.imu.reset_heading(0)
-    left.run(200); right.run(-200)            # fast for the long haul…
-    while hub.imu.heading() < target - 30:
-        wait(5)
-    left.run(50); right.run(-50)              # …crawl the last 30°
-    while hub.imu.heading() < target:
-        wait(5)
-    left.stop(); right.stop()
-
-gyro_turn(90)     # or gyro_turn(45), gyro_turn(180)…
-```
-
-::: {.fragment .fade-up}
-::: {.cardbox .purple}
-Two speeds, two `while`s: **fast for the long haul, crawl the last 30°**, so momentum arrives with nothing left to steal. And line 1: `def` **names the move once**, and every call replays it.
-:::
-:::
-
-::: {.notes}
-First `def` of the bootcamp — land it hard: a function is a *named move*, exactly like `run_angle` is someone else's named move. This version handles right turns (positive targets); if a kid asks about left turns, brilliant — flip the two `run` signs and the `<` to `>`, or park it as a challenge. The constants 200/50/30 are the raw material the afternoon interrogates; they get promoted into the `ROBOT FACTS` block at D8. Demo on the next slide — walk the highlights here first.
-:::
-
-## One recipe card, many calls 📝
-
-```{=html}
-<div class="sim">
-  <div style="display:flex;justify-content:center;align-items:center;gap:10px;margin-bottom:8px;">
-    <span style="font-size:18px;color:#1C355E;font-weight:700;">call the one recipe:</span>
-    <button class="sim-btn teal small" data-sim="rcCall" data-sim-arg="45">gyro_turn(45)</button>
-    <button class="sim-btn purple small" data-sim="rcCall" data-sim-arg="90">gyro_turn(90)</button>
-    <button class="sim-btn coral small" data-sim="rcCall" data-sim-arg="180">gyro_turn(180)</button>
-  </div>
-  <div style="display:flex;justify-content:center;align-items:center;gap:48px;">
-    <div id="rcCard" style="font-family:Consolas,monospace;font-size:16px;color:#1C355E;background:#eef3f8;border-radius:12px;border-left:5px solid #625D9C;padding:12px 18px;transition:box-shadow .15s,transform .15s;">
-      <div style="font-weight:800;color:#625D9C;margin-bottom:4px;">📝 one recipe card</div>
-      <div>def gyro_turn(target):</div>
-      <div>&nbsp;&nbsp;fast … then crawl</div>
-      <div>&nbsp;&nbsp;stop at the target</div>
-    </div>
-    <div style="text-align:center;">
-      <svg width="170" height="170" viewBox="-100 -100 200 200" style="display:block;">
-        <circle r="82" fill="#eef3f8" stroke="#1C355E" stroke-width="5"/>
-        <g id="rcTick" opacity="0"><line x1="0" y1="-82" x2="0" y2="-98" stroke="#00AE8D" stroke-width="6"/></g>
-        <g id="rcNeedle">
-          <use href="#sim-bot" style="--bot:#625D9C"/>
-        </g>
-      </svg>
-      <div style="font-family:Consolas,monospace;font-size:18px;color:#1C355E;">landed <span id="rcLand" style="font-weight:800;">–</span>°</div>
-      <div style="font-size:15px;color:#625D9C;">calls made: <b><span id="rcN">0</span></b> · recipes written: <b>1</b></div>
-    </div>
-  </div>
-</div>
-<script>
-(function(){
-  var T=0, h=0, phase='idle', raf=null, last=null, n=0;
-  function step(now){
-    var dt = last ? Math.min((now-last)/1000,0.05) : 0.016; last=now;
-    if(phase==='fast'){ h += 300*dt; if(h >= T-30) phase='crawl'; }
-    else if(phase==='crawl'){ h += 70*dt; if(h >= T){ h=T; phase='settle'; } }
-    SIM.el('rcNeedle').setAttribute('transform','rotate('+h.toFixed(1)+')');
-    SIM.el('rcLand').textContent = Math.round(h);
-    if(phase==='settle'){ SIM.el('rcLand').style.color='#00AE8D'; raf=null; return; }
-    raf=requestAnimationFrame(step);
-  }
-  SIM.def('rcCall', function(t){
-    T=t; h=0; phase='fast'; last=null;
-    n++; SIM.el('rcN').textContent=n;
-    SIM.el('rcLand').style.color='#1C355E';
-    SIM.el('rcTick').setAttribute('transform','rotate('+T+')');
-    SIM.el('rcTick').setAttribute('opacity','1');
-    var c=SIM.el('rcCard');
-    c.style.boxShadow='0 0 0 3px #625D9C'; c.style.transform='scale(1.03)';
-    setTimeout(function(){ c.style.boxShadow='none'; c.style.transform='scale(1)'; },220);
-    if(raf) cancelAnimationFrame(raf);
-    raf=requestAnimationFrame(step);
-  });
-})();
-</script>
-```
-
-::: {.fragment .fade-up}
-::: {.cardbox .purple}
-**The 94 is cured**, and you just wrote your first robot *move*: one recipe card, any number of calls, and the 🚗 parks on every tick.
-:::
-:::
-
-::: {.fragment .fade-up}
-::: {.cardbox .teal}
-Can you beat two speeds? Imagine speed **shrinking as the degrees-left shrink**. That idea comes due before lunch. 😏
-:::
-:::
-
-::: {.notes}
-Run the demo BEFORE any fragment: click all three calls, watch the same recipe card flash and the car park on three different ticks — that *is* the def/call story, animated. Only then reveal the cards. The teal teaser plants the smarter fix (push proportional to distance-left) — do NOT name it: it gets built and *named* before lunch as the start of the PID story.
-:::
-
-## 🐛 Bug hunt: the silent robot
-
-::: {.qbox}
-[No red error. No crash. The robot just… **sits there.** The code looks perfect. What did we forget?]{.qtitle}
-:::
-
-```python
-def gyro_turn(target):
-    hub.imu.reset_heading(0)
-    left.run(200); right.run(-200)
-    while hub.imu.heading() < target:
-        wait(5)
-    left.stop(); right.stop()
-```
-
-::: {.fragment .fade-up}
-::: {.cardbox .coral}
-`def` only **writes** the recipe, it never cooks it. Nothing happens until you **call** the move by name: add `gyro_turn(90)` below. Defining a move and *using* a move are two separate steps.
-:::
-:::
-
-::: {.notes}
-The most instructive bug of the week — no error to read, so the robot's stillness *is* the message. Elicit first: "if the code is right, why no movement?" Draw the split on the board — `def …:` writes the recipe card, `gyro_turn(90)` hands it to the cook. Leads straight into the bench lab, where they call it three times.
-:::
-
-## Bench check: tune your crawl 🎯
-
-- Build `gyro_turn`, then judge-call yourself: **90° · 45° · 180°**, printing the landing each time.
-- Tune **200 / 50 / 30** until 90° lands within a degree or two. Write your three numbers on a sticky note. They're about to testify.
-
-⏱️ **Time: 20 minutes**
-
-::: {.notes}
-*Perfect Pivot*, folded into a bench lab: the cure is verified on 90°, but nobody is asked (yet) whether one tuning serves all three calls — that tension is the next act's job. Make every squad physically write their three numbers down; the race lab reads them straight back.
-:::
-
-# C. Break It {.sdaia-dark background-gradient="linear-gradient(135deg, #1C355E, #FF7A5C)"}
+# B. Break It {.sdaia-dark background-gradient="linear-gradient(135deg, #1C355E, #FF7A5C)"}
 
 The judge adds a **stopwatch**. Suddenly your crawl zone has a price tag.
 
@@ -302,16 +77,20 @@ Pure prediction, nothing revealed — the bars are deliberately unshaded; 90° i
 
 ## Lab: race your own turn 🏁
 
-```{.python code-line-numbers="|1|3-5|6-8|9"}
+```{.python code-line-numbers="|1|3-9|11-13"}
 timer = StopWatch()                 # a stopwatch, in code
 
-for target in [45, 90, 180]:
+def race(target):
     timer.reset()
     gyro_turn(target)
     elapsed = timer.time()
     wait(1000)                      # let the coast settle before you trust heading()
     print(target, "->", elapsed, "ms, landed", hub.imu.heading())
     wait(3000)                      # set the robot straight again
+
+race(45)
+race(90)
+race(180)
 ```
 
 - Run it with **your bench tuning** from the sticky note. Look at 45°'s time. Sleepy? That's the crawl lane eating two-thirds of a small turn.
@@ -330,7 +109,7 @@ Board the results next to the predictions. Expected shape: at 200, everything la
 ## The tuning treadmill 🎡
 
 ::: {.qbox}
-[Fix it with yesterday's toolbox: a **wider** crawl zone? A **third** speed? A different tuning **per angle**? What does each one cost?]{.qtitle}
+[Fix it with the toolbox you own: a **wider** crawl zone? A **third** speed? A different tuning **per angle**? What does each one cost?]{.qtitle}
 
 Talk it out. Follow each fix two steps ahead.
 :::
@@ -342,7 +121,7 @@ Board your fixes, then we **test-drive every one**. 🚗
 ⏱️ **Time: 20 minutes** *(discussion + test-drives)*
 
 ::: {.notes}
-This is the morning's teal teaser ("imagine speed shrinking as the degrees-left shrink") coming due. Let them propose the staircase fixes seriously — each is a real idea with a real cost; the point isn't that they're dumb, it's that they don't *scale*. Collect the fixes on the board first; the next slide drives them.
+This is *Cure the Coast*'s teal teaser ("imagine speed shrinking as the degrees-left shrink") coming due. Let them propose the staircase fixes seriously — each is a real idea with a real cost; the point isn't that they're dumb, it's that they don't *scale*. Collect the fixes on the board first; the next slide drives them.
 :::
 
 ## Test-drive the fixes 🚗
@@ -503,7 +282,7 @@ Every fix adds a **step** and a **knob**, and *every* drive still ends the same:
 How to read the picture — say it out loud, every time: the yellow dot is the robot's *moment*: how far it walks right = degrees used up; how high it sits = how hard the wheels push. Apply a fix, hit ▶ drive it, and narrate the dot + car together: "far away → high up → car whips around… close → low → car creeps." Wider zone: slower time, same coast. Extra speed: better time, same coast. Table: same staircase, ×10 retuning. The landing readout says ~92-and-something every single run — THAT's the cliff no staircase removes. Someone usually says the magic sentence ("just make the speed depend on how far is left") — hand them the chalk.
 :::
 
-# D. Name It: the P-controller {.sdaia-dark background-gradient="linear-gradient(135deg, #1C355E, #625D9C)"}
+# C. Name It: the P-controller {.sdaia-dark background-gradient="linear-gradient(135deg, #1C355E, #625D9C)"}
 
 You've been running this controller your whole life. Time to write it down.
 
@@ -690,7 +469,7 @@ Same reading ritual as the test-drive slide — the kids already know it: dot wa
 ## The proportional turn
 
 ```{.python code-line-numbers="|1|3|4|5-6|8|10"}
-def gyro_turn_p(target, kp=4):
+def gyro_turn_p(target, kp):
     hub.imu.reset_heading(0)
     while abs(target - hub.imu.heading()) > 1:   # until within 1°…
         error = target - hub.imu.heading()       # degrees still to go
@@ -699,17 +478,17 @@ def gyro_turn_p(target, kp=4):
         wait(5)
     left.stop(); right.stop()
 
-gyro_turn_p(90)   # gyro_turn_p(45)… gyro_turn_p(180)… gyro_turn_p(-90)!
+gyro_turn_p(90, 4)   # (45, 4)… (180, 4)… (-90, 4)!
 ```
 
 ::: {.fragment .fade-up}
 ::: {.cardbox .teal}
-Line 10: a **negative** target flips the sign and the wheels swap, so **left turns come free.** Yesterday's version needed surgery for that.
+Line 10: a **negative** target flips the sign and the wheels swap, so **left turns come free.** The two-speed version needed surgery for that.
 :::
 :::
 
 ::: {.notes}
-Walk the highlight stops: `kp` arrives as a *parameter with a default* — new syntax, teach it in one breath ("a knob you can leave alone"). Line 3's `abs()` is what makes negative targets work. Demo on the next slide.
+Walk the highlight stops: `kp` is a plain second parameter, passed on every call. **No default yet** (decision #55): "a knob you can leave alone" only makes sense once the move lives in a library, and that is *Name Your Moves*. Line 3's `abs()` is D3's "how far, whichever way" and is what makes negative targets work; ask for it, don't teach it. Demo on the next slide.
 
 **Coach aside — "why `run()` and not `motor.dc()`?"** (for the sharp student who's read ahead). Honest truth: `run()` is *itself* a closed-loop **speed** controller inside Pybricks — so this hand-written P sits *on top* of it, a controller-on-a-controller. Your `kp` sets a speed *target*; Pybricks' own loop chases it. A pro writing a controller from scratch often reaches for `motor.dc()` instead — raw power/duty — so their formula is the *whole* controller, one layer, nothing hidden underneath. Totally legitimate, and purer. We keep `run()` on purpose for two reasons: it's **smoother and battery-proof** (a fresh vs. tired hub turns the same — priceless with five robots on the bench), and it speaks the same **"speed"** language as `robot.drive(speed, turn)` and `DriveBase` — so `speed = error × KP` stays literally true all the way from this turn, through the self-healing straight, to D6's line-follower. `dc()` is the right tool the day you build a controller with no help underneath; that day isn't this bootcamp.
 :::
@@ -727,7 +506,7 @@ Walk the highlight stops: `kp` arrives as a *parameter with a default* — new s
   </div>
   <div style="display:flex;justify-content:center;gap:70px;">
     <div style="text-align:center;">
-      <div style="font-weight:800;color:#E96852;font-size:21px;">🪜 two speeds (yesterday)</div>
+      <div style="font-weight:800;color:#E96852;font-size:21px;">🪜 two speeds (before)</div>
       <svg width="195" height="195" viewBox="-105 -105 210 210" style="display:block;margin:2px auto;">
         <circle r="86" fill="#eef3f8" stroke="#1C355E" stroke-width="5"/>
         <g id="tsTick" opacity="0"><line x1="0" y1="-86" x2="0" y2="-101" stroke="#00AE8D" stroke-width="6"/></g>
@@ -850,7 +629,7 @@ This exact line runs inside every drone, thermostat, cruise control, elevator, a
 :::
 
 ::: {.notes}
-This is the payoff of yesterday's "it has a name every roboticist on Earth knows" — let it land with a beat of silence. Do NOT preview what I and D do; tomorrow each arrives as the rescue to a failure they'll *see* (P in a hurry overshoots → D; a leftover P can't kill → I).
+This is the payoff of *Drive a Square*'s "it has a name every roboticist on Earth knows" — let it land with a beat of silence. Do NOT preview what I and D do; tomorrow each arrives as the rescue to a failure they'll *see* (P in a hurry overshoots → D; a leftover P can't kill → I).
 :::
 
 ## Quick quiz: the KP knob 🚨
@@ -871,17 +650,17 @@ The prediction is the day's real gate: "the bigger the error, the harder the pus
 
 ## Lab: your KP, your rematch 🎛️
 
-- Build `gyro_turn_p`, then rerun the **morning race**: same three calls, one KP. Beat your two-speed times *and* landings?
+- Build `gyro_turn_p`, then rerun the **race**: same three calls, one KP. Beat your two-speed times *and* landings?
 - Find **your** KP: start at 4 → halve it, double it, feel both failures, close in from the middle.
-- Try `gyro_turn_p(-90)`. No surgery required. 😎
+- Try `gyro_turn_p(-90, 4)`. No surgery required. 😎
 
 ⏱️ **Time: 30 minutes**
 
 ::: {.notes}
-Every squad's best KP is different (battery, tire wear, robot mass) — that's the point of it being a knob, and why nobody copies a neighbor's number. Log times + landings like the morning so the win over the staircase is on paper. Fast squads: call `gyro_turn_p(360)` — a full spin that parks where it started — or race 45 at KP 8 vs 4.
+Every squad's best KP is different (battery, tire wear, robot mass) — that's the point of it being a knob, and why nobody copies a neighbor's number. Log times + landings like the race lab so the win over the staircase is on paper. Fast squads: call `gyro_turn_p(360, 4)` — a full spin that parks where it started — or race 45 at KP 8 vs 4.
 :::
 
-# E. Straight With It {.sdaia-dark background-gradient="linear-gradient(135deg, #1C355E, #FF7A5C)"}
+# D. Straight With It {.sdaia-dark background-gradient="linear-gradient(135deg, #1C355E, #FF7A5C)"}
 
 Turns are true. But is your "straight"… actually straight?
 
@@ -1076,7 +855,7 @@ Gyro fix **OFF**: one nudge and it rides the wall forever. **ON**: every nudge g
 
 ⏱️ **Time: 15 minutes**
 
-# F. Competition & Gate {.sdaia-dark background-gradient="linear-gradient(135deg, #1C355E, #00C9A7)"}
+# E. Competition & Gate {.sdaia-dark background-gradient="linear-gradient(135deg, #1C355E, #00C9A7)"}
 
 Today's showdown: **Nudge Wars** 💥
 

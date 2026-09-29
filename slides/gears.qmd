@@ -1,16 +1,30 @@
 ---
 title: "Gears"
-subtitle: "Day 11 · Robot Rockstars · SPIKE Prime + Pybricks"
+subtitle: "Session 15 · Lesson D11 · Robot Rockstars · SPIKE Prime + Pybricks"
 date: today
 format: revealjs
 ---
 
 # A. Break It {.sdaia-dark background-gradient="linear-gradient(135deg, #1C355E, #00C9A7)"}
 
-Yesterday you **built** a gripper. Today you **understand** it and make it score. 🦾
+Your mechanism has a job. Finish the build, then choose gears that help it do that job. 🦾
 
 ::: {.notes}
 Frame the day in one sentence: "You can build it and you can run it — today you'll be able to *explain* it and *improve* it." That's the ladder: follow → modify → create. The deck goes straight to the gripper — the confidence today comes from their own build, not from drills.
+:::
+
+## Build check: ready for the gear lab
+
+- Your mechanism is mounted firmly and can **open and close**.
+- Trace the motor shaft through the gears to the moving part.
+- Finish the build now if it is still a sketch or loose parts.
+
+::: {.cardbox .teal}
+Use the coach's working gripper for the demonstrations while your own build catches up. Tune your own mechanism once it is ready.
+:::
+
+::: {.notes}
+The preceding session only guaranteed a sketch and a build kickoff. Budget build time here before loading or modifying a mechanism. A prepared linked-claw demonstration supplies the specific two-claw example; students with other designs compare the trade rather than rebuilding to match it. Freeze the chassis and use the agreed mounting points. Homing and automatic grip code arrive in Programming the Claw.
 :::
 
 ## Feel it: the heavy lift 🏋️
@@ -23,12 +37,12 @@ What happens? Why? The motor is trying its hardest, so **where is the strength g
 
 ::: {.fragment .fade-up}
 ::: {.cardbox .coral}
-The motor isn't weak. The **ratio** is. Your gears hand the claw exactly the strength the motor makes, **1 : 1.**
+The motor isn't weak. This demonstration has a **1 : 1** ratio, so its gears give the claw no extra turning force.
 :::
 :::
 
 ::: {.notes}
-The engineered failure that makes gear theory land as a rescue instead of a lecture. With the 1:1 bevel pairs, a genuinely heavy object slips or stalls the medium motor — let them feel it strain, and don't let a stall cook the motor for more than a moment. Then the hook question: "a car engine can't lift a car either — yet the jack in the trunk lifts it with one hand. What's the trick?" Someone will say gears or leverage — that someone just introduced Act B for you.
+The coach's 1:1 bevel-pair demonstration makes gear theory concrete. A genuinely heavy object slips or stalls the medium motor — let students feel it strain, and don't let a stall cook the motor for more than a moment. The students' 12-tooth to 20-tooth claw appears later as the stronger alternative. Then the hook question: "a car engine can't lift a car either — yet the jack in the trunk lifts it with one hand. What's the trick?" Someone will say gears or leverage — that someone just introduced Act B for you.
 :::
 
 ## Break it: two claws, one brain 🧠
@@ -93,7 +107,7 @@ Ratio = follower teeth ÷ driver teeth.
 
 ::: {.fragment .fade-up}
 ::: {.cardbox .teal}
-**Bevel gears buy direction, not strength.** Your gripper spent its gears on the corner, so the lift failed.
+**A 1 : 1 bevel pair changes direction without multiplying torque.** That is why this demonstration still struggles with the lift.
 :::
 :::
 
@@ -104,7 +118,7 @@ Ratio = follower teeth ÷ driver teeth.
 :::
 
 ::: {.notes}
-Keep the arithmetic tiny: teeth in, teeth out, one division. Have every squad physically count the teeth on a spare bevel gear — counting beats being told. The reveal sentence is the punchline of Act A: their gear pair spends its entire budget on turning the axis 90° (which the build *needs* — motor lies flat, claws swing on vertical axles) and has nothing left for strength. Now the fix is obvious before it's taught: change the ratio.
+Keep the arithmetic tiny: teeth in, teeth out, one division. Have every squad physically count the teeth on a spare bevel gear — counting beats being told. The 1:1 demonstration turns the axis 90° without adding torque. Next, compare it with the students' 12-tooth motor gear and 20-tooth output gear, which give a 20 ÷ 12 ratio.
 :::
 
 ## The trade: speed ⇄ strength
@@ -211,9 +225,27 @@ Keep the arithmetic tiny: teeth in, teeth out, one division. Have every squad ph
 :::
 
 ::: {.notes}
-Click through the three followers and narrate the yellow spokes — the driver is always the 24T, only the follower changes. **12T:** the claw spins twice as fast and grips half as hard. **24T:** exactly the motor, no bonus — the same 1:1 deal their own bevel pair gives them. **36T:** gives up a third of its speed and buys half again the strength (×1.5). One sentence carries the slide: "speed and strength are the same budget — gears just move money between the accounts."
+Click through the three followers and narrate the yellow spokes — the driver is always the 24T, only the follower changes. **12T:** the claw spins twice as fast and grips half as hard. **24T:** exactly the motor, no bonus. **36T:** gives up a third of its speed and buys half again the strength (×1.5). One sentence carries the slide: "speed and strength are the same budget — gears just move money between the accounts."
 
 Then link each direction to a mission verb: gear **for torque** where a push needs *force* (cable pusher against friction), **for speed** where it needs *reach* (a claw that must open wide in a hurry). Physical demo beats the animation if time allows: hold a 12T driving a 36T between two fingers and feel the follower resist. Resist the full gear zoo — idlers, racks, worms and compound trains are continuation-season material. Coach prep: WRO-Learn *Fundamentals of Mechanics*, PrimeLessons *Robot Designs*, Competition Ready L7 *Time for an Upgrade*.
+:::
+
+## Tell Pybricks about the claw's gears
+
+The **12-tooth gear** is on the motor axle. The **20-tooth gear** is on the output axle.
+
+```python
+claw = Motor(
+    port=Port.E,
+    positive_direction=Direction.CLOCKWISE,
+    gears=[12, 20]
+)
+```
+
+For every **100°** at the motor, the output turns **60°**. Pybricks uses the output axle for later angle and speed commands.
+
+::: {.notes}
+Have students identify the first and last gear on the actual claw. The list is ordered from motor to output. The output gear has 20 ÷ 12 = 1.67 times as many teeth, so the output turns 12 ÷ 20 = 0.6 as far as the motor. `positive_direction` describes the motor shaft; confirm that a positive command closes this build. The lesson program uses Port E and clockwise. The transfer gear and second jaw are mechanically linked; the 20-tooth jaw gear is the chosen output axle. Source: https://docs.pybricks.com/en/stable/pupdevices/motor.html
 :::
 
 ## Challenge: tune YOUR gripper 🛠️
@@ -225,11 +257,11 @@ Then link each direction to a mission verb: gear **for torque** where a push nee
 - ⚡ **Faster:** re-gear so open→close beats the stopwatch, and prove it with a timed cycle
 :::
 
-- Rules: same motor, same port, **only the gears change**
+- Rules: keep the same motor and port; change the gears and the matching `gears` setting
 - Still fits the **250 mm cube** with claws closed 📏
 - Before you build: **say the ratio out loud.** Predict, then prove
 
 ::: {.notes}
-Modification is their proven skill — this stretches it one step, with a prediction gate ("say the ratio before you touch a gear") so the theory does the work. Squads choose their own goal; both choices are correct, which quietly teaches that gearing is a *decision*, not an answer. Watch for the classic trap: gearing so slow the claw takes 5 seconds to close — a run costs time. If a squad finishes early: "now make the two claws close at *different* speeds from the same motor" — a compound ratio discovered, not assigned. This is also where mechanism talent becomes visible post-draft; watch who leads the rebuild.
+Modification is their proven skill — this stretches it one step, with a prediction gate ("say the ratio before you touch a gear") so the theory does the work. After each physical change, students update the `gears` list and recheck the angle and speed targets. Squads choose their own goal; both choices are correct, which teaches that gearing is a decision. Watch for the classic trap: gearing so slow the claw takes 5 seconds to close — a run costs time. If a squad finishes early: "now make the two claws close at *different* speeds from the same motor" — a compound ratio discovered, not assigned. This is also where mechanism talent becomes visible post-draft; watch who leads the rebuild.
 :::
 

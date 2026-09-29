@@ -1,6 +1,6 @@
 ---
 title: "Make It Move"
-subtitle: "Day 2 · Robot Rockstars · SPIKE Prime + Pybricks"
+subtitle: "Session 3 · Lesson D2, part 1 · Robot Rockstars · SPIKE Prime + Pybricks"
 date: today
 format: revealjs
 ---
@@ -131,7 +131,7 @@ Same start. Same 3 seconds. **What did you notice?**
 
 ::: {.fragment .fade-up}
 ::: {.cardbox .purple}
- …and *how much* faster is 🚗? 
+ …and *how much* faster is 🚗?
 :::
 :::
 
@@ -703,7 +703,40 @@ Wheels don't advertise their rope. They advertise their **diameter**.
 :::
 :::
 
-## 🧪 Bonus: discover π yourself
+# H. Competition & Gate {.sdaia-dark background-gradient="linear-gradient(135deg, #1C355E, #00C9A7)"}
+
+Today's showdown: **Radar Gun** 🔫
+
+## Radar Gun 📡
+
+::: {.callout-important}
+## The challenge
+**Predict, then prove.** Measure your robot's speed, then tell the judge *exactly* how many seconds it needs to cross the **1.5 m** finish line. The judge starts the stopwatch, and the closest prediction wins. 3 attempts, best counts.
+:::
+
+- Pure science: measure → calculate → predict → test.
+- Pro move: does your prediction survive a battery swap? 😏
+
+## Today's gate
+
+::: {.callout-important}
+## You're done today when…
+Your robot **moves with named variables**, you can convert **deg/s → cm/s** for your wheel, and you can **explain why counted degrees beat timed seconds**.
+:::
+
+::: {.fragment .fade-up}
+Next: *The Beam Balance*. You stop borrowing **1304°** and build the formula yourself, for any distance.
+:::
+
+::: {.fragment .fade-up}
+**Optional at home:** WRO-Learn, [*Fundamentals of Mechanics*](https://wro-learn.org/en_us/course/48). Short videos, pure enrichment. Everything you need is taught in class.
+:::
+
+# 🏠 Explore at Home {.sdaia-dark background-gradient="linear-gradient(135deg, #1C355E, #9B8EC0)"}
+
+Optional: where π comes from. **Nothing next session depends on these.** 🧪
+
+## 🏠 Discover π yourself
 
 - Wrap a string around anything round: a cup, a tape roll, a bottle, your wheel. That's **C**.
 - Measure straight across the middle. That's **d**.
@@ -715,7 +748,7 @@ Wheels don't advertise their rope. They advertise their **diameter**.
 :::
 :::
 
-## 🧪 Bonus: another way to measure a circle
+## 🏠 Another way to measure a circle
 
 No string? Catch the circle with **straight lines** instead.
 
@@ -756,7 +789,7 @@ No string? Catch the circle with **straight lines** instead.
 Optional enrichment — no gate depends on it; skip live if time is tight and point kids to it for home. Build: squares are the shapes we *can* measure (4 × side, no π). Click 1: outside square (side = d = 1) → its rope is 4, and the circle's rope is clearly shorter. Click 2: inside square → rope ≈ 2.83, circle clearly longer. Don't derive the 2.83 (side = d/√2) — the picture is the proof. Since d = 1, rope ÷ d IS π, so the trap holds π itself. The "more sides" question is the cliffhanger into the demo.
 :::
 
-## 🧪 Bonus: Archimedes' squeeze
+## 🏠 Archimedes' squeeze
 
 ```{=html}
 <div class="sim-stage">
@@ -817,33 +850,4 @@ Optional enrichment — no gate depends on it; skip live if time is tight and po
 
 ::: {.notes}
 Optional enrichment, self-guided at home. The inner rope (teal) is always too short, the outer (coral) always too long — the circle's rope is trapped between them, and since d = 1 the trap holds π itself. Click 4 → 96 and watch both numbers march toward 3.14159. At 96 sides the trap is 3.1410–3.1427 — Archimedes' actual stopping point. Connect back: the Babylonians gave us degrees, Archimedes gave us π — both live inside every wheel calculation the robot does.
-:::
-
-# H. Competition & Gate {.sdaia-dark background-gradient="linear-gradient(135deg, #1C355E, #00C9A7)"}
-
-Today's showdown: **Radar Gun** 🔫
-
-## Radar Gun 📡
-
-::: {.callout-important}
-## The challenge
-**Predict, then prove.** Measure your robot's speed, then tell the judge *exactly* how many seconds it needs to cross the **1.5 m** finish line. The judge starts the stopwatch, and the closest prediction wins. 3 attempts, best counts.
-:::
-
-- Pure science: measure → calculate → predict → test.
-- Pro move: does your prediction survive a battery swap? 😏
-
-## Today's gate
-
-::: {.callout-important}
-## You're done today when…
-Your robot **moves with named variables**, you can convert **deg/s → cm/s** for your wheel, and you can **explain why counted degrees beat timed seconds**.
-:::
-
-::: {.fragment .fade-up}
-Next: *Drive a Square*. You meet the **gyro**, feel it in your own hands, and watch it snap an open-loop square shut.
-:::
-
-::: {.fragment .fade-up}
-**Optional at home:** WRO-Learn, [*Fundamentals of Mechanics*](https://wro-learn.org/en_us/course/48). Short videos, pure enrichment. Everything you need is taught in class.
 :::

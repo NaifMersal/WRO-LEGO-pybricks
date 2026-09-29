@@ -1,6 +1,6 @@
 ---
 title: "Name Your Moves"
-subtitle: "Day 5 · Robot Rockstars · SPIKE Prime + Pybricks"
+subtitle: "Session 10 · Lesson D5 · Robot Rockstars · SPIKE Prime + Pybricks"
 date: today
 format: revealjs
 ---
@@ -8,7 +8,7 @@ format: revealjs
 # A. Warm-Up {.sdaia-dark background-gradient="linear-gradient(135deg, #1C355E, #00C9A7)"}
 
 Yesterday you built **P** (`error × KP`).
-Today: complete PID, then build your own motion library. 📦
+Today: add D braking, then build your own motion library. I is an optional demonstration. 📦
 
 ```{=html}
 <script>
@@ -37,7 +37,7 @@ SIM.pidTick = function (s, kd) {
 | 😴 **Crack 2** | Low KP **parked short** of target |
 
 ::: {.fragment .fade-up}
-- Today's two letters fix both cracks: **D** and **I**
+- **D** addresses the overshoot; an optional **I** demo explores the leftover error
 - Then every move gets a **name** in your own library 📦
 :::
 
@@ -160,7 +160,7 @@ Run it before the fragment. The red arc past the tick is overshoot made visible.
       <div style="text-align:center;font-size:12px;color:#625D9C;font-weight:800;">↻ back to ASK again</div>
     </div>
     <div id="brCodeCol" style="display:block;background:#f7f9fc;border:1px solid #dbe2ea;border-radius:12px;padding:8px 10px;font-family:Consolas,monospace;font-size:12.5px;line-height:1.5;color:#1C355E;">
-<div id="brC0" class="brln">def gyro_turn_p(target, kp=4):</div>
+<div id="brC0" class="brln">def gyro_turn_p(target, kp):</div>
 <div id="brC1" class="brln">    hub.imu.reset_heading(0)</div>
 <div id="brC2" class="brln">    while abs(target - hub.imu.heading()) &gt; 1:</div>
 <div id="brC3" class="brln">        error = target - hub.imu.heading()</div>
@@ -207,7 +207,7 @@ Run it before the fragment. The red arc past the tick is overshoot made visible.
   function doBeat(){
     if(s.done) return;
     var pc=s.pc;
-    if(pc===0){ s.h=0; drawBot(); msg('called <b>gyro_turn_p(90, kp='+kp+')</b> (target 90°)'); s.pc=1; }
+    if(pc===0){ s.h=0; drawBot(); msg('called <b>gyro_turn_p(90, '+kp+')</b> (target 90°)'); s.pc=1; }
     else if(pc===1){
       var gap=Math.abs(90-s.h);
       row('brRGap',gap.toFixed(1),1);
@@ -315,7 +315,7 @@ Step through the turn live. Point out the loop structure: ASK (check door), MEAS
 ## Name it: D damps 🛑 {.code-shrink}
 
 ```{.python code-line-numbers="|1|3|4|5|6-7|8|10"}
-def gyro_turn_pd(target, kp=4, kd=0.5):
+def gyro_turn_pd(target, kp, kd):
     hub.imu.reset_heading(0)
     last_error = target
     while abs(target - hub.imu.heading()) > 1:
@@ -352,7 +352,7 @@ def gyro_turn_pd(target, kp=4, kd=0.5):
 :::
 
 ::: {.notes}
-Focus on the three new lines: remember last error, subtract to get rate of change, and combine into the motor command. When closing fast on the target, error shrinks each loop pass, making `change` negative. Multiplying by `kd` subtracts power, giving a smooth deceleration right into 90°.
+Call it with all three numbers, for example `gyro_turn_pd(90, 4, 0.5)`. Defaults arrive in the library section. Focus on the three new lines: remember last error, subtract to get rate of change, and combine into the motor command. When closing fast on the target, error shrinks each loop pass, making `change` negative. Multiplying by `kd` subtracts power, giving a smooth deceleration right into 90°.
 :::
 
 ## Step it: feel the brake 🛑 {.smaller}
@@ -379,7 +379,7 @@ Focus on the three new lines: remember last error, subtract to get rate of chang
       <div id="bdB4" class="brBeat"><span class="be">😴</span><span><b>BLINK</b><span class="d">wait 5 ms</span></span></div>
     </div>
     <div style="background:#f7f9fc;border:1px solid #dbe2ea;border-radius:12px;padding:8px 10px;font-family:Consolas,monospace;font-size:12px;line-height:1.45;color:#1C355E;">
-<div id="bdC0" class="brln">def gyro_turn_pd(target, kp=4, kd=0.5):</div>
+<div id="bdC0" class="brln">def gyro_turn_pd(target, kp, kd):</div>
 <div id="bdC1" class="brln">    hub.imu.reset_heading(0)</div>
 <div id="bdC2" class="brln">    last_error = target</div>
 <div id="bdC3" class="brln">    while abs(target - hub.imu.heading()) &gt; 1:</div>
@@ -431,7 +431,7 @@ Focus on the three new lines: remember last error, subtract to get rate of chang
   function doBeat(){
     if(s.done) return;
     var pc=s.pc;
-    if(pc===0){ s.h=0; s.lastErr=90; drawBot(); msg('called <b>gyro_turn_pd(90, kp='+kp+', kd='+kd+')</b>'); s.pc=1; }
+    if(pc===0){ s.h=0; s.lastErr=90; drawBot(); msg('called <b>gyro_turn_pd(90, '+kp+', '+kd+')</b>'); s.pc=1; }
     else if(pc===1){
       var gap=Math.abs(90-s.h);
       row('bdRGap',gap.toFixed(1),1);
@@ -640,7 +640,7 @@ Demonstrate the new SENSE beat. Compare `kd = 0` (rings like yesterday) against 
 Show the real-time comparison graph. Red shows P ringing past 90 degrees before settling. Green shows PD smoothly approaching target. Adjust the slider live to show that setting kd=0 replicates the P curve.
 :::
 
-## The last letter: I (Coach Demo) 🧲
+## Optional: I (Coach Demo) 🧲
 
 ::: {.qbox}
 [Add physical friction or a lean to one side. Why does P stop short and stay there?]{.qtitle}
@@ -749,10 +749,10 @@ Show the real-time comparison graph. Red shows P ringing past 90 degrees before 
 :::
 
 ::: {.notes}
-Coach demo only; not a required implementation for students. When a small error remains, `KP * error` is too small to overcome friction, so the robot sits parked short. The integral term adds up the leftover error every millisecond. As time passes, the accumulator grows until it breaks through friction and hits target.
+Optional coach demo: skip it when bench practice needs the time. Neither implementation nor explanation of I is gated. When a small error remains, `KP * error` is too small to overcome friction, so the robot sits parked short. The integral term adds up the leftover error every millisecond. As time passes, the accumulator grows until it breaks through friction and hits target.
 :::
 
-## You own all three letters 🏆
+## Optional: the three PID terms 🏆
 
 ```{=html}
 <div style="text-align:center;margin:10px 0 4px 0;">
@@ -783,7 +783,7 @@ Coach demo only; not a required implementation for students. When a small error 
 :::
 
 ::: {.notes}
-Let the acronym land. Students have built P and D themselves and seen I solve steady friction. All three read error in complementary ways. Transition to the afternoon: packaging these formulas into a reusable module.
+Use this summary only when the optional I demonstration ran. Otherwise move straight to the library section. Students have built P and D themselves; the optional I demo shows a third use of error. The library work and gate depend on P and D.
 :::
 
 # C. The Library Begins {.sdaia-dark background-gradient="linear-gradient(135deg, #1C355E, #625D9C)"}
@@ -841,7 +841,7 @@ Then call it like a sentence.
 :::
 
 ::: {.notes}
-Have squads think about copying loop code 4 or 5 times in a single mission file. If they need to change the KP value or fix a calculation, they must remember to edit all four copies. Introducing functions and modules solves duplicate code.
+Students already own functions. Use the pasted loops as a quick retrieval check: which of their functions replaces each block? Then ask what happens when two different program files each contain their own copy of that function. A shared module is the new step today.
 :::
 
 ## Fix it: Your Own File `movements.py` 📦 {.code-shrink}
@@ -865,11 +865,77 @@ DEG_PER_MM = 360 / (3.14 * WHEEL_MM)  # wheel conversion factor
 ::: {.fragment .fade-up}
 - **Constants at the top:** ports, tuning numbers, and wheel sizes
 - **Functions below:** the moves you call in your missions
-- Main program stays clean: `from movements import drive_straight, turn`
+- Main program stays clean: `import movements as move`, then `move.turn(90)`
+- The `move.` says **which file to open** when a verb misbehaves
 :::
 
 ::: {.notes}
-Walk through creating `movements.py` alongside the main mission script. Keeping constants at the top makes tuning easy and central. All functions inside the library share these settings.
+Walk through creating `movements.py` alongside the main mission script. The import is always named (decision #64): `import movements as move`, never `from movements import …` and never a star. Every call in the mission file then reads `move.drive_straight(300)`, and the prefix tells a debugging student which file to open. Inside `movements.py` the verbs call each other bare, because there they are at home. Keeping constants at the top makes tuning easy and central. All functions inside the library share these settings.
+:::
+
+## Knobs with defaults 🎛️ {.smaller}
+
+You have been passing all three numbers: `gyro_turn_pd(90, 4, 0.5)`.
+Once your gains are tuned, most calls can reuse them.
+
+```{.python}
+def gyro_turn_pd(target, kp=4, kd=0.5):
+    ...  # the same PD body
+
+gyro_turn_pd(90)              # uses 4 and 0.5
+gyro_turn_pd(90, kd=0)        # change one knob for this call
+```
+
+::: {.fragment .fade-up}
+::: {.cardbox .teal}
+An `=` in the header gives a **default**. A named argument overrides it for **one call**. `target` has no default, so every call must supply it.
+:::
+:::
+
+::: {.notes}
+Predict each call before revealing the card. Then ask what `gyro_turn_pd(kd=0)` is missing: the target. This is the first explanation of defaults. In the next verb, `absolute=False` will be another default; `speed=400` does the same job for the straight. Keep the initial PD lesson on plain parameters so syntax does not compete with derivative reasoning.
+:::
+
+## Turn by, or turn to? 🧭
+
+Start facing **30°**. Act out each instruction twice.
+
+| Instruction | First landing | Second landing |
+|:--|:--|:--|
+| Turn **by** 90° | 120° | 210° |
+| Turn **to** 90° | 90° | 90° |
+
+::: {.fragment .fade-up}
+::: {.cardbox .purple}
+Our verb uses `absolute=True` for **to this heading**. Its default, `absolute=False`, means **by this amount**. The code needs to choose between those two targets.
+:::
+:::
+
+::: {.notes}
+Have a student turn their body or a robot by hand before the code appears. The next slide uses the first if/else to implement the choice they have just demonstrated. The interactive turn slide then checks it on repeated calls.
+:::
+
+## New word: `if` 🛣️
+
+::: {.qbox}
+[Your turn verb needs to ask **one** question: turn **by** 90, or turn **to** 90?]{.qtitle}
+:::
+
+```{.python code-line-numbers="|1|2|3-4"}
+if absolute:
+    target = angle                       # road 1: absolute is True
+else:
+    target = hub.imu.heading() + angle   # road 2: absolute is False
+```
+
+::: {.fragment .fade-up}
+::: {.cardbox .teal}
+`if` asks a True or False question **once**, then takes **one** road. Same colon, same indent as `while`. The difference: `while` asks again and again.
+:::
+:::
+
+::: {.notes}
+Two minutes: this is the course's first `if` (decision #65), and it arrives because `turn` needs a fork, not because it is on a syllabus. Ask "which road runs for `turn(90)`?" and "for `turn(90, absolute=True)`?" before the reveal. The contrast with `while` is the point: they already own a True/False check at the top of a block; `if` is that check run once, with no jump back. `elif` waits for the line day, where the eye has more than two answers.
 :::
 
 ## Verb #1: `turn`, by or to {.code-shrink}
@@ -892,8 +958,8 @@ def turn(angle, absolute=False, kp=4, kd=0.5):
 <div class="sim">
   <div style="display:flex;justify-content:center;align-items:center;gap:10px;margin-bottom:6px;">
     <span style="font-size:18px;color:#1C355E;font-weight:700;">call your verb:</span>
-    <button class="sim-btn coral" data-sim="tvTurn" data-sim-arg="false">&#9654; turn(90)</button>
-    <button class="sim-btn teal" data-sim="tvTurn" data-sim-arg="true">&#9654; turn(90, absolute=True)</button>
+    <button class="sim-btn coral" data-sim="tvTurn" data-sim-arg="false">&#9654; move.turn(90)</button>
+    <button class="sim-btn teal" data-sim="tvTurn" data-sim-arg="true">&#9654; move.turn(90, absolute=True)</button>
     <button class="sim-btn ghost small" data-sim="tvReset">&#8634; crooked start</button>
   </div>
   <div class="sim-stage">
@@ -991,7 +1057,7 @@ Do not tell them yet that Pybricks spells this exact signature the exact same wa
 
 ```{.python code-line-numbers="|1|3|5|6-8|9"}
 def drive_straight(distance_mm, speed=400):
-    """Drive distance_mm while holding gyro heading."""
+    """Drive forward distance_mm while holding heading."""
     heading = hub.imu.heading()                    # lock current heading
     finish = left.angle() + distance_mm * DEG_PER_MM
     while left.angle() < finish:                   # encoder finish line
@@ -1009,124 +1075,18 @@ def drive_straight(distance_mm, speed=400):
 :::
 
 ::: {.notes}
-Combine motor encoders with the gyro. Motor encoders determine forward distance; the gyro detects and counters yaw drift. Notice that `speed=400` in the function header is a default parameter.
+This first version accepts forward distances only. The wall lesson adds the sign choice for backing off before it uses a negative distance. Combine motor encoders with the gyro. Motor encoders determine forward distance; the gyro detects and counters yaw drift. Notice that `speed=400` in the function header is a default parameter.
 :::
 
-## Knobs with defaults 🎛️ {.smaller}
-
-```{.python code-line-numbers="|1|2"}
-def turn(angle, absolute=False, kp=4, kd=0.5):   # these have default values
-def drive_straight(distance_mm, speed=400):  # speed has a default value
-```
-
-::: {.qbox}
-[Predict what happens: ① `turn(90, absolute=True)` &nbsp;|&nbsp; ② `turn(90, absolute=True, kd=0)` &nbsp;|&nbsp; ③ `drive_straight(300, speed=150)` &nbsp;|&nbsp; ④ `drive_straight(speed=150)`]{.qtitle}
-:::
-
-::: {.fragment .fade-up}
-:::: {.columns}
-::: {.column width="50%"}
-::: {.cardbox .teal}
-- **①:** Uses default values (`kp=4, kd=0.5`)
-- **②:** Disables derivative braking (`kd=0`) 🔔
-:::
-:::
-::: {.column width="50%"}
-::: {.cardbox .purple}
-- **③:** Sets speed to 150 for this single call
-- **④:** 💥 `TypeError`: `distance_mm` has no default
-:::
-:::
-::::
-:::
-
-::: {.notes}
-Explain default arguments and keyword overrides. When a parameter has an `=` in the definition, callers can omit it to use the default value, or specify it explicitly to adjust that parameter for a specific maneuver. Required arguments without defaults must always be provided.
-:::
-
-## Two homes for a name 🗺️ {.smaller}
-
-```{.python code-line-numbers="|1-3|5-7"}
-# Top of movements.py (GLOBAL)
-hub = PrimeHub()
-KP = 4
-
-def drive_straight(distance_mm, speed=400):
-    heading = hub.imu.heading()              # LOCAL: created during call
-    error = hub.imu.heading() - heading      # LOCAL: deleted when call ends
-```
-
-::: {.fragment .fade-up}
-:::: {.columns}
-::: {.column width="50%"}
-::: {.cardbox .coral}
-<h3>Local variables</h3>
-
-- Created inside a function
-- Gone the moment the function returns
-- `print(error)` outside → `NameError`
-:::
-:::
-::: {.column width="50%"}
-::: {.cardbox .teal}
-<h3>Global constants</h3>
-
-- Defined at the top of the file
-- Visible across all functions
-- Update once to tune the entire robot
-:::
-:::
-::::
-:::
-
-::: {.notes}
-Contrast scope: variables defined inside a function exist only during that specific function call, preventing accidental variable collisions between different maneuvers. Variables defined at module top level remain available everywhere.
-:::
-
-## Break it: the tune that didn't stick 🔥
-
-```{.python code-line-numbers="|1-2|4-5"}
-def make_it_sharper():
-    KP = 12          # trying to tune the whole library...
-
-make_it_sharper()
-drive_straight(300)  # ...still unchanged! 😤
-```
-
-::: {.fragment .fade-up}
-:::: {.columns}
-::: {.column width="50%"}
-::: {.cardbox .coral}
-<h3>Why it failed</h3>
-
-- Assigning inside `def` creates a **local** variable
-- The global `KP` at the top was never touched
-:::
-:::
-::: {.column width="50%"}
-::: {.cardbox .teal}
-<h3>The rule</h3>
-
-- **Read** globals from any function
-- **Change** tuning values only at the top of `movements.py`
-:::
-:::
-::::
-:::
-
-::: {.notes}
-Assigning a variable inside a function creates a local variable in Python unless declared otherwise. Emphasize the clean pattern: never reassign constants inside functions; keep tuning values strictly in the constants block at the top of the file.
-:::
-
-## The square, in four names
+## Stretch: the square, in four names
 
 ```{.python code-line-numbers="|1|3-6|8"}
-from movements import drive_straight, turn
+import movements as move
 
 def drive_square(side_mm):
-    for corner in [90, 180, 270, 360]:
-        drive_straight(side_mm)
-        turn(corner, absolute=True)
+    for side in range(4):
+        move.drive_straight(side_mm)
+        move.turn(90 * (side + 1), absolute=True)
 
 drive_square(300)
 ```
@@ -1138,10 +1098,10 @@ drive_square(300)
 :::
 
 ::: {.notes}
-Compare this against the Day 3 square. Because the corners are taken with `absolute=True` mat headings rather than relative turns, any angular error from wheel scrub is automatically corrected on the next corner.
+Optional extension after the core benchmarks. `side` takes 0, 1, 2, 3, so `90 * (side + 1)` produces 90, 180, 270, 360 using the familiar counted loop. Compare this against the earlier square. Because the corners are taken with `absolute=True` mat headings rather than relative turns, any angular error from wheel scrub is automatically corrected on the next corner.
 :::
 
-## Watch the square snap shut 🔲
+## Stretch: watch the square snap shut 🔲
 
 ```{=html}
 <div class="sim">
@@ -1202,18 +1162,18 @@ Run drift mode first, then the library mode. The visual contrast demonstrates wh
 
 | Challenge | Goal |
 |---|---|
-| 1️⃣ **Ring on purpose** | Run `turn(90, absolute=True, kd=0)` to see overshoot return 🔔 |
+| 1️⃣ **Ring on purpose** | Run `move.turn(90, absolute=True, kd=0)` to see overshoot return 🔔 |
 | 2️⃣ **Slow straight** | Run one straight at half-speed with `speed=200` |
-| 3️⃣ **Set square default** | Give `drive_square(side_mm=300)` a default side length |
-| 4️⃣ **Code detective** 🔎 | Identify where to change all straights vs one call |
+| 3️⃣ **Code detective** 🔎 | Identify where to change all straights vs one call |
+| ⭐ **Stretch: square default** | Give `drive_square(side_mm=300)` a default side length |
 
 ::: {.fragment .fade-up}
 - ⏱️ **10 minutes with robots**
-- **Check-off:** Explain default, keyword argument, global, and local
+- **Check-off:** Explain default and keyword argument
 :::
 
 ::: {.notes}
-Have squads test their parameters. Challenge 1 verifies that D damping was active. Challenge 2 exercises keyword arguments without modifying library source. Challenge 3 gives students practice writing default parameter syntax.
+Have squads test their parameters. Challenge 1 verifies that D damping was active. Challenge 2 exercises keyword arguments without modifying library source. Challenge 3 checks that students distinguish a library default from a keyword override at one call. The square-default stretch is only for students who completed the optional square.
 :::
 
 # D. Compete & Gate {.sdaia-dark background-gradient="linear-gradient(135deg, #1C355E, #00C9A7)"}
@@ -1231,7 +1191,7 @@ Stop as close to the target mark as possible (3 attempts, best counts).
 ```{=html}
 <div class="sim">
   <div class="sim-controls">
-    <button class="sim-btn teal" data-sim="beRun">▶ drive_straight(1000)</button>
+    <button class="sim-btn teal" data-sim="beRun">▶ move.drive_straight(1000)</button>
     <button class="sim-btn ghost" id="beBtn" data-sim="beNudge">😈 evil nudge</button>
   </div>
   <svg width="820" height="180" viewBox="0 0 820 180" style="display:block;margin:0 auto;">
@@ -1285,10 +1245,12 @@ The competition tests code reliability. A properly calibrated wheel diameter and
 
 ::: {.callout-important}
 ## Checklist for today
-1. `drive_straight(1000)` lands within **±2 cm** of 1.0 m (10 runs)
-2. `turn(…, absolute=True)` lands within **±2°** of target heading (10 runs)
-3. `drive_square()` closes the square cleanly
-4. Can explain what **D** and **I** add to **P**
+1. `move.drive_straight(1000)` lands within **±2 cm** of 1.0 m (10 runs)
+2. `move.turn(…, absolute=True)` lands within **±2°** of target heading (10 runs)
+3. Can explain how **P** and **D** affect the turn
+4. Can use a default and override it for one call
+
+**Stretch:** close the square with `drive_square()`. **I** is an optional coach demonstration.
 :::
 
 ::: {.fragment .fade-up}
@@ -1296,5 +1258,5 @@ Next: *Line King*, following a line with the colour sensor. 👑
 :::
 
 ::: {.notes}
-Benchmark evaluation: verify each squad's straight driving and heading accuracy over 10 trials. Confirm students understand the roles of D and I.
+Benchmark evaluation: verify each squad's straight driving and heading accuracy over 10 trials. Gate P and D, function calls, and parameter use. I and the square extension do not block progression. If time is tight, skip the I demonstration and the repeated controller simulations before cutting independent bench practice.
 :::

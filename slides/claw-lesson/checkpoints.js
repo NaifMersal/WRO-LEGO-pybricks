@@ -15,8 +15,8 @@
     observing: s => s.log.length >= 2 && s.waiting?.kind === 'sleep',
     checked: s => s.checkCount > 0,
     startup: s => s.waiting?.kind === 'sleep' && s.program[s.active]?.ms === 100,
-    /* A loop that only checks stalled() never leaves an empty trial: the movement
-       finished within target tolerance, so the checks carry on past completion. */
+    /* A loop that only checks the load never leaves an empty trial: the movement
+       reached its target with nothing to press on, so the checks carry on. */
     spinning: s => s.done && s.checkCount > 60,
     released: s => s.log.some(x => x.text === 'Released')
   };
@@ -28,15 +28,10 @@
     }
     throw new Error('Checkpoint not reached: ' + stop);
   }
-  function start(stage, variant, settledExample = false) {
+  function start(stage, variant) {
     const c = S.configFor(stage, variant);
     const s = E.newState(c);
     const program = S.programFor(stage, variant, c);
-    if (settledExample) {
-      // This slide illustrates 132° actual for 130° requested, within a 3°
-      // position tolerance once stopped. Other slides retain exact target arrival.
-      Object.assign(program.find(p => p.type === 'move'), { settleOffset: 2, positionTolerance: 3 });
-    }
     E.start(s, program);
     return s;
   }
@@ -53,10 +48,14 @@
        before the jaws are anywhere near the object. */
     'fixed-start': () => start(8, 0),
     'fixed-end': () => until(get('fixed-start'), 'complete'),
+    /* The loop students propose first, from stage 5: it works, after a pause. */
     'stall-wide-start': () => start(9, 2),
     'stall-wide-end': () => until(get('stall-wide-start'), 'observing'),
-    'stall-empty-start': () => start(9, 3, true),
-    'stall-empty-spin': () => until(get('stall-empty-start'), 'spinning'),
+    /* The same loop watching load() instead leaves as soon as the jaws press. */
+    'load-wide-start': () => start(9, 4),
+    'load-wide-end': () => until(get('load-wide-start'), 'observing'),
+    'load-empty-start': () => start(9, 3),
+    'load-empty-spin': () => until(get('load-empty-start'), 'spinning'),
     'loop-wide-start': () => start(9, 0),
     'loop-wide-end': () => until(get('loop-wide-start'), 'observing'),
     'loop-empty-start': () => start(9, 1, true),
@@ -66,9 +65,9 @@
       const s = get('loop-wide-end');
       s.log = [];
       E.start(s, [
-        { type: 'limit', value: E.FACTS.gripTorque, text: 'claw.control.limits(torque=GRIP_TORQUE)' },
+        { type: 'limit', value: E.FACTS.squeezeTorque, text: `claw.control.limits(torque=${E.FACTS.squeezeTorque})` },
         { type: 'move', target: E.FACTS.openTarget, speed: E.FACTS.openSpeed, then: 'COAST', wait: true,
-          text: 'claw.run_target(\n    OPEN_SPEED, OPEN_TARGET,\n    then=Stop.COAST\n)' },
+          text: `claw.run_target(\n    speed=${E.FACTS.openSpeed}, target_angle=${E.FACTS.openTarget},\n    then=Stop.COAST\n)` },
         { type: 'print', message: 'Released', text: 'print("Released")' }
       ]);
       return s;
@@ -92,14 +91,15 @@
     'default-argument': cue('default-wide-blocked', { explicitWait: true, focus: 'argument' }),
     'async': cue('cut-start', { focus: 'argument' }),
     'fixed-wait': cue('fixed-start', { waitTimer: true }),
-    'stall-loop': cue('stall-wide-start', { stepCode: true }),
-    'done-check': cue('stall-empty-start'),
-    'release': cue('release-start', { status: 2 })
+    'load-loop': cue('stall-wide-start', { stepCode: true }),
+    /* From here the loop reads load(), so its reading replaces the stalled() flag. */
+    'done-check': cue('load-empty-start', { showLoad: true, hide: ['stalled'] }),
+    'release': cue('release-start', { status: 2, showLoad: true, hide: ['stalled'] })
   };
   const views = {
     /* The trailing observation wait only keeps the scene alive for discussion, so
        stage 9 reads the loop as the function will contain it. */
-    'stall-loop': { show: ['start', 'move', 'startup', 'check', 'poll', 'continue'], console: 'last' },
+    'load-loop': { show: ['start', 'move', 'startup', 'check', 'poll', 'continue'], console: 'last' },
     /* The finished condition makes the loop four lines, so the empty trial reads the
        loop alone: with the prints out of the excerpt, their console goes out too. */
     'done-check': { show: ['move', 'startup', 'check', 'poll'], console: 'none' }
@@ -111,7 +111,7 @@
     ],
     'blocked': [
       {title:'The object stops closing before the target', label:'Observe', stop:'blocked'},
-      {title:'The program is waiting for 130°', label:'Explain', state:'default-wide-blocked', focus:'target', stop:null}
+      {title:'The program is waiting for 72°', label:'Explain', state:'default-wide-blocked', focus:'target', stop:null}
     ],
     /* Three instructions and nothing else: the program outruns the motor, and
        ending it releases the drive where the jaws happen to be. */
@@ -127,20 +127,26 @@
       {title:'A wait measures time, not the motor', label:'Explain', focus:'target',
        caption:'A longer number would still be a guess.', stop:null}
     ],
-    'stall-loop': [
-      {title:'stalled() ends the waiting at the object', label:'Observe',
-       focus:'check', stop:'observing'}
+    /* stalled() waits for the push to reach the full 180 mNm limit and stay there, so
+       the jaws sit on the object while the loop keeps checking. load() passes 100 on
+       the way up, which is the reason grab() watches it instead. */
+    'load-loop': [
+      {title:'stalled() ends the waiting, after a pause', label:'Observe',
+       focus:'check', stop:'observing'},
+      {title:'load() ends it as soon as the jaws press', label:'Observe',
+       state:'load-wide-start', showLoad:true, hide:['stalled'], focus:'check', stop:'observing'}
     ],
-    /* A small settled position error still allows completion. The empty claw never
-       stalls, so the program needs done() to stop waiting. */
+    /* The 72° close target sits short of the angle where empty jaws would meet, so an empty
+       trial finishes its movement with the jaws apart and never builds load. Completion
+       is the only ending available, which is why the loop needs done(). */
     'done-check': [
-      {title:'Actual: 132°. Target: 130°. Still waiting.', label:'Observe',
-       caption:'The motor has settled slightly past the target. stalled() stays False.', stop:'spinning'},
+      {title:'The jaws stop, still apart, and the loop keeps checking', label:'Observe',
+       caption:'The output reached 72° and stopped. Nothing pushes back, so the load stays low.', stop:'spinning'},
       {title:'claw.done() lets the loop finish', label:'Observe',
        state:'loop-empty-start', status:2, focus:'check',
-       caption:'Illustrative reading: the motor has settled within the completion tolerance.', stop:'observing'},
+       caption:'The commanded movement is complete, so done() is True.', stop:'observing'},
       {title:'The loop ended with nothing between the jaws', label:'Explain', focus:'done',
-       caption:'132° actual > 130° requested. done() is True, and the claw is empty.', stop:null}
+       caption:'The target was reached with nothing to grip. done() is True, and the jaws are still apart.', stop:null}
     ],
     'release': [
       {title:'The jaws open to 0° and let the object go', label:'Observe', stop:'released'},

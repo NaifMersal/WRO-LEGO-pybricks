@@ -95,3 +95,6 @@ body.claw-presentation .reveal .function-trio pre code {
   font-family:Consolas,monospace;font-size:inherit;line-height:inherit;
   white-space:pre;overflow:visible;max-height:none;
 }
+
+/* The load() flag carries a number, so its unit is set small like the readings above it. */
+.status-flag strong small {font-size:16px;margin-left:4px;}

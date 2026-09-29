@@ -1,0 +1,80 @@
+---
+title: "Draft Day"
+subtitle: "Session 14 · Lesson D10 · Robot Rockstars · SPIKE Prime + Pybricks"
+date: today
+format: revealjs
+---
+
+# A. Mini Mission {.sdaia-dark background-gradient="linear-gradient(135deg, #1C355E, #00C9A7)"}
+
+The last solo showdown. Everything from two weeks, on one clock. 🎤
+
+## Mini Mission 🎤
+
+::: {.callout-important}
+## The challenge
+A **3-task run** (drive, turn, push an object home) in **60 seconds**. Integration, time management, nerve.
+:::
+
+- Plan it as a **sequence** of your verbs, written as direct function calls. Test each call, then run the whole sequence.
+- Budget the clock: a clean 2-task run beats a chaotic 3-task attempt. *(Sound familiar? It's the anchor-first rule, in miniature.)*
+
+::: {.notes}
+Template is Competition Ready Lesson 8 "Mission Ready." This is the last solo competition and the scorecard's final data point: watch integration and composure, not just score. Call out anyone who deliberately drops to two tasks to bank clean points. That's competition maturity, so praise it loudly; it's the exact instinct the anchor-first strategy needs from them in Week 4. After scores are recorded, close the leaderboard era warmly: from tomorrow the competition is team vs team.
+:::
+
+# B. The Draft {.sdaia-dark background-gradient="linear-gradient(135deg, #1C355E, #625D9C)"}
+
+Solo builders become **teams**. 🤝
+
+## The draft 🤝
+
+- Teams are formed on **who works well together and what each team needs**. Complementary skills beat matching skills.
+- **Everyone keeps their own robot** for now. Each of you prototypes a mechanism on it in the build sessions.
+- The team picks its **one** competition robot later, with those prototypes as the evidence.
+- From tomorrow: **team vs team, every day**, which doubles the mat time.
+
+::: {.fragment .fade-up}
+::: {.cardbox .teal}
+Your robot will not be judged today. **Your code and your skills travel with you.** When the team picks its robot, everything moves onto it through one `ROBOT FACTS` block, the same swap you practised in *The Earned Shortcut*.
+:::
+:::
+
+::: {.notes}
+Say the framing line exactly as planned and nothing more: "I'm teaming you based on who works well together and what each team needs." Never rank, never "you scored lowest." The pairings are already decided from the private scorecard + library benchmarks; announce, don't debate. **Robot selection does not happen today** (plan: rescheduled to D18). Every student carries their own robot through Week 3, and D18 picks one per team with the Week-3 prototypes as evidence, then opens the donor pool. Say so plainly, because students will expect a choice today. Set up team build areas after the announcement.
+:::
+
+# C. Hands for the Robot {.sdaia-dark background-gradient="linear-gradient(135deg, #1C355E, #FF7A5C)"}
+
+Driving skill scores **nothing** on its own. Mechanisms turn it into points. 🔌
+
+## This afternoon: mechanism build #1
+
+::: {.qbox}
+[Look at the anchor run on the scoresheet. Which two tasks are the simplest **pushes and places**?]{.qtitle}
+:::
+
+::: {.fragment .fade-up}
+::: {.cardbox .purple}
+**Cables (30) and the microphone (20).** Both are pushes and places, no colour sensing. They are the first two stones of the anchor run.
+:::
+:::
+
+::: {.notes}
+The afternoon block kicks off mechanism build #1 (the plan's D10 row). Point back at *Stop at the Wall*'s anchor-first scoring map: cables and microphone are 50 of the ~135 anchor points and need no colour sensing at all. Teams sketch before they build: where on the robot does the mechanism go, which port and motor does it use, and does it keep the robot inside 250 × 250 × 250 mm at the start? Check the 4-motor cap out loud (General Rules §5.2.8): our robot already runs two drive motors, so each team has at most two motors for mechanisms. Off-stage, the coach documents the gold reference in BrickLink Studio as benchmark spec + rebuild insurance.
+:::
+
+## Today's gate
+
+::: {.callout-important}
+## You're done today when…
+You ran the Mini Mission, you know your **team**, and your team has a **sketch** of its first mechanism: where it sits, which port it uses, and why it stays inside the start box.
+:::
+
+::: {.fragment .fade-up}
+Next: finish a working mechanism, then use *Gears* to improve it.
+:::
+
+::: {.notes}
+The plan's D10 floor is teaming only; the sketch is the handoff into Week 3, not a pass/fail. Collect the sketches for the next build block. A sketch does not satisfy the Gears lab prerequisite: students need a mounted mechanism that opens and closes. Reserve the start of that session to finish it; use the coach's working mechanism for the gear demonstrations while unfinished builds catch up.
+:::

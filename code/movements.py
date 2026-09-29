@@ -1,11 +1,11 @@
 """movements.py -- how your robot DRIVES. Wheels and the eye, nothing else.
 
-    from movements import *      # only one of its kind, so a star import is safe
+    import movements as move       # named, like every import in the library
 
-    robot.reset(angle=0)
-    drive_straight(300)
-    robot.turn(90, absolute=True)
-    find_line()
+    move.robot.reset(angle=0)
+    move.drive_straight(300)
+    move.robot.turn(90, absolute=True)
+    move.find_line()
 
 RULES OF THE ROAD
     distances in mm         drive_straight(300) = 30 cm

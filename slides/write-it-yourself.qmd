@@ -1,0 +1,177 @@
+---
+title: "Write It Yourself"
+subtitle: "Session 8 · Lesson D4b · Robot Rockstars · SPIKE Prime + Pybricks"
+date: today
+format: revealjs
+---
+
+# A. Warm-Up {.sdaia-dark background-gradient="linear-gradient(135deg, #1C355E, #00C9A7)"}
+
+Nothing new today. You already own every piece. Today you **type** them. ⌨️
+
+## Cold write: no peeking 🧊
+
+::: {.qbox}
+[Laptop lid down, pencil out. Write `gyro_turn(target)` **from memory**: two speeds, the crawl zone, the stop.]{.qtitle}
+:::
+
+::: {.fragment .fade-up}
+Then open your file and compare, line by line. **Circle what you forgot.**
+:::
+
+⏱️ **Time: 10 minutes**
+
+::: {.notes}
+The cold write is the day's diagnostic (decision #56's warm-up pattern): what a student can't write from memory, they don't own yet. Walk the room and look at what gets circled. The usual gaps are the `reset_heading(0)` at the top and the `stop()` lines at the end. Don't correct on paper; the diff against their own file does the teaching. Anyone who can't start at all pairs with a neighbour for problem 1.
+:::
+
+## Your toolbox
+
+| You own | It does |
+|:--|:--|
+| `run_angle` | drive a counted number of degrees |
+| degrees = distance ÷ 27.6 × 360 | turn any distance into degrees |
+| `for side in range(n)` | repeat `n` times |
+| `gyro_turn(target)` | turn with the crawl cure |
+| `def name(thing):` | write a recipe once, call it by name |
+
+::: {.fragment .fade-up}
+::: {.cardbox .teal}
+Three problems. **Each one is a `def`.** Every piece you need is on this table.
+:::
+:::
+
+# B. Three Problems {.sdaia-dark background-gradient="linear-gradient(135deg, #1C355E, #FF7A5C)"}
+
+Read the card. Plan it in words. **Then** type.
+
+## Problem 1: `drive_cm` 📏
+
+::: {.callout-important}
+## The card
+Write `drive_cm(cm)`. It drives the robot **straight forward** by `cm` centimetres.
+
+**Test it:** `drive_cm(30)`, then `drive_cm(100)`. Tape-measure both.
+:::
+
+::: {.fragment .fade-up}
+::: {.cardbox .purple}
+Stuck? Say the plan out loud: *"turn the centimetres into degrees, then spin both wheels that many degrees."*
+:::
+:::
+
+⏱️ **Time: 20 minutes**
+
+::: {.notes}
+The beam-balance formula, now living inside a recipe. A working answer:
+
+```python
+def drive_cm(cm):
+    degrees = cm / 27.6 * 360
+    left.run_angle(400, degrees, wait=False)
+    right.run_angle(400, degrees)
+```
+
+Accept any correct shape: a `SPEED` constant, a different speed, the maths inline in the call. The two classic bugs: forgetting `wait=False` on the first wheel (the robot drives one wheel, then the other, and curves), and calling `drive_cm` with no number. Both are D2 and D4a knowledge, so ask, don't tell. The measured distance will come up a little short; that is slip and coast, not their maths.
+:::
+
+## Problem 2: `shape` 🔺
+
+::: {.callout-important}
+## The card
+Write `shape(sides)`. It drives **any** closed shape with sides of 30 cm: `shape(3)` a triangle, `shape(4)` a square, `shape(6)` a hexagon.
+
+**Test it:** `shape(3)`, then `shape(4)`.
+:::
+
+::: {.fragment .fade-up}
+::: {.cardbox .purple}
+Stuck? Your **Shape Shifter** loop is most of it. And `drive_cm` is already yours.
+:::
+:::
+
+⏱️ **Time: 20 minutes**
+
+::: {.notes}
+The new idea hiding in plain sight: a `def` that calls another `def`. A working answer:
+
+```python
+def shape(sides):
+    for side in range(sides):
+        drive_cm(30)
+        gyro_turn(360 / sides)
+```
+
+Students who paste the whole Shape Shifter body instead of calling `drive_cm` get it working too; praise it, then ask "which line would you change if the sides had to be 40 cm?" The ones who called `drive_cm` change one number. If a triangle opens up, the cause is `gyro_turn`'s crawl zone on 120° corners, which is next session's break-it; note who spots it and move on.
+:::
+
+## Problem 3: `there_and_back` 🔁
+
+::: {.callout-important}
+## The card
+Write `there_and_back(cm)`. The robot drives out `cm` centimetres, turns around, and comes **home** to where it started, facing the same way it began.
+
+**Test it:** tape a start mark. `there_and_back(50)`. How close to the mark does it finish?
+:::
+
+::: {.fragment .fade-up}
+::: {.cardbox .purple}
+Stuck? Act it out first: walk it yourself and count the moves. **How many turns does "facing the same way" need?**
+:::
+:::
+
+⏱️ **Time: 20 minutes**
+
+::: {.notes}
+The trap is the last clause: most first drafts turn once and stop facing backwards. Walking it out finds the second 180. A working answer:
+
+```python
+def there_and_back(cm):
+    drive_cm(cm)
+    gyro_turn(180)
+    drive_cm(cm)
+    gyro_turn(180)
+```
+
+Fast squads: call it three times in a row and measure how far the robot has wandered from the mark. The wander is real and it is tomorrow's business, not a mistake.
+:::
+
+# C. Show and Swap {.sdaia-dark background-gradient="linear-gradient(135deg, #1C355E, #625D9C)"}
+
+Your code, a classmate's robot. 🔄
+
+## Swap files 🤝
+
+- Give your `shape` to the next squad. They run it **on their robot**.
+- Does it work first time? If not, **which number** had to change?
+
+::: {.fragment .fade-up}
+::: {.cardbox .teal}
+If the fix was one number at the top, your recipe was well written. If the fix was ten lines, it wasn't.
+:::
+:::
+
+⏱️ **Time: 10 minutes**
+
+::: {.notes}
+Stretch for squads who finish all three. The point is the plan's D4b stretch, "refactor a classmate's": reading someone else's `def` is a different skill from writing your own. The robots differ (ports, tuning numbers on the sticky note), so almost every swap needs *some* change. Steer the discussion to where that change lived. This also seeds the D5 library and the D8 `ROBOT FACTS` block without naming either.
+:::
+
+# D. Gate {.sdaia-dark background-gradient="linear-gradient(135deg, #1C355E, #00C9A7)"}
+
+Three recipes, all yours. 📝
+
+## Today's gate
+
+::: {.callout-important}
+## You're done today when…
+You wrote a working `def` for a problem you had **never seen**, **without help**, and your robot ran it.
+:::
+
+::: {.fragment .fade-up}
+Next: *The Drive That Heals Itself*. A stopwatch joins the race, and your crawl zone meets its match.
+:::
+
+::: {.notes}
+The gate is the plan's D4b floor verbatim: produces a working `def` for an unfamiliar problem unaided. Problem 1 alone is enough to pass; check that the student typed it, not their partner. Nothing is taught today on purpose (decision #55: every concept day is followed by a production day). Use a bare file for the individual check: convert a fresh distance, write a function that uses the result, and call it. A student who needs help gets targeted practice and a fresh unaided attempt before P control. Cut optional problems or later stretches to protect this prerequisite; a partner's working file is not a pass.
+:::

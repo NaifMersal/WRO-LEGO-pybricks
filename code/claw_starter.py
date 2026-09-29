@@ -4,14 +4,15 @@ from pybricks.tools import wait
 
 CLAW_PORT = Port.E
 CLAW_DIRECTION = Direction.CLOCKWISE
-OPEN_SPEED = 300
-CLOSE_SPEED = 200
+CLAW_GEARS = [12, 20]  # motor gear, output gear
+OPEN_SPEED = 180
+CLOSE_SPEED = 120
 OPEN_TARGET = 0
-GRIP_TARGET = 120
+CLOSE_TARGET = 72
 HOME_TORQUE = 220
-GRIP_TORQUE = 180
+SQUEEZE_TORQUE = 180
 
-claw = Motor(CLAW_PORT, CLAW_DIRECTION)
+claw = Motor(port=CLAW_PORT, positive_direction=CLAW_DIRECTION, gears=CLAW_GEARS)
 
 
 def home():
@@ -24,4 +25,4 @@ def home():
     wait(200)
     claw.reset_angle(0)
 
-    claw.control.limits(torque=GRIP_TORQUE)
+    claw.control.limits(torque=SQUEEZE_TORQUE)

@@ -1,6 +1,6 @@
 ---
 title: "Stop at the Wall"
-subtitle: "Day 7 · Robot Rockstars · SPIKE Prime + Pybricks"
+subtitle: "Session 12 · Lesson D7 · Robot Rockstars · SPIKE Prime + Pybricks"
 date: today
 format: revealjs
 ---
@@ -29,12 +29,57 @@ Recap by asking, not telling: "how does the robot know where it is?" Yesterday's
 
 ## 🤖 Robots out: Line King rematch 👑
 
-- 🛣️ `follow_line(600)` on the mat's staff lines: **hold the curve**
-- 📐 finish with `square_on_line()` at the junction: **sit square**
+- 🛣️ `move.follow_line(600)` on the mat's staff lines: **hold the curve**
+- 📐 **Two eyes:** finish with `move.square_on_line()`; **one eye:** explain why the wall will do that job today
 - ⏱️ **15 minutes**, then the robot gets its sense of touch
 
 ::: {.notes}
 Drill-first (decision #22): yesterday's compete replayed as the warm-up, on the real mat. It re-proves the two verbs the anchor run leans on — the tuned P follower and the junction square — and it surfaces overnight drift: if a squad's follower wobbles today, the first question is the threshold (did the light change? re-read white/black, re-split), not the code. Squads that finish early re-run for speed — that's the Speed Demon itch, let them scratch it. Logistics: mat on the ground, no table yet (decision #23) — the wall board goes at the mat edge for the stall work next; nothing today needs borders at true positions. Keep it to 15 minutes; the leaderboard can wait for Gentle Giant.
+:::
+
+## Before the wall: can it reverse? ↩️
+
+Our first `drive_straight` only drove forward. Predict this call:
+
+```{.python}
+move.drive_straight(-50)  # back away by 50 mm?
+```
+
+::: {.fragment .fade-up}
+::: {.cardbox .coral}
+The old finish line is **behind** the current wheel angle. Its `while angle < finish` check is False immediately, so it never drives.
+:::
+:::
+
+Choose the direction with `if`. Measure distance travelled with `abs()`.
+
+::: {.notes}
+This is a required prerequisite, not a stretch. Run the old version once, predict the first check, then upgrade the function on the next slide. Both if and abs are familiar. Ten minutes including the forward/backward bench check.
+:::
+
+## A straight in either direction {.code-shrink}
+
+```{.python}
+def drive_straight(distance_mm, speed=400):
+    if distance_mm < 0:
+        direction = -1
+    else:
+        direction = 1
+    start = left.angle()
+    heading = hub.imu.heading()
+    travel = abs(distance_mm) * DEG_PER_MM
+    while abs(left.angle() - start) < travel:
+        error = hub.imu.heading() - heading
+        left.run(direction * abs(speed) - KP * error)
+        right.run(direction * abs(speed) + KP * error)
+        wait(5)
+    left.stop(); right.stop()
+```
+
+Test `move.drive_straight(100)`, then `move.drive_straight(-100)`. A zero-distance call stays still.
+
+::: {.notes}
+Replace the forward-only definition in movements.py. The distance sign selects travel direction; speed is a magnitude. The wheel-angle difference measures progress from this call's start, without resetting the gyro or wheel counters. The gyro correction keeps the same signs in reverse: positive yaw still needs leftward correction. Check positive, negative and zero distances before approaching the wall. This upgrade is the code all later back-off calls use.
 :::
 
 # B. The Motor Is a Sensor {.sdaia-dark background-gradient="linear-gradient(135deg, #1C355E, #FF7A5C)"}
@@ -44,7 +89,8 @@ No distance sensor anywhere on this robot, and it already knows how to **feel**.
 ## Feel it: see the invisible 📉
 
 ```{.python}
-# Run this ALONE first -- watch the number, not the robot.
+# Wheels lifted first; the loop reads a motor already running.
+left.run(150)
 while True:
     print("wheel speed:", left.speed())
     wait(100)
@@ -71,7 +117,7 @@ left.run_until_stalled(APPROACH_SPEED,
                        duty_limit=50)   # …until LEFT jams
 right.stop()
 hub.speaker.beep()           # "I arrived"
-drive_straight(-BACKOFF_MM)         # measured, repeatable
+move.drive_straight(-BACKOFF_MM)    # measured, repeatable
 ```
 
 🤖 **Robots out.** Build it and tune `BACKOFF_MM` against the board. This is today's competition in seven lines.
@@ -83,7 +129,7 @@ Gentle touch · wait for the jam · back off a **measured** `BACKOFF_MM`.
 :::
 
 ::: {.notes}
-Stress the gentleness knobs: a low approach speed (≈150 deg/s) and `duty_limit=50` — the duty limit caps how hard the motor is *allowed* to push, so the reading is crisp and the LEGO survives. Driving straight into a wall jams both wheels, so watching ONE motor is enough — `run_until_stalled` blocks on the left while the right just rolls. Line 6 calls their own `drive_straight` with a *negative* distance — the challenge parked at the library day is now urgent: flip the `while` comparison (or mirror it for negatives) in `movements.py`, two-minute fix, big payoff. Back-off is measured, not guessed — `BACKOFF_MM = 50` ends exactly 5 cm off the wall, every run. (The pro equivalent, `DriveBase.stalled()`, arrives with the D8 reveal.)
+Stress the gentleness knobs: a low approach speed (≈150 deg/s) and `duty_limit=50` — the duty limit caps how hard the motor is *allowed* to push, so the reading is crisp and the LEGO survives. Driving straight into a wall jams both wheels, so watching ONE motor is enough — `run_until_stalled` blocks on the left while the right just rolls. The negative-distance call uses the upgraded `drive_straight` that every student tested in today's warm-up. Ask which line selects reverse and which line measures the distance. Back-off is measured, not guessed — `BACKOFF_MM = 50` ends exactly 5 cm off the wall, every run. (The pro equivalent, `DriveBase.stalled()`, arrives with the D8 reveal.)
 :::
 
 # C. Patrol & React {.sdaia-dark background-gradient="linear-gradient(135deg, #1C355E, #00C9A7)"}
@@ -115,12 +161,12 @@ hub.imu.reset_heading(0)
 for lap in range(PATROL_LAPS):          # counted repeat = laps
     left.run(PATROL_SPEED); right.run(PATROL_SPEED)
     while not left.stalled():           # repeat until the wall
-        if left_eye.reflection() < REFLECT_THRESHOLD:
+        if left_eye.reflection() < THRESHOLD:
             hub.speaker.beep(880)       # react, don't stop
         wait(10)
     left.stop(); right.stop()
-    drive_straight(-BACKOFF_MM)                # measured back-off
-    turn(90 * (lap + 1), absolute=True)   # absolute appointment
+    move.drive_straight(-BACKOFF_MM)           # measured back-off
+    move.turn(90 * (lap + 1), absolute=True)   # absolute appointment
 ```
 
 ::: {.fragment .fade-up}
@@ -163,7 +209,7 @@ Both wheels flat on the wall → heading **known again**. **The wall never lies.
 :::
 
 ::: {.notes}
-Same promotion ritual as the library day: the morning's loose fix-it lines get names and move into `movements.py`, right under `drive_straight` and `turn`. Walk `wall_square` slowly — it's the first verb whose *output* is trust, not motion: waiting for BOTH motors to stall means the bumper is flat on the wall, so the physical world just told you your heading exactly; `reset_heading(heading)` writes that truth back into the gyro, and the measured back-off leaves you at a known distance too. Gyro drift accumulates over a 2-minute run — squaring is how Weeks 3–4 missions reset it between tasks, which is why this humble verb outlives almost everything else. Demo: spin the robot a few times by hand (drift injected), wall_square, then a `turn(90, absolute=True)` — still true. Table note (decision #23): until the bordered table exists, `wall_square` trains on the fixed board; when the table lands we re-validate it at the true border positions — that's the table-arrival checkpoint.
+Same promotion ritual as the library day: the morning's loose fix-it lines get names and move into `movements.py`, right under `drive_straight` and `turn`. Walk `wall_square` slowly. Its loop header is *Line King*'s `square_on_line` check with `stalled()` swapped in for the eye: ask the room to read `not (… and …)` aloud before explaining anything. It's the first verb whose *output* is trust, not motion: waiting for BOTH motors to stall means the bumper is flat on the wall, so the physical world just told you your heading exactly; `reset_heading(heading)` writes that truth back into the gyro, and the measured back-off leaves you at a known distance too. Gyro drift accumulates over a 2-minute run — squaring is how Weeks 3–4 missions reset it between tasks, which is why this humble verb outlives almost everything else. Demo: spin the robot a few times by hand (drift injected), wall_square, then a `turn(90, absolute=True)` — still true. Table note (decision #23): until the bordered table exists, `wall_square` trains on the fixed board; when the table lands we re-validate it at the true border positions — that's the table-arrival checkpoint.
 :::
 
 ## Read the scoresheet: anchor first 🗺️
@@ -181,7 +227,7 @@ Same promotion ritual as the library day: the morning's loose fix-it lines get n
     <line x1="432.4" y1="34" x2="432.4" y2="104" stroke="#625D9C" stroke-width="2" stroke-dasharray="5 4"/>
     <text class="label purple" x="432.4" y="28" font-size="12" font-weight="800" text-anchor="middle">&#8776;135 &#183; the gate</text>
     <line x1="551.6" y1="104" x2="551.6" y2="120" stroke="#E96852" stroke-width="2" stroke-dasharray="5 4"/>
-    <text class="label coral" x="551.6" y="134" font-size="12" font-weight="800" text-anchor="middle">&#8776;175 &#183; D24 stretch</text>
+    <text class="label coral" x="551.6" y="134" font-size="12" font-weight="800" text-anchor="middle">&#8776;175 &#183; post-gate stretch</text>
     <text class="label" x="790" y="134" font-size="12" font-weight="800" text-anchor="end">255 max</text>
   </svg>
   <div id="scMsg" class="sim-msg">the anchor run scores <b>~135 with NO color sensor</b>, and that's what we build first.</div>
@@ -200,7 +246,7 @@ Same promotion ritual as the library day: the morning's loose fix-it lines get n
   var msgs=[
     'the anchor run scores <b>~135 with NO color sensor</b>, and that\'s what we build first.',
     '<b>Anchor ~135</b>: Instruments 45 · Cables 30 · Avoidance 40 · Microphone 20, zero color needed. 🧱',
-    '<b>+40 fixed notes</b> (green/red) → <b>~175</b>: a D24 stretch, taken only after the lock. 🎶',
+    '<b>+40 fixed notes</b> (green/red) → <b>~175</b>: a post-gate stretch, taken only after the lock. 🎶',
     '<b>+80 randomized notes</b> → <b>255</b>: the Week-5 stretch. Anchor first, always. 🌈'
   ];
   function xw(pts){ return pts/TOT*W; }

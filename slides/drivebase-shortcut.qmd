@@ -1,13 +1,13 @@
 ---
 title: "The Earned Shortcut"
-subtitle: "Day 8 · Robot Rockstars · SPIKE Prime + Pybricks"
+subtitle: "Session 13 · Lesson D8 · Robot Rockstars · SPIKE Prime + Pybricks"
 date: today
 format: revealjs
 ---
 
 # A. Warm-Up {.sdaia-dark background-gradient="linear-gradient(135deg, #1C355E, #00C9A7)"}
 
-Two weeks, one library, every verb hand-built and proven. Today teams form, one robot gets chosen, and you collect a surprise you've been earning since the square wouldn't close. 🎁
+Two weeks, one library, every verb hand-built and proven. Today your code drives a robot it has never met, and you collect a surprise you've been earning since the square wouldn't close. 🎁
 
 ## Where we left off
 
@@ -15,26 +15,25 @@ Two weeks, one library, every verb hand-built and proven. Today teams form, one 
 |---|---|
 | 📦 **`movements.py`** | `drive_straight` · `drive_to_wall` · `wall_square` · `follow_line` · `square_on_line` in one module, with one constants block |
 | 🧱 **the wall verbs** | stall, back off, square up: the reset that erases drift |
-| 🏁 **the gauntlet** | every verb proven alone *and* in sequence, under a judge's clock |
 
 ::: {.fragment .fade-up}
-🤔 Everything above was built by **one student, for one robot**. Today five students become **two teams**, and each team keeps just **one** robot. What happens to four robots' worth of carefully tuned code?
+🤔 Everything above was built by **one student, for one robot**. What happens when that code has to drive **somebody else's** robot?
 :::
 
 ⏱️ **Time: 10 minutes**
 
 ::: {.notes}
-Recap fast — the room already owns all of it; the table is there to make the *inventory* visible because today it gets audited. The warm-up question is the day's whole arc: the merge (code from several authors onto one robot) is the break-it that motivates the ROBOT FACTS block, and the reveal + draft close the two-week chapter. Structure of the day: Mini Mission finale runs in the competition window as usual; the draft itself lands after the gate. Keep the DriveBase surprise unspoiled until Act C.
+Recap fast — the room already owns all of it; the table is there to make the *inventory* visible because today it gets audited. The warm-up question is the day's whole arc: the robot swap (your code onto a neighbour's robot) is the break-it that motivates the ROBOT FACTS block, and the reveal closes the two-week chapter. Structure of the day: *Gauntlet* runs in the competition window on the migrated library. Teams form at *Draft Day*, not here (decision #65 closes open decision #5), and robot selection waits until the D18 consolidation. Keep the DriveBase surprise unspoiled until Act C.
 :::
 
 # B. One Robot, Many Files {.sdaia-dark background-gradient="linear-gradient(135deg, #1C355E, #FF7A5C)"}
 
-Your new team keeps **one** robot. Everyone's code was tuned for a *different* one. 😬
+Swap robots with your neighbour. Your code was tuned for a *different* one. 😬
 
 ## Break it: the merge 🔥
 
 ::: {.qbox}
-[Your team just picked its robot, and it's **not yours**. Your `movements.py` thinks the wheels are 88 mm, and the chosen robot's are 87. Your teammate's turn `kp` is tuned hotter. A motor sits on a different port. How many edits until *your* mission runs on *this* robot?]{.qtitle}
+[Your code, your **neighbour's** robot. Your `movements.py` thinks the wheels are 88 mm, and this robot's are 87. Your neighbour's turn `kp` is tuned hotter. A motor sits on a different port. How many edits until *your* mission runs on *this* robot?]{.qtitle}
 :::
 
 ```{=html}
@@ -63,12 +62,12 @@ Your new team keeps **one** robot. Everyone's code was tuned for a *different* o
 
 ::: {.fragment .fade-up}
 ::: {.cardbox .coral}
-Every file was tuned for a robot that just became a **parts donor**. The facts (wheels, ports, gains, speeds) are *scattered* across files and functions, so a robot swap means **twenty hunted edits**, and missing one means the robot **lies quietly**. The facts need **one home**.
+Every file was tuned for **one** robot, and it isn't this one. The facts (wheels, ports, gains, speeds) are *scattered* across files and functions, so a robot swap means **twenty hunted edits**, and missing one means the robot **lies quietly**. The facts need **one home**.
 :::
 :::
 
 ::: {.notes}
-Make it concrete with the team's actual files if the draft order allows — three real constants blocks on screen beats the mock-up. Sharpen the sting: it's not just today's merge. The donor pool means a swap can happen *again* mid-season (a cracked chassis at Week 4 pace), and next time there's no afternoon to spare. Elicit the shape of the fix before naming it — they've done this twice: constants block (square day), library module (consolidation day). Same instinct, one level up: promote the constants to a single shared *object* the whole team's code reads.
+Make it concrete with two neighbours' actual files — real constants blocks on screen beat the mock-up. Sharpen the sting: it's not just today's swap. Teams will run one robot each later in the course, and a swap can happen *again* mid-season (a cracked chassis at Week 4 pace), and next time there's no afternoon to spare. Elicit the shape of the fix before naming it — they've done this twice: constants block (square day), library module (consolidation day). Same instinct, one level up: promote the constants to a single block every file reads.
 :::
 
 ## Fix it: `ROBOT FACTS`, the robot in one place {.code-shrink}
@@ -82,7 +81,7 @@ EYE_PORT         = Port.D     # yours
 LEFT_DIRECTION  = Direction.COUNTERCLOCKWISE   # flip if it reverses  TUNE
 RIGHT_DIRECTION = Direction.CLOCKWISE                             # TUNE
 
-WHEEL_DIAMETER = 88           # mm, MEASURE the team robot        TUNE
+WHEEL_DIAMETER = 88           # mm, MEASURE this robot            TUNE
 AXLE_TRACK     = 128          # mm, wheel centre to centre        TUNE
 
 CRUISE_SPEED   = 300          # mm/s
@@ -100,34 +99,9 @@ One **block at the top of the file**, a name on every line, `TUNE` on everything
 No classes today, and none this season — a plain block of named constants does the whole job, and every student can already read one. Walk the categories: ports, geometry, tuned knobs — point out these are exactly the numbers that differed across the three files on the last slide. Make `TUNE` the habit: it marks every value that must be *measured on this robot*, so a squad scanning the block knows exactly what a robot swap costs them. The full gold-reference block is in `code/movements.py`; teams copy it and edit *their* measured values.
 :::
 
-## Every verb reads the block
-
-```{.python code-line-numbers="|1-3|5-6|8-10"}
-# movements.py -- the verbs READ the block, they don't hide numbers
-left_motor  = Motor(LEFT_MOTOR_PORT, LEFT_DIRECTION)
-right_motor = Motor(RIGHT_MOTOR_PORT, RIGHT_DIRECTION)
-
-robot = DriveBase(left_motor, right_motor,
-                  WHEEL_DIAMETER, AXLE_TRACK)
-
-def drive_straight(distance_mm, speed=CRUISE_SPEED):
-    robot.settings(straight_speed=speed)
-    robot.straight(distance_mm)
-```
-
-::: {.fragment .fade-up}
-::: {.cardbox .purple}
-New robot? **Measure it, edit the block, done.** The library and every mission file never change, and the donor pool just became a *one-line insurance policy*. 🛡️
-:::
-:::
-
-::: {.notes}
-The team exercise that proves it (from the exemplar): run the merged code with teammate A's old constants on the chosen robot — watch the square miss; then fix ONLY the ROBOT FACTS block and rerun — the square closes. One file changed, zero functions touched. That felt difference is the lesson. Also flag the discipline cost honestly: from today, hard-coding a number inside a function is a team foul — a merge conflict waiting to happen. The constants block habit from the library days is what made this promotion cheap. Continuity note: squads' own `movements.py` from D5 may still spell the turn knob `gain=` — fold the rename into today's promotion and say it once: "we've been calling this knob the gain; its code name is `kp`, same K-family as the `KP` constants."
-:::
-
 # C. The Reveal: Let DriveBase Drive {.sdaia-dark background-gradient="linear-gradient(135deg, #1C355E, #625D9C)"}
 
-You built gyro turns, self-healing straights, and all three letters of P·I·D by hand, from raw motors. Now meet the pro version that's been in the box all along. 🎁
+You built gyro turns, self-healing straights, and P/PD control by hand, from raw motors. Now meet the pro version that's been in the box all along. 🎁
 
 ## You built a robot driver 🏆
 
@@ -151,7 +125,7 @@ You built gyro turns, self-healing straights, and all three letters of P·I·D b
 
 ::: {.fragment .fade-up}
 ::: {.cardbox .teal}
-Pybricks ships both moves, polished and tested, inside one tool: **`DriveBase`**. It runs a professional **P·I·D** on every move, and you'll understand *every letter* of it, because you spent two weeks building all three.
+Pybricks ships both moves inside **`DriveBase`**, using built-in feedback control. Your own P and D work helps you understand its corrections. The optional coach demonstration introduces the I term.
 :::
 :::
 
@@ -174,14 +148,16 @@ It's your **turn-circle**! You ran that math by hand once to get 131, and DriveB
 :::
 
 ::: {.notes}
-Both numbers are measured, not copied: roll the wheel 5 turns, divide by 5 and π for diameter (they'll land near 88); the track they measured on Day 3 for the 131 derivation (≈128 mm on the coach's build; the stock ADB is ≈114) — have each *team* re-measure its chosen robot now, since that's the number going into its config. Wrong track → every turn systematically over- or under-shoots: that's the afternoon's tuning conversation (`robot.settings()`). If asked *why* the track matters: a spin-in-place drives the wheels around a circle as wide as the axle track — wider track = more wheel-degrees per robot-degree.
+Both numbers are measured, not copied: roll the wheel 5 turns, divide by 5 and π for diameter (they'll land near 88); the track they measured on Day 3 for the 131 derivation (≈128 mm on the coach's build; the stock ADB is ≈114) — have each student re-measure their own robot now, since that's the number going into its config. Wrong track → every turn systematically over- or under-shoots: that's the afternoon's tuning conversation (`robot.settings()`). If asked *why* the track matters: a spin-in-place drives the wheels around a circle as wide as the axle track — wider track = more wheel-degrees per robot-degree.
 :::
 
 ## Build your DriveBase from the block
 
-```{.python code-line-numbers="|1|3-4|5|6"}
+```{.python code-line-numbers="|1|3-4|5-6|7|8"}
 from pybricks.robotics import DriveBase   # now earned
 
+left_motor = Motor(LEFT_MOTOR_PORT, LEFT_DIRECTION)
+right_motor = Motor(RIGHT_MOTOR_PORT, RIGHT_DIRECTION)
 robot = DriveBase(left_motor, right_motor,
                   WHEEL_DIAMETER, AXLE_TRACK)
 robot.use_gyro(True)  # your gyro + full PID, switched on
@@ -190,6 +166,25 @@ robot.settings(straight_speed=CRUISE_SPEED)
 
 ::: {.cardbox .teal}
 `DriveBase` speaks **mm and robot-degrees**, as in `robot.straight(300)` and `robot.turn(90)`. With `use_gyro(True)` every move is *watched* and *PID-corrected*, exactly like yours were. Its two constructor arguments are the two facts you measured: **wheel diameter** and **axle track**.
+:::
+
+## Every verb reads the block
+
+```{.python code-line-numbers="|2|3-4"}
+# movements.py -- the verbs READ the block, they don't hide numbers
+def drive_straight(distance_mm, speed=CRUISE_SPEED):
+    robot.settings(straight_speed=speed)
+    robot.straight(distance_mm)
+```
+
+::: {.fragment .fade-up}
+::: {.cardbox .purple}
+New robot? **Measure it, edit the block, done.** The library and every mission file never change, and the donor pool just became a *one-line insurance policy*. 🛡️
+:::
+:::
+
+::: {.notes}
+Prove the swap with a measured straight and a turn: test the old constants on the neighbour's robot, change the ROBOT FACTS block, and repeat. Use the square only for students who completed that extension. Compare the measured errors before and after tuning. One file changed, and the functions kept their names. New robot facts belong in the block so the next swap does not require hunting through the functions.
 :::
 
 ## ✂️ Now delete your turn verb
@@ -332,7 +327,7 @@ Run the duel on the real robots too — their drive_straight next to robot.strai
 - `drive_straight()`, new insides and the **same name**
 - `drive_to_wall()` · `wall_square()`, the *feel* verbs
 - `follow_line()` · `square_on_line()`, the *eyes* verbs
-- every mechanism verb Week 3 will add
+- the mechanism functions you will add during the build sessions
 :::
 
 ::::
@@ -344,55 +339,38 @@ Run the duel on the real robots too — their drive_straight next to robot.strai
 :::
 
 ::: {.notes}
-This boundary slide is the anti-demoralizer — put numbers on it: two verbs retire, five survive today, and every mechanism verb from Week 3 joins the surviving side. Be precise about *how* they retire, because the two cases differ. `drive_straight` **keeps its name**: it still does real work (it sets the speed, then drives), so its insides swap to `robot.straight()` and every mission list runs unchanged — that's the payoff of naming moves, swap the engine and keep the verb. The turn verb is the other case: `robot.turn()` already takes the same `absolute` flag, so wrapping it would add a name and nothing else — **it is deleted, not rewrapped.** `robot.stalled()` upgrades the inside of `drive_to_wall` without changing its name, same as `drive_straight`. Name one more so nobody is surprised later: **`square_on_line` changes shape inside.** The version they wrote on the line day drives both wheels and lets each one park itself the moment its own eye crosses — which works because those were two independent motors. Once the motors belong to a `DriveBase`, starting one stops the other, so the library version creeps until *either* eye finds the line and then pivots to bring the second one on. Same verb, same reason it needs two eyes, different insides — and that difference is itself the lesson about what you traded away for `DriveBase`'s gyro. Last, the zero: from today `hub.imu.reset_heading(0)` is the wrong verb — `DriveBase` owns the gyro now, so `robot.reset(angle=0)` is what says "this way is zero", and it moves the gyro and the odometer together. Say it out loud, because every program they wrote in the last fortnight opens with the old line, and a squad that keeps it ends up with two zeros that disagree.
+This boundary slide is the anti-demoralizer — put numbers on it: two verbs retire, five survive today, and every mechanism function from the build sessions joins the surviving side. Be precise about *how* they retire, because the two cases differ. `drive_straight` **keeps its name**: it still does real work (it sets the speed, then drives), so its insides swap to `robot.straight()` and every straight-driving call runs unchanged — that's the payoff of naming moves, swap the engine and keep the verb. The turn verb is the other case: `robot.turn()` already takes the same `absolute` flag, so wrapping it would add a name and nothing else — **it is deleted, not rewrapped.** `robot.stalled()` upgrades the inside of `drive_to_wall` without changing its name, same as `drive_straight`. Name one more so nobody is surprised later: **`square_on_line` changes shape inside.** The version they wrote on the line day drives both wheels and lets each one park itself the moment its own eye crosses — which works because those were two independent motors. Once the motors belong to a `DriveBase`, starting one stops the other, so the library version creeps until *either* eye finds the line and then pivots to bring the second one on. Same verb, same reason it needs two eyes, different insides — and that difference is itself the lesson about what you traded away for `DriveBase`'s gyro. Last, the zero: from today `hub.imu.reset_heading(0)` is the wrong verb — `DriveBase` owns the gyro now, so `robot.reset(angle=0)` is what says "this way is zero", and it moves the gyro and the odometer together. Say it out loud, because every program they wrote in the last fortnight opens with the old line, and a squad that keeps it ends up with two zeros that disagree.
 :::
 
-# D. Draft Day {.sdaia-dark background-gradient="linear-gradient(135deg, #1C355E, #00C9A7)"}
+# D. Gauntlet & Gate {.sdaia-dark background-gradient="linear-gradient(135deg, #1C355E, #00C9A7)"}
 
-Today's showdown: **Mini Mission** 🎤, then the draft.
+Today's showdown: **Gauntlet** 🏁, on the migrated library.
 
-## Mini Mission 🎤
+## Gauntlet 🏁
 
 ::: {.callout-important}
 ## The challenge
-A **3-task run** (drive, turn, push an object home) in **60 seconds**. Everything from two weeks on one clock: integration, time management, nerve.
+A circuit of stations: **drive to a mark**, **stop at the wall**, **follow a line and square on a junction (two eyes) or a wall (one eye)**. Solve every station with **library calls only**. Score = stations cleared, tiebreak = time.
 :::
 
-- Plan it as a **sequence** of your verbs, written out longhand. The *list* that walks itself is still ahead of you.
-- Budget the clock: a clean 2-task run beats a chaotic 3-task attempt. *(Sound familiar? It's the anchor-first rule, in miniature.)*
+- No new loops, no pasted code: if a station needs a move, it is a verb in `movements.py`.
+- A station you can't clear with one call is telling you which verb is **not tuned yet**.
 
 ::: {.notes}
-Template is Competition Ready Lesson 8 "Mission Ready." This is the last solo competition and the scorecard's final data point — watch integration and composure, not just score. Call out anyone who deliberately drops to two tasks to bank clean points: that's competition maturity, praise it loudly — it's the exact instinct the anchor-first strategy needs from them in Week 4. After scores are recorded, close the leaderboard era warmly: from tomorrow the competition is team vs team.
-:::
-
-## The draft 🤝
-
-- Teams are formed on **who works well together and what each team needs**. Complementary skills beat matching skills.
-- Each team reviews its members' robots and **selects one** as its competition robot.
-- The unselected robots become the **parts donor pool**, your insurance one config edit away. 🛡️
-- From tomorrow: **team vs team, every day**, which doubles the mat time.
-
-::: {.fragment .fade-up}
-::: {.cardbox .teal}
-Your robot may retire to the donor pool. **Your code and your skills don't.** Everything merges onto the team robot through one `ROBOT FACTS` block, and both of the team's cross-trained roles need every verb you built. The draft picks a *chassis*, not a *coder*.
-:::
-:::
-
-::: {.notes}
-Say the framing line exactly as planned and nothing more: "I'm teaming you based on who works well together and what each team needs" — never rank, never "you scored lowest." The pairings are already decided from the private scorecard + library benchmarks; announce, don't debate. Give the selection its dignity: each team physically inspects its candidate robots (the four quality checks from Day 1 make a nice ritual return) before choosing. Handle the sting of an unselected robot with the card's line — the donor pool is genuinely valuable, not a consolation. Set up team build areas after the announcement.
+The plan's D8 competition. Set up three to four stations on the mat, each clearable by one or two verb calls: `drive_straight` to a taped mark, `drive_to_wall` + `wall_square`, `follow_line` into `square_on_line` for two-eye robots, or `wall_square` for one-eye robots. Score stations cleared; time breaks ties. The coach observes refactoring discipline and function-call fluency, and above all **which verbs are actually tuned**: a squad that pastes a loop to rescue a station has found an untuned verb, which is useful information, not a foul. Run it on the `DriveBase`-migrated library, so the duel's winner is doing real work.
 :::
 
 ## Today's gate
 
 ::: {.callout-important}
 ## You're done today when…
-Your library passes its benchmarks one last time **solo** (`drive_straight` ±2 cm · `robot.turn(…, absolute=True)` ±2° · wall and line verbs demonstrated · the runner walks a called mission), and your **team** leaves with one chosen robot, a donor pool, and a single `ROBOT FACTS` block that drives it with the merged code.
+Your `movements.py`, now driving **`DriveBase`**, runs the gauntlet end-to-end, and **one edit** in `ROBOT FACTS` retunes every move. Benchmarks still hold: `drive_straight` ±2 cm · `robot.turn(…, absolute=True)` ±2°.
 :::
 
 ::: {.fragment .fade-up}
-Next week: your robot grows **hands**, the mechanisms that turn driving skill into **scored points**, and the runner starts chaining them into the anchor run. 🔌🎤
+Next: *Draft Day*. Solo builders become **teams**, and the robots start growing **hands**. 🤝
 :::
 
 ::: {.notes}
-The student-facing end-of-week-2 gate: individual benchmarks (they're part of the draft evidence) plus the team artifacts — chosen robot, donor pool, one working config. The coach's own checklist for today (gold-reference validation against the same gate, dimensions/weight/wireless-off, CAD capture in BrickLink Studio) runs off-stage and isn't student material. Teaser lands on Week 3: mechanisms first — cables and microphone, instruments and avoidance — then the mission runner chains the ~135 anchor.
+The plan's D8 gate verbatim: the migrated module runs the gauntlet end-to-end; one edit in the constants block retunes every move. The benchmarks are the solo evidence the coach carries into Draft Day. Test the "one edit" leg live: change `WHEEL_DIAMETER` by a millimetre and ask which files had to change (one).
 :::

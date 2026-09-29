@@ -1,6 +1,6 @@
 """lift_gripper.py -- jaws that GRIP an object, then LIFT it.  Port C.
 
-    from movements import *
+    import movements as move          # named, like every import in the library
     import lift_gripper as lift       # named, NEVER star-imported
 
     lift.home()                       # shut on nothing = zero, then open ready
@@ -21,8 +21,9 @@ FROM ZERO. A big base stops the jaws at +45, a small one at +20; an absolute
 lift target would swing them to different heights. LIFT_TRAVEL is degrees
 *past contact*, so every object rises the same amount.
 
-POSITIVE OPENS, and zero is where the jaws MEET -- the same way round as
-claw_gripper.py, so a sign means the same thing in both files.
+POSITIVE OPENS, and zero is where the jaws MEET. claw_gripper.py counts the
+OTHER way (zero at its open stop, positive closes) -- check which file you
+are in before you flip a sign.
 """
 
 from pybricks.parameters import Direction, Port, Stop
@@ -43,12 +44,12 @@ CLOSE_SPEED = 200       # deg/s -- slow enough not to slam the object
 LIFT_SPEED = 150        # deg/s -- slowest: it is carrying now
 
 HOME_EFFORT = 50        # % raw power, home() only. Too high strips gears.  TUNE
-GRIP_TORQUE = 60        # mNm -- phase 1 squeeze. High crushes, low slips.  TUNE
-LIFT_TORQUE = 200       # mNm -- phase 2. MUST exceed GRIP_TORQUE or the
+SQUEEZE_TORQUE = 60     # mNm -- phase 1 squeeze. High crushes, low slips.  TUNE
+LIFT_TORQUE = 200       # mNm -- phase 2. MUST exceed SQUEEZE_TORQUE or the
                         # lift can never push past its own grip.            TUNE
 
 READY_ANGLE = 140       # deg open -- wide enough for your BIGGEST object.  TUNE
-GRIP_TARGET = -10       # deg past shut. Unreachable on purpose: the jaws never
+CLOSE_TARGET = -10      # deg past shut. Unreachable on purpose: the jaws never
                         # arrive, so they never stop leaning in.
 
 LIFT_TRAVEL = 60        # deg PAST CONTACT -- the lift itself. Not a position:
@@ -79,9 +80,9 @@ def home():
 def grab():
     """Squeeze the object, then lift it."""
     # PHASE 1 -- TORQUE. Aim past shut so we never arrive; lean in at
-    # GRIP_TORQUE until the object stops us. One behaviour, any object.
-    lift.control.limits(torque=GRIP_TORQUE)
-    lift.run_target(CLOSE_SPEED, GRIP_TARGET, then=Stop.HOLD, wait=False)
+    # SQUEEZE_TORQUE until the object stops us. One behaviour, any object.
+    lift.control.limits(torque=SQUEEZE_TORQUE)
+    lift.run_target(CLOSE_SPEED, CLOSE_TARGET, then=Stop.HOLD, wait=False)
     wait(100)                          # let it get moving before asking
     while not lift.stalled() and not lift.done():
         wait(10)
@@ -102,8 +103,8 @@ def grab():
 def release(angle=READY_ANGLE):
     """Set the object down and open the jaws. A smaller angle opens less.
 
-    Same rule as the claw: zero is where the jaws meet, so the number is how
-    far open you want them when the object is on the mat.
+    Zero is where the jaws meet, so the number is how far open you want
+    them when the object is on the mat.
     """
     # +LIFT_TRAVEL walks the lift back off, landing near the contact point
     # whatever it was -- so this never needs to remember where the grip

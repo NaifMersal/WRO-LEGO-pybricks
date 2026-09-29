@@ -1,6 +1,6 @@
 ---
 title: "Build Day"
-subtitle: "Day 1 · Robot Rockstars · SPIKE Prime + Pybricks"
+subtitle: "Sessions 1–2 · Lesson D1 · Robot Rockstars · SPIKE Prime + Pybricks"
 date: today
 format: revealjs
 ---
@@ -101,11 +101,11 @@ That's why we *understand* our code instead of memorizing it. **Every team membe
 
 | Week | Your robot learns to… |
 |:--:|---|
-| **1** | Build, drive straight, and sense |
-| **2** | Score its first missions · teams of 2 form |
-| **3** | Chain everything into **one big run** |
-| **4** | Do it **every single time** |
-| **5** | Sense color and **compete** |
+| **1** | Build, move, measure, and repeat |
+| **2** | Turn accurately and write your own functions |
+| **3** | Sense lines and walls, form teams, and build mechanisms |
+| **4** | Program the mechanisms and chain the anchor run |
+| **5** | Prove reliability and **compete** |
 
 ::: {.fragment .fade-up}
 A run that works **every time** beats a fancy one that sometimes doesn't. You leave with real **Python**, a robot **you** built, and a **certificate**.

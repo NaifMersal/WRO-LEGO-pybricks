@@ -1,6 +1,6 @@
 ---
 title: "Drive a Square"
-subtitle: "Day 3 · Robot Rockstars · SPIKE Prime + Pybricks"
+subtitle: "Session 6 · Lesson D3, part 2 · Robot Rockstars · SPIKE Prime + Pybricks"
 date: today
 format: revealjs
 ---
@@ -15,6 +15,7 @@ Yesterday you taught it *distance*. Today it learns *direction*, and **you** bui
 |---|---|
 | 📏 **Distance** | count **degrees**: 1 turn = **27.6 cm** |
 | 🧭 **Blindfolded** | no checking → it **drifts** |
+| 🔁 **Until It's True** | `while` keeps **checking**, and stops when the check turns False |
 
 ::: {.fragment .fade-up}
 🤔 It knows how far its *wheels* spun. But which way is it **pointing**?
@@ -271,55 +272,12 @@ for side in range(4):            # do the indented lines 4 times
 
 - Run it: prints **0, 1, 2, 3**. Computers start counting at 0.
 - Everything **indented** under the `for` is *inside* the loop.
+- Same two rules as `while`: a **colon** on the header, the body **pushed in**.
 
 ::: {.fragment .fade-up}
 ::: {.cardbox .teal}
 `range(4)` = "**4 times.**" Write it once, repeat it. A square = *one corner, four times*.
 :::
-:::
-
-## 🐛 Bug hunt: the missing colon
-
-::: {.qbox}
-[This `for` loop won't even start. Pybricks flags the **first line** in red. What's missing?]{.qtitle}
-:::
-
-```python
-for side in range(4)
-    left.run_angle(SPEED, SIDE_ANGLE, wait=False)
-    right.run_angle(SPEED, SIDE_ANGLE)
-```
-
-::: {.fragment .fade-up}
-::: {.cardbox .coral}
-`SyntaxError`: no **colon**. Every repeat header ends in `:`, which says *"block starts here."* Fix: `for side in range(4):`
-:::
-:::
-
-::: {.notes}
-The colon is invisible until it's missing — run it live so the red SyntaxError lands on the `for` line. Make the habit loud: say "colon" out loud every time you type a `for` or `while` header this week. This is the #1 typo of the day; naming it now saves ten rescues later.
-:::
-
-## 🐛 Bug hunt: the runaway line
-
-::: {.qbox}
-[The colon's there now… and it *still* won't run. Read the error. It points at **line 2.**]{.qtitle}
-:::
-
-```python
-for side in range(4):
-left.run_angle(SPEED, SIDE_ANGLE, wait=False)
-right.run_angle(SPEED, SIDE_ANGLE)
-```
-
-::: {.fragment .fade-up}
-::: {.cardbox .coral}
-`IndentationError`: lines inside a loop must be **pushed in** (one Tab). No indent, no "inside." The spaces tell Python what repeats.
-:::
-:::
-
-::: {.notes}
-Indentation-as-meaning is the single biggest beginner hurdle — spend a beat. Show both side by side: flush-left (crashes) vs. indented (runs). Then the sneaky version if time allows: indent **only** line 2 — no crash, but the right wheel fires once, outside the loop. "It ran but it's wrong" is scarier than a crash, and that's exactly the lesson.
 :::
 
 ## The square: one corner, four times
@@ -488,6 +446,32 @@ for _ in range(100):            # ~10 seconds of just… feeling
 :::
 :::
 
+## Which way, and how far? ➕➖
+
+```
+  -20    -10     0     +10    +20
+   ◀──── left ───┼─── right ────▶
+```
+
+- `heading()` reads **+8**: the nose swung **right**, 8°.
+- It reads **−5**: the nose swung **left**, 5°.
+- The **sign** says which way. The number says how far.
+
+::: {.fragment .fade-up}
+```{.python}
+print(abs(-5))    # 5
+print(abs(8))     # 8
+```
+
+::: {.cardbox .teal}
+`abs()` throws the sign away and keeps **how far**. "How far off am I?" is `abs(heading)`, whichever way you missed.
+:::
+:::
+
+::: {.notes}
+Five minutes, and it is the day's only arithmetic detour (decision #55): the gyro is the first thing in the course that hands back a signed number, so the number line lands here, not later. Draw the line on the board and walk a finger along it: twist the robot a little right, read +8, point at +8; a little left, read −5, point at −5. Then ask: "which miss is bigger, +8 or −5?" and let the room argue about whether −5 is "smaller". `abs()` settles it. The P-controller will lean on signed error without re-teaching it, and Shape Shifter's closure gap is exactly `abs()` of the final heading miss, so name that at the gate.
+:::
+
 # D. Steer With It {.sdaia-dark background-gradient="linear-gradient(135deg, #1C355E, #00C9A7)"}
 
 The gyro knows the truth. Now hand it the steering wheel, one line at a time.
@@ -502,19 +486,19 @@ No code. Say the plan out loud.
 
 ::: {.fragment .fade-up}
 ::: {.cardbox .purple}
-"Spin. **Keep watching** the heading. The instant it says 90, **stop**." A turn that *watches itself*. New trick: repeating *while* something is true.
+"Spin. **Keep watching** the heading. The instant it says 90, **stop**." A turn that *watches itself*. You already own the loop for that.
 :::
 :::
 
-## New trick: `while`
+## You already own `while`
 
 ```{.python code-line-numbers="|1|2"}
-while hub.imu.heading() < 90:   # as long as this check is TRUE…
+while hub.imu.heading() < 90:   # last session: left.angle() < 360
     wait(5)                     # …wait 5 ms, then check again
 ```
 
+- Same loop as *Until It's True*. The check now reads the **gyro**, not the wheel.
 - `for` repeats a *known* count. `while` repeats **while a check is true**.
-- This loop does nothing but **watch**, hundreds of gyro checks per second.
 
 ::: {.fragment .fade-up}
 ::: {.cardbox .teal}
@@ -605,7 +589,7 @@ The day's two loops, nested — say it out loud: `for` repeats a known count, `w
 Field the "but yesterday's turn was *smoother*" objection with the purple card, don't dodge it: `run_angle` eased off the gas into its target (smooth ride, but slip-blind — it drifted), while this `while`/`stop()` turn runs flat-out then coasts (honest heading, rough ride). If a squad says "the calculation looked nicer," agree — then point at where each square *finished*: smooth lost on accuracy. The lurch is a *driving* problem D4 cures (arrive slowly, then a controller), not a gyro problem — do NOT preview the fix, just name that it's coming.
 :::
 
-## Pro move: targets that climb 🧗 {.smaller}
+## Stretch: targets that climb 🧗 {.smaller}
 
 ::: {.qbox}
 [Each corner resets heading to 0. But heading *keeps counting*: 360, 450, 720… What if you never reset, and aim corner 1 at **90**, corner 2 at **180**, corner 3 at **270**?]{.qtitle}
@@ -793,7 +777,7 @@ The judge calls a shape, triangle up to octagon. **60 seconds** to edit and run:
 - Pro question: which drifts more, 3 fat corners or 8 skinny ones? Watch your traces and keep the answer for tomorrow.
 
 ::: {.notes}
-Uses exactly today's material: `for` + `range`, the watched-turn `while`, 360 ÷ n, and heading — no `def`; that arrives tomorrow. The 60-second edit window is the point: a loop makes a new shape a two-number change, so the octagon call separates loopers from pasters on the clock. The closure gap keeps the coast visible — 8 corners × ~4° beats 3 × ~4°, so the octagon drifts more; squads that *see* that are already leaning into tomorrow's cure. Coach scorecard: edit discipline (two calm edits vs. a rewrite), 360 ÷ n reasoning without a calculator, and who re-tapes and re-tests between calls.
+Uses exactly today's material: `for` + `range`, the watched-turn `while`, 360 ÷ n, heading, and `abs()` for the closure gap — no `def`; that arrives tomorrow. The 60-second edit window is the point: a loop makes a new shape a two-number change, so the octagon call separates loopers from pasters on the clock. The closure gap keeps the coast visible — 8 corners × ~4° beats 3 × ~4°, so the octagon drifts more; squads that *see* that are already leaning into tomorrow's cure. Coach scorecard: edit discipline (two calm edits vs. a rewrite), 360 ÷ n reasoning without a calculator, and who re-tapes and re-tests between calls.
 :::
 
 ## Today's gate
@@ -804,6 +788,6 @@ The judge calls **any shape** → your loop draws it with watched corners (two e
 :::
 
 ::: {.fragment .fade-up}
-Tomorrow: the coast meets its cure, which is to arrive *slowly*. Then the cure gets a brain: **speed that shrinks with the error**. One formula, and it has a name every roboticist knows.
+Next: *Cure the Coast*. Arrive slowly and name the move with `def`. A full writing-practice session follows before we add P control.
 :::
 

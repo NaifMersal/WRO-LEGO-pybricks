@@ -18,15 +18,18 @@ A slide shows only the panels its question needs. The mechanism, contact line,
 motor task, each reading, the status flags, the program panel, the console and
 the interactive controls are switched per slide from its cue, so a prediction
 slide with nothing running does not display an idle motor task or an empty
-reading. The question about human fingers, `eyes-closed`, replaces the mechanism
-with a bottle held between two fingertips instead of showing the claw.
+reading. The `eyes-closed` cue (a bottle between two fingertips) is still defined
+in `early-cues.js` but no slide uses it: the deck dropped that slide (decision #65)
+because students already met stall at the wall in *Stop at the Wall*.
 
 Staged reveals come from the same cues. `stepCode`, `stepControls`, `stepTarget`
 and `stepFlags` hold back that panel until the next press, and any element
 carrying `class="step"` inside a slide or a cue panel waits its turn in document
 order (`data-step` on an element moves it later). Cues can also force a panel on
 with `add:` or off with `hide:`, listing part names: mechanism, contact, task,
-angle, target, torque, stalled, done, code, heading, context, console, controls.
+angle, target, torque, stalled, load, done, code, heading, context, console, controls.
+The `abs(load())` reading appears only where a cue sets `showLoad`; the stage 9
+and 10 cues that read it also hide `stalled`.
 
 ## Frames within a slide
 
@@ -42,7 +45,7 @@ heading changing from the question to what was observed:
 'blocked': cue('default-wide-start'),          // Predict · What changes when we add an object?
 phases: [
   {title:'The object stops closing before the target', label:'Observe', stop:'blocked'},
-  {title:'The program is waiting for 130°', label:'Explain', state:'default-wide-blocked',
+  {title:'The program is waiting for 72°', label:'Explain', state:'default-wide-blocked',
    focus:'target', stop:null}
 ]
 ```
@@ -56,16 +59,16 @@ a later slide lands on the last frame, not the question.
 
 | Lesson stage | Slides | Topic |
 | --- | --- | --- |
-| 1 | 1–3 | Motor, gears, linked jaws, direction |
-| 2 | 4–7 | Relative movement from different starts |
-| 3 | 8–16 | Reference, usable home(), zeroing, target movement |
-| 4 | 17–18 | Grip-angle trials on a wide and a narrower object |
-| 5 | 19–22 | Resistance, stall detection, internal home() walkthrough, effort limits |
-| 7–10 | 23–32 | Waiting, building the checking loop, the three functions |
+| 1 | 1–4 | Motor, 12-to-20 gearing, linked jaws, direction |
+| 2 | 5–8 | Relative movement from different starts |
+| 3 | 9–17 | Reference, usable home(), zeroing, target movement |
+| 4 | 18–19 | Grip-angle trials on a wide and a narrower object |
+| 5 | 20–22 | Resistance, stall detection (a recap of *Stop at the Wall*), internal home() walkthrough, effort limits |
+| 7–10 | 23–33 | Waiting, building the checking loop, the three functions, bench challenge |
 
 Home code is available from stage 3. Students can copy the complete function
-or download `claw_starter.py`, configured with the supplied Port E motor,
-clockwise direction, opening speed 300, and closing speed 200. The internal
+or download `claw_starter.py`, configured with Port E, clockwise direction, and
+the 12-tooth to 20-tooth gear train. The internal
 teaching walkthrough begins in stage 5, after the experiment. `home-detection`
 opens the folded function and reveals it one line at a time, in the order the
 questions arise rather than in execution order: `run_until_stalled` first,
@@ -76,11 +79,14 @@ limit and the pause are read as statements that must come first. A closing press
 marks both limit lines together and names their values, so the effort limits are
 taught where the function uses them rather than in a separate stage. Home
 finishes fully open at the zero reference, with no additional target movement.
-Closing targets are measured from that zero; stage 3 demonstrates target 60°.
+Closing targets are output-axle degrees from that zero; stage 3 demonstrates target 45°.
+The simulation draws a sweep arc around the output gear and updates its angle
+from home to the current position. Before homing, it says “Home not set”; an
+arbitrary zero does not claim to be the open stop.
 
 Stage 4 runs its trials from one slide. The button names the trial before it
-runs, so the class still predicts each result: 60° stops short of the wide
-object, 80° is stopped by it near 70°, and the same 80° leaves a gap on the
+runs, so the class still predicts each result: 45° stops short of the wide
+object, 60° is stopped by it near 52°, and the same 60° leaves a gap on the
 narrower object. Every trial starts homed at the zero reference, and all three
 stay in the table together. Contact in this model is separate from holding
 force.
@@ -89,43 +95,57 @@ Stage 5 makes the same comparison across its own slides rather than in a
 scripted lab: the object blocks closing on `detect-blockage`, `stall-reveal`
 reads the flag and then states that a stall reports blocked movement and not a
 held object, and the rigid open stop stalls inside `home-detection` with nothing
-to catch. That reading is what stage 9's checking loop is built on, and stage 9
-returns to what a stall leaves unknown.
+to catch. Stage 9's checking loop tries that reading first, then trades it for
+`load()`; `home()` keeps `run_until_stalled`, because stalling at the rigid stop
+is how it finds zero.
 
 Stage 6 has no slides of its own. Its two questions are answered where they
 arise: the effort limits are named and compared on the last frame of
 `home-detection` in stage 5, and requested against actual is the whole of stage
-7, whose `blocked` slide ends on “The program is waiting for 130°” with the jaws
-stopped near 70°. The torque reading is therefore shown in stage 5 only.
+7, whose `blocked` slide ends on “The program is waiting for 72°” with the jaws
+stopped near 52°. The torque reading is therefore shown in stage 5 only.
 
 Stages 8 to 10 build the waiting one failure at a time, in the order the
 questions arise. `async` runs `wait=False` with nothing after it: “2: Continue”
 prints while the jaws are barely open, and then the program simply ends. Ending
-a program releases the motors, so the jaws stop at 2° with 130° still requested.
+a program releases the motors, so the jaws stop near 2° with 72° still requested.
 `fixed-wait` adds the obvious repair, a wait, and someone has to choose its
-length: 200 ms is a reasonable guess and the program still ends at 42°, short of
-an object sitting at 70°. A longer number would be another guess, and a wait
-measures time rather than the motor either way. `stall-loop` therefore replaces
-it with `while not claw.stalled():`, which ends the moment the object blocks the
-jaws. `done-check` runs that same loop on an empty claw, with an illustrative
-actual angle of 132° for a requested target of 130°. The motor settles slightly
-past the target within the example's 3° position tolerance. Nothing blocks the
-jaws, so `stalled()` stays False and the loop keeps checking. Revealing
-`claw.done()` lets the loop finish despite the small angle difference. Completion
-depends on position and speed tolerances, so merely passing the target is not
-enough. The engine's optional `settleOffset` and `positionTolerance` fields apply
-only to this slide's two empty trials. They illustrate a settled reading, are
-not Pybricks arguments or default settings, and do not simulate a controller.
-The same slide closes on the empty result: `done()` is True with nothing
+length: 200 ms is a reasonable guess and the program still ends at 25°, short of
+an object reached near 52°. A longer number would be another guess, and a wait
+measures time rather than the motor either way. `load-loop` therefore replaces
+it with the loop students propose from stage 5, `while not claw.stalled():`. It
+works, after a pause: the jaws sit on the object while the check counter keeps
+climbing, because `stalled()` waits until the push has reached the full 180 mNm
+limit and stayed there. The slide's second phase swaps in
+`while abs(claw.load()) < 100:`, which leaves as the push passes 100 mNm on the
+way up; the closing command keeps squeezing to 180 afterwards. `done-check` runs
+that load-only loop on an empty claw. The close target is deliberately short of
+the angle where empty jaws would meet, so the movement reaches 72° and stops with
+a gap still between the jaws. Nothing pushes back, the load stays low and the
+loop keeps checking. Revealing `claw.done()` lets the loop finish: a completed
+movement is the only ending an unobstructed trial can produce. Real Pybricks decides completion from position and speed
+tolerances; this model arrives exactly on the target and does not simulate a
+controller. The same slide closes on the empty result: `done()` is True with nothing
 between the jaws, so returning does not confirm a catch. `truth-table`
 then reads the finished condition, `release` opens from the grip the loop left
 behind, and `functions` sets `home()`, `grab()` and `release()` side by side
 under what ends each one.
 
 The loop condition is built up rather than shown finished, so a `check` op
-carries the checks it makes in `conds` (the default is both). The engine and the
-code panel both read that list, which is why the same slide machinery can render
-`while not claw.stalled():` and the finished four-line condition.
+carries the checks it makes in `conds` (the default is `LOOP_CONDS`, load and
+done). The engine and the code panel both read that list, which is why the same
+slide machinery can render `while not claw.stalled():`,
+`while abs(claw.load()) < 100:` and the finished four-line condition.
+
+The engine models `load()` the way the Pybricks firmware reports it: the
+controller's push, capped at the torque limit, low-pass filtered every 5 ms
+(`avg*0.95 + push*0.05`) and negated, so it reads negative while closing. Closing
+on air it holds a small friction value; blocked, the push climbs fast and then
+slowly to the limit, since a `run_target` reference that has reached its target
+leaves only the integral term to raise it. `stalled()` needs that push at the
+limit, with the motor not moving, for 200 ms. A coasting motor reads 0. The
+rates are illustrative, chosen so the stall-based loop visibly pauses on the
+object and the load-based one does not.
 
 Ending a program releases the motors, as the hub does. Only a task still working
 is visibly cut off: a movement that already reached its target keeps the frozen
@@ -147,10 +167,35 @@ trial.
 The deck uses the supplied Claw Lab model and saved scenes. It does not connect
 to hardware. Geometry, object contact, and motor readings are illustrative.
 Torque is a motor setting in mNm; the model does not estimate jaw force or prove
-a secure physical grip. Teaching presets use open target 0 and grip target 130, with homing
-and gripping torque limits of 220 and 180 mNm. Stage 8's guessed wait is 200 ms;
+a secure physical grip. Teaching presets use open target 0 and close target 72 output degrees, homing
+and squeeze torque limits of 220 and 180 mNm, and a contact load of 100 mNm. Stage 8's guessed wait is 200 ms;
 the 5000 ms observation wait that keeps later scenes alive is left out of the
 stage 9 code excerpts.
+
+## Named arguments, literal values
+
+Every argument in the code this deck *displays* names its parameter and gives
+the value on the spot: `claw.run_target(speed=120, target_angle=72)`,
+`claw.run_until_stalled(speed=-120, then=Stop.COAST)`,
+`claw.run_angle(speed=180, rotation_angle=-15)`, `claw.reset_angle(angle=0)`,
+`claw.control.limits(torque=220)`. Nothing is positional and nothing is a
+constant: no `CLOSE_SPEED` or `CLOSE_TARGET` appears on a slide or in the copyable
+`home()` dialog. Downloadable Python files use the course's named facts block. A slide is read
+once, on its own, so the reader should never have to look elsewhere to learn
+either what a number means or what it is. The parameter names are Pybricks' own,
+so the code students copy still runs.
+
+The numbers still come from one place in the source: `FACTS` in `engine.js`
+(port E, clockwise, 12-to-20 gears, open speed 180, close speed 120, home torque 220, squeeze
+torque 180, contact load 100, open target 0, close target 72). Every code string interpolates
+from it, so retuning a value changes the model and the printed code together.
+Write new code strings the same way: interpolate from `FACTS` rather than
+pasting a bare number, and name the parameter rather than relying on argument
+order.
+
+The exception is the course's own `code/claw_gripper.py`, offered on the final
+slide and mirrored into `downloads.js`. It keeps its named `CLAW FACTS` block,
+which is the repository convention for runnable curriculum code.
 
 ## Editable source
 
@@ -178,16 +223,17 @@ what the function is.
 ## Gear transmission
 
 The motor axle carries a 12-tooth pinion. It meshes with a 12-tooth transfer
-gear, which drives the 16-tooth right jaw gear. That gear drives the 16-tooth
-left jaw gear. Each mesh reverses direction: positive motor rotation closes
-both jaws. A 100-degree motor movement produces 75 degrees at each jaw.
-The illustrated tooth counts preserve the teaching model's existing ratio;
-they are not measurements of a physical LEGO build.
+gear, which drives the 20-tooth right jaw output gear. That gear drives the
+20-tooth left jaw gear. Each mesh reverses direction: positive motor rotation
+closes both jaws. A 100-degree motor movement produces 60 degrees at each jaw.
+The 12-to-20 ratio matches the course claw. The transfer gear carries motion
+without changing the ratio; Pybricks is configured with `[12, 20]` for the
+chosen right output axle. The second jaw is mechanically linked to it.
 
 `engine.js` defines the shared gear geometry and rotation ratios. The view and
 jaw-contact model use these ratios. Resetting the angle reference does not
 rotate any gear; a blocked motor stops the complete train.
-Run `node verify-gears.cjs` to check the transmission and its browser rendering.
+Run `node slides/claw-lesson/verify-model.cjs` to check the transmission and lesson scenes.
 
 ## Course integration
 

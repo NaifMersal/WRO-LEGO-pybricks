@@ -34,15 +34,16 @@ code{ color:var(--navy); }
 You get **one** `movements.py` and **as many gripper files as you built
 mechanisms** — one, or both.
 
-**One import line per mechanism you actually built.** Give each one a name:
+**Every import gets a name** — driving and mechanisms alike:
 
 ```python
-from movements import *
-import claw_gripper as claw      # port E
-import lift_gripper as lift      # port C
+import movements as move           # the wheels and the eye
+import claw_gripper as claw        # port E
+import lift_gripper as lift        # port C
 
-claw.grab()      # the jaws close
-lift.grab()      # the fork rises
+move.drive_straight(300)           # 30 cm, gyro-straight
+claw.grab()                        # the jaws close
+lift.grab()                        # the fork rises
 ```
 
 Built only one? Then one line, and `gripper` is the natural name:
@@ -59,18 +60,19 @@ lift to **C**. If a mechanism won't answer, check `CLAW_PORT` and `LIFT_PORT`
 **first**, before you touch anything else.
 :::
 
-> 🏷️ **Why `as claw` and not `from claw_gripper import *`?** Because with two
-> mechanisms, a star import is a silent trap: import both files and the second
-> `grab` **overwrites** the first. You'd get one working verb, one dead one,
-> and no error message. `claw.grab()` and `lift.grab()` can't collide — you
+> 🏷️ **Why every import gets a name?** Because two mechanisms share the same
+> verbs, and a star import is a silent trap: import both files that way and the
+> second `grab` **overwrites** the first. You'd get one working verb, one dead
+> one, and no error message. `claw.grab()` and `lift.grab()` can't collide — you
 > said which one you meant.
 >
-> It also tells you *which file to open* when something misbehaves, and it
-> makes rebuilding a claw as a fork a **one-word** change on the import line.
+> The prefix also tells you *which file to open* when something misbehaves, and
+> it makes rebuilding a claw as a fork a **one-word** change on the import line.
 >
-> Driving is different: there's only one `movements.py`, so nothing can shadow
-> it and `import *` is safe. **Star-import a file when it's the only one of its
-> kind. Name it when something else could claim the same words.**
+> Driving follows the same rule: `import movements as move`, so a mission line
+> reads `move.drive_straight(300)`. **Name every import.** An unqualified verb
+> makes you hunt for the file that owns it; a prefix answers that where you
+> stand. (#37, #64.)
 
 Downloads: [movements.py](code/movements.py) ·
 [claw_gripper.py](code/claw_gripper.py) ·
@@ -80,16 +82,16 @@ Downloads: [movements.py](code/movements.py) ·
 
 **Distances in mm. Speeds in mm/s. Turning takes a flag.**
 
-`drive_straight(300)` drives 30 cm. `drive_straight(300, speed=150)` does it
-slowly. Turning is Pybricks' own verb, and one word decides everything:
+`move.drive_straight(300)` drives 30 cm. `move.drive_straight(300, speed=150)`
+does it slowly. Turning is Pybricks' own verb, and one word decides everything:
 
 ```python
-robot.turn(90)                   # BY 90, from wherever I'm pointing
-robot.turn(90, absolute=True)    # TO heading 90 on the mat
+move.robot.turn(90)              # BY 90, from wherever I'm pointing
+move.robot.turn(90, absolute=True)  # TO heading 90 on the mat
 ```
 
 > 🧭 **Absolute is a compass; relative is a steering wheel.**
-> `robot.turn(90, absolute=True)` three times leaves you at 90 — not 270. Each
+> `move.robot.turn(90, absolute=True)` three times leaves you at 90 — not 270. Each
 > absolute turn throws away the leftover error from the last one instead of
 > inheriting it. Four relative turns pile their mistakes up until the robot
 > walks off the mat. **Write the anchor run in absolute turns**; reach for the
@@ -101,12 +103,12 @@ robot.turn(90, absolute=True)    # TO heading 90 on the mat
 
 | Verb | What it does |
 |---|---|
-| `robot.reset(angle=0)` | "the way I'm facing now is zero" |
-| `drive_straight(mm)` | drive straight; negative = backward |
-| `robot.turn(a, absolute=True)` | turn until you **face** heading `a` |
-| `robot.turn(a)` | spin `a` degrees **more**, from here |
-| `robot.angle()` | which way am I pointing right now |
-| `follow_line(mm)` | ride the edge of the line |
+| `move.robot.reset(angle=0)` | "the way I'm facing now is zero" |
+| `move.drive_straight(mm)` | drive straight; negative = backward |
+| `move.robot.turn(a, absolute=True)` | turn until you **face** heading `a` |
+| `move.robot.turn(a)` | spin `a` degrees **more**, from here |
+| `move.robot.angle()` | which way am I pointing right now |
+| `move.follow_line(mm)` | ride the edge of the line |
 
 Turning and heading are Pybricks' own — they already do the job, so
 `movements.py` doesn't wrap them in a second name.
@@ -115,22 +117,22 @@ Turning and heading are Pybricks' own — they already do the job, so
 
 | Verb | What it does |
 |---|---|
-| `find_line()` | creep until the eye sees a line; `True` if found |
-| `drive_to_wall()` | creep until the wheels **stall** on the border |
-| `wall_square(h)` | push flat on the border, then declare heading `h` |
-| `square_on_line(h)` | sit square on a line, then declare `h` — **two eyes** |
-| `show_eye()` | print what the eye sees — **use this to tune** |
+| `move.find_line()` | creep until the eye sees a line; `True` if found |
+| `move.drive_to_wall()` | creep until the wheels **stall** on the border |
+| `move.wall_square(h)` | push flat on the border, then declare heading `h` |
+| `move.square_on_line(h)` | sit square on a line, then declare `h` — **two eyes** |
+| `move.show_eye()` | print what the eye sees — **use this to tune** |
 
 > 👁️ **One eye or two?** One eye tells you that you *are* on the line, never
 > whether you're **crooked** on it — so a one-eye robot squares up on a wall
 > (`wall_square`), where both wheels press the same flat edge. A second eye on
 > the free port buys `square_on_line()`. That is the trade port **A** is for.
 
-`find_line()` returns `True` or `False`. **Check the answer.**
+`move.find_line()` returns `True` or `False`. **Check the answer.**
 
 ```python
-if find_line():
-    drive_straight(120)          # measured FROM the line
+if move.find_line():
+    move.drive_straight(120)       # measured FROM the line
 else:
     print("no line -- something is wrong")
 ```
@@ -178,17 +180,17 @@ import line goes in front — `gripper.`, `claw.`, `lift.`:
 
 > 📦 **Same three words on every robot.** Four students built four different
 > mechanisms. A claw closes sideways; a fork scoops upward; they share no
-> parts. But the mission list can't tell them apart —
+> parts. The same sequence of calls works with each one —
 >
 > ```python
 > gripper.home()
-> drive_straight(200)
+> move.drive_straight(200)
 > gripper.grab()
-> drive_straight(-200)
+> move.drive_straight(-200)
 > gripper.release()
 > ```
 >
-> That list runs on all four robots. The only line that differs between them
+> That sequence runs on all four robots. The only line that differs between them
 > is the `import`. **That** is what a library is for: hide the machine behind
 > the word.
 >
@@ -216,7 +218,7 @@ where you are again for real, instead of from adding up guesses.
 
 ### The two things that fix your run
 
-**`find_line()` / `follow_line()` — position truth, from the printed mat.**
+**`move.find_line()` / `move.follow_line()` — position truth, from the printed mat.**
 Drive *to a landmark*, then measure from there. A leg that ends on a found line
 doesn't care about the wheel slip that happened on the way to it.
 
@@ -235,7 +237,7 @@ claw.control.limits(torque=HOME_TORQUE)
 claw.run_until_stalled(-CLOSE_SPEED, then=Stop.COAST)
 wait(200)
 claw.reset_angle(0)
-claw.control.limits(torque=GRIP_TORQUE)
+claw.control.limits(torque=SQUEEZE_TORQUE)
 ```
 
 **The printed mat never lies — neither does the end stop.** Same trick, two
@@ -245,10 +247,10 @@ That works because the end stop is **rigid and always in the same place**. An
 object in the jaws is neither — which is why `grab()` does something different.
 [See below.](#stall-to-find-zero-torque-to-hold-a-thing)
 
-> ⚠️ **Your heading has no landmark.** `find_line()` fixes how far you've
+> ⚠️ **Your heading has no landmark.** `move.find_line()` fixes how far you've
 > travelled, but nothing on this robot re-checks which way you're *pointing* —
 > that's the gyro alone, for the whole run. So place the robot straight in the
-> start area, call `robot.reset(angle=0)` once, and keep your legs short.
+> start area, call `move.robot.reset(angle=0)` once, and keep your legs short.
 
 ## Move **by**, or move **to**
 
@@ -263,7 +265,7 @@ mean, and your mechanism lives or dies on it.
 | shoved by hand | inherits the shove | drives back out of it |
 
 > 🧭 **You already know this pair — it's the same idea, twice.** On the wheels
-> it's a flag: `robot.turn(90)` moves **by**, `robot.turn(90, absolute=True)` moves
+> it's a flag: `move.robot.turn(90)` moves **by**, `move.robot.turn(90, absolute=True)` moves
 > **to**. On a motor it's two verb names: `run_angle` moves **by**, `run_target`
 > moves **to**. Different hardware, different spelling, one rule: **a relative move
 > inherits every mistake before it, an absolute move forgets them.**
@@ -293,58 +295,74 @@ what makes a claw let go halfway across the mat.
 | The job | The question | The tool |
 |---|---|---|
 | **`home()`** | *where is my claw?* | stall into the end stop |
-| **`grab()`** | *how hard do I squeeze?* | ask for a **torque** |
+| **`grab()`** | *how hard do I squeeze?* | ask for a **torque**, then wait on the **load** |
 
 ### Finding zero — `run_until_stalled`
 
 ```python
-motor.run_until_stalled(-CLOSE_SPEED, then=Stop.COAST, duty_limit=HOME_EFFORT)
-motor.reset_angle(0)                    # the jaws just met -- THAT is zero
+claw.control.limits(torque=HOME_TORQUE)                 # how hard it may press
+claw.run_until_stalled(-CLOSE_SPEED, then=Stop.COAST)
+claw.reset_angle(0)                     # the jaw just hit the body -- THAT is zero
 ```
 
 | Part | What it's for |
 |---|---|
 | `speed` | direction and how fast. Negative = the other way. |
 | `then=Stop.COAST` | relax on arrival. Homing is *leaving*, not holding. |
-| `duty_limit` | how hard it may push, 0–100. |
+| `HOME_TORQUE` | how hard it may press the stop, in **mNm**. |
 
 > 🧱 **Stalling is only trustworthy against a thing that doesn't move.** The
-> jaws meeting each other is rigid, part of the mechanism, and in exactly the
-> same place on every run. Press into *that* and you get the same answer every
-> time. That's what makes `home()` exact.
+> robot body the claw opens into is rigid, part of the robot, and in exactly
+> the same place on every run. Press into *that* and you get the same answer
+> every time. That's what makes `home()` exact.
 >
 > An **object** is none of those things. It sits where it landed, it squashes,
 > it rolls. Press into that and "where it stopped" is a different number every
 > run — which is why gripping needs the other tool.
 
-> 🎯 **Zero goes where the jaws meet.** Both gripper files home the jaws
-> **shut** and call that 0, so every angle in the file reads as *how far open*
-> the mechanism is. `READY_ANGLE` is a positive number and `GRIP_TARGET` a
-> small negative one. Nothing to measure, nothing to mistype, and nothing to
-> re-measure after you re-gear.
+> 🎯 **Zero goes on a rigid stop you can reach empty.** The claw homes
+> **open**: the opening jaw stalls against the robot body and that is 0, so
+> every claw angle reads as *how far closed*, and `CLOSE_TARGET` is a positive
+> number (72). The lift homes **shut**: its jaws meet and that is 0, so every
+> lift angle reads as *how far open*. The two files count opposite ways, so
+> check which one you're in before you flip a sign.
 
-> ⚠️ **`duty_limit` is the knob that breaks gears.** Too high and the motor
+> ⚠️ **The homing push is the knob that breaks gears.** Too high and the motor
 > keeps shoving after the mechanism has arrived — you'll *hear* the plastic
 > teeth skip. Too low and it gives up early, `reset_angle(0)` fires anyway,
-> and now zero is **almost** right. It lives in your gripper file's facts block
-> as `HOME_EFFORT` (the claw starts at **40** — it is pressing jaw on jaw — and
-> the lift at **75**) — change it there, never at the call, and adjust by ear.
+> and now zero is **almost** right. It lives in your gripper file's facts block:
+> `HOME_TORQUE` on the claw (**220** mNm) and `HOME_EFFORT` on the lift (**50**,
+> a `duty_limit` percentage). Change it there, never at the call, and adjust
+> by ear.
 
 ### Holding a thing — aim past it, cap the torque
 
 ```python
-claw.control.limits(torque=GRIP_TORQUE)     # the squeeze, set once
-claw.run_target(CLOSE_SPEED, GRIP_TARGET, then=Stop.HOLD, wait=False)
+claw.control.limits(torque=SQUEEZE_TORQUE)     # how hard to squeeze
+claw.run_target(CLOSE_SPEED, CLOSE_TARGET, then=Stop.HOLD, wait=False)
+wait(100)
+while abs(claw.load()) < CONTACT_LOAD and not claw.done():
+    wait(10)
 ```
 
-`GRIP_TARGET` is deliberately set a little **past** where the jaws meet. The
-claw can never get there — the object is in the way — so it never stops
-trying, and it leans in at `GRIP_TORQUE` for the whole carry.
+`CLOSE_TARGET` is set **past** where the object stops the jaws. The claw can't
+get there — the object is in the way — so it never stops trying, and it leans
+in at `SQUEEZE_TORQUE` for the whole carry.
 
-> 🧮 **`GRIP_TARGET` is a small negative number, and that's the whole trick.**
-> Zero is where the jaws meet, so "a few degrees past shut" is just `-10` — the
-> same line in every squad's file, with nothing to measure and nothing to keep
-> it in step with.
+> 🧮 **`CLOSE_TARGET` is 72, and short of shut on purpose.** With an object,
+> the jaws stop before 72 and keep pushing. With nothing in them, they reach 72
+> and `done()` ends the wait. Set it past the angle where empty jaws meet and
+> every empty grab ends by jamming the jaws into each other.
+
+> ⏱️ **`grab()` waits on the load, not on a stall.** `claw.load()` is how hard
+> the motor is pushing right now, in mNm (it reads negative while closing, so
+> `abs()` it). It passes `CONTACT_LOAD` (100) the moment the jaws press on
+> something, so `grab()` returns straight away. `stalled()` would only answer
+> once the push had maxed out at `SQUEEZE_TORQUE` and stayed there, which is
+> a visible pause. The motor keeps squeezing after `grab()` returns, so the
+> grip keeps building while the robot drives. Find `CONTACT_LOAD` by printing
+> `abs(claw.load())` while closing on air, then on your object, and pick a
+> number in between.
 
 > 🤝 **Why aim at a place you can't reach?** Because that's what keeps the
 > pressure on. A motor that *arrives* stops pushing: it holds the angle it
@@ -355,11 +373,13 @@ trying, and it leans in at `GRIP_TORQUE` for the whole carry.
 > This is also why `grab()` never calls `hold()` — freezing the claw where it
 > is would undo the entire trick.
 
-> 🔩 **`GRIP_TORQUE` is one number doing two jobs.** It's how hard you squeeze,
+> 🔩 **`SQUEEZE_TORQUE` is one number doing two jobs.** It's how hard you squeeze,
 > *and* it's the gear protection: the motor physically cannot shove harder
 > than this, whatever you ask it. Raise it if the object slips on turns; lower
 > it if you hear crunching or the object deforms. Find it on the mat, with the
-> object you actually carry — not by guessing at the desk.
+> object you actually carry — not by guessing at the desk. It **must** stay
+> above `CONTACT_LOAD`: the load can never pass the torque limit, so a lower
+> `SQUEEZE_TORQUE` means `grab()` never returns on an object.
 
 ## Three ways to move a motor
 
@@ -368,7 +388,7 @@ You've met all three. Here's when to reach for which.
 | | What you say | What you get |
 |---|---|---|
 | `motor.run(300)` | "spin at 300 deg/s" | one wheel, exact speed |
-| `robot.straight(300)` | "drive 30 cm" | both wheels, gyro-straight, ramped |
+| `move.robot.straight(300)` | "drive 30 cm" | both wheels, gyro-straight, ramped |
 | `motor.dc(40)` | "40% power" | **no promise at all** |
 
 > 🔋 **We don't compete on `dc()`.** `dc(40)` on a fresh battery, a tired
@@ -377,13 +397,13 @@ You've met all three. Here's when to reach for which.
 > WRO runs are won by doing the same thing twice, and that's the one thing raw
 > power can't promise.
 
-> ⚖️ **Same rule, over in the claw.** `GRIP_TORQUE` is in **mNm** — an amount
+> ⚖️ **Same rule, over in the claw.** `SQUEEZE_TORQUE` is in **mNm** — an amount
 > of actual turning force — for exactly the reason `run()` is in deg/s: ask
 > for the *thing you want* and the hub spends whatever power that costs today.
 > Percentages are a promise about the battery. Units are a promise about the
 > robot.
 
-`DriveBase` (`robot.straight`, `robot.turn`) does the most for you: it converts
+`DriveBase` (`move.robot.straight`, `move.robot.turn`) does the most for you: it converts
 mm to degrees, holds the gyro line, and ramps up and down so nothing lurches.
 Use it for driving — every verb in `movements.py` is built on it.
 

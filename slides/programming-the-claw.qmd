@@ -1,5 +1,5 @@
 ---
-pagetitle: "Programming the Claw · Robot Rockstars"
+pagetitle: "Programming the Claw · Session 16 · Robot Rockstars"
 format:
   revealjs:
     theme: simple
@@ -62,15 +62,24 @@ Observe the reversal, then ask a student to trace the mechanism in their own wor
 Use the direction control. Start moving, press Stop motor, then reverse. Distinguish stopping the motor from Pause, which only freezes the demonstration. Reset scene restores this saved starting state.
 :::
 
+## Which axle should Pybricks count? {#gear-setup data-cue="gear-setup" data-chapter="1 / The mechanism" data-phase="Code"}
+
+::: {.lab-slot}
+:::
+
+::: {.notes}
+Recall the 12-tooth motor gear and 20-tooth output gear from Gears. Read the constructor from left to right: Port E, the motor's positive direction, then the gear train from motor to output. Pybricks scales subsequent angle and speed commands to the 20-tooth output axle. Its positive direction still describes the motor shaft; on this build, positive closes the claw. The label on the simulation says “Home not set” until the open stop is found and named zero in chapter 3. Source: https://docs.pybricks.com/en/stable/pupdevices/motor.html
+:::
+
 ## How far should we open? {#relative-near data-cue="relative-near" data-chapter="2 / Relative movement" data-phase="Predict"}
 
 ::: {.lab-slot}
 :::
 
 ::: {.notes}
-The dotted outline marks the fully open stop. This first physical pose is 20 degrees of motor movement away. No consistent reference has been established yet, so do not label the current motor reading with a known angle.
+The dotted outline marks the fully open stop. This first physical pose is 15 degrees of output movement away. No consistent home reference has been established yet, so do not label the current reading as an angle from home.
 
-Reveal run_angle(OPEN_SPEED, -20). Run and observe the jaws meeting the outline. Ask what the negative sign does on this build.
+Reveal run_angle(speed=180, rotation_angle=-15). Run and observe the jaws meeting the outline. Ask what the negative sign does on this build.
 
 Ask students why this particular movement works from this starting pose. Keep the distinction between movement amount and final position.
 :::
@@ -81,7 +90,7 @@ Ask students why this particular movement works from this starting pose. Keep th
 :::
 
 ::: {.notes}
-Only the starting pose changes. Keep exactly run_angle(OPEN_SPEED, -20). Ask where the jaws will finish.
+Only the starting pose changes. Keep exactly run_angle(speed=180, rotation_angle=-15). Ask where the jaws will finish.
 
 Run the unchanged instruction. The second start ends short of the open-stop outline. Ask what information is needed to choose a better movement.
 :::
@@ -92,7 +101,7 @@ Run the unchanged instruction. The second start ends short of the open-stop outl
 :::
 
 ::: {.notes}
-Let students adjust relative movement from the second pose. -80 reaches the outline. Compare with -20 from the first pose. The required movement depends on the start and the destination.
+Let students adjust relative movement from the second pose. -60 reaches the outline. Compare with -15 from the first pose. The required movement depends on the start and the destination.
 :::
 
 ## The movement amount depends on the start {#relative-explain data-cue="relative-explain" data-chapter="2 / Relative movement" data-phase="Explain"}
@@ -176,10 +185,10 @@ Open the Home code control. Students can inspect and copy the complete function 
 :::
 
 ::: {.notes}
-The reference is now established. A target of 60° is measured from home. Compare 0 to 60 requiring +60 and 30 to 60 requiring +30. In both cases the destination remains 60. Ask which number can stay the same.
+The reference is now established. The simulation's arc and number show the output angle from the open home stop to the current position. A target of 45° is measured from home. Compare 0 to 45 requiring +45 and 20 to 45 requiring +25. In both cases the destination remains 45. Ask which number can stay the same.
 :::
 
-## Where will target 60° take us? {#ready-near data-cue="ready-near" data-chapter="3 / Reference and home()" data-phase="Predict"}
+## Where will target 45° take us? {#ready-near data-cue="ready-near" data-chapter="3 / Reference and home()" data-phase="Predict"}
 
 ::: {.lab-slot}
 :::
@@ -187,10 +196,10 @@ The reference is now established. A target of 60° is measured from home. Compar
 ::: {.notes}
 Start fully open at the homed zero reference. Reveal the prints and closing target command. Predict the jaw position when Target reached appears.
 
-Run from 0 degrees to target 60. Follow the pending target call. Target reached prints after arrival. Mention default waiting briefly; stages 7 and 8 investigate it.
+Run from 0 degrees to output target 45. Follow the pending target call and the angle arc from home. Target reached prints after arrival. Mention default waiting briefly; stages 7 and 8 investigate it.
 :::
 
-## Will target 60° work from this start? {#ready-far data-cue="ready-far" data-chapter="3 / Reference and home()" data-phase="Predict"}
+## Will target 45° work from this start? {#ready-far data-cue="ready-far" data-chapter="3 / Reference and home()" data-phase="Predict"}
 
 ::: {.lab-slot}
 :::
@@ -198,7 +207,7 @@ Run from 0 degrees to target 60. Follow the pending target call. Target reached 
 ::: {.notes}
 Only the starting position changes to 30 degrees. The home reference stays the same. Predict the destination and message order before running.
 
-Run from 30 degrees with the same reference. Both runs finish at 60 degrees, measured from home. Ask why target numbers need a consistent reference.
+Run from 20 degrees with the same reference. Both runs finish at 45 output degrees, measured from home. Ask why target numbers need a consistent reference.
 :::
 
 ## Find an angle that grips {#grip-lab data-cue="grip-lab" data-chapter="4 / The angle lab" data-phase="Try it"}
@@ -209,17 +218,17 @@ Run from 30 degrees with the same reference. Both runs finish at 60 degrees, mea
 ::: {.notes}
 One scripted comparison instead of six slides. Ask for a prediction before each trial: the button names the trial it is about to run. Every completed trial stays in the table, which is what makes the comparison visible.
 
-The claw was homed with empty jaws, then this wide object was placed between the open jaws. The program requests the same 60° target demonstrated in stage 3, measured from home. The dotted outline marks that requested destination. Ask whether the jaws will touch the object there.
+The claw was homed with empty jaws, then this wide object was placed between the open jaws. The program requests the same 45° output target demonstrated in stage 3, measured from home. The dotted outline marks that requested destination. Ask whether the jaws will touch the object there.
 
-Nothing blocked the movement, so the jaws reach the requested 60° and hold it. A gap remains. This target is too small for this object. Ask what number to request instead.
+Nothing blocked the movement, so the jaws reach the requested 45° and hold it. A gap remains. This target is too small for this object. Ask what number to request instead.
 
-Only the requested target changes, from 60 to 80. The same object and the same home reference are kept. The dotted outline now sits inside the object. Predict the angle the jaws will report when the movement ends.
+Only the requested output target changes, from 45 to 60. The same object and the same home reference are kept. The dotted outline now sits inside the object. Predict the angle the jaws will report when the movement ends.
 
-Both jaws meet the object near 70°. The requested target stays 80° while the actual angle stops at 70°, and the motor task is still trying toward the destination it never reached. Contact here does not measure holding force on a real robot. Keep 80° for the next trial.
+Both jaws meet the object near 52°. The requested target stays 60° while the actual output angle stops near 52°, and the motor task is still trying toward the destination it never reached. Contact here does not measure holding force on a real robot. Keep 60° for the next trial.
 
-The requested target stays 80°, homed from the same reference. Only the object is narrower. Predict whether the jaws stop early again or reach the requested destination.
+The requested target stays 60°, homed from the same reference. Only the object is narrower. Predict whether the jaws stop early again or reach the requested destination.
 
-Nothing blocks this movement. The jaws arrive at the requested 80° and a gap remains, the same result the 60° trial gave with the wide object. The number that worked before does not work here.
+Nothing blocks this movement. The jaws arrive at the requested 60° and a gap remains, the same result the 45° trial gave with the wide object. The number that worked before does not work here.
 :::
 
 ## Each object has its own contact angle {#contact-explain data-cue="contact-explain" data-chapter="4 / The angle lab" data-phase="Explain"}
@@ -228,18 +237,7 @@ Nothing blocks this movement. The jaws arrive at the requested 80° and a gap re
 :::
 
 ::: {.notes}
-Three trials, one requested number each: 60° left a gap, 80° was stopped by the wide object near 70°, and the same 80° left a gap on the narrower one. Picking an exact angle for every object is impractical. Ask what the claw would need to notice instead of counting degrees.
-:::
-
-## Could you grip a bottle with your eyes closed? {#eyes-closed data-cue="eyes-closed" data-chapter="5 / Resistance and home()" data-phase="Predict"}
-
-::: {.lab-slot}
-:::
-
-::: {.notes}
-If a bottle were already between open fingers, could students grip it with eyes closed? Use a brief hands-on exercise or the vote buttons. Ask what would tell them they had reached the bottle. Stall has not been revealed yet.
-
-Draw out resistance, followed by maintaining enough pressure to hold the bottle. Connect this to objects stopping the claw before its target.
+Three trials, one requested number each: 45° left a gap, 60° was stopped by the wide object near 52°, and the same 60° left a gap on the narrower one. Picking an exact angle for every object is impractical. Ask what the claw would need to notice instead of counting degrees.
 :::
 
 ## Could the program recognize blocked movement? {#detect-blockage data-cue="detect-blockage" data-chapter="5 / Resistance and home()" data-phase="Predict"}
@@ -248,7 +246,7 @@ Draw out resistance, followed by maintaining enough pressure to hold the bottle.
 :::
 
 ::: {.notes}
-Recall an experiment in which the object stopped the jaws before the target. Predict what evidence the motor controller could use.
+Recall an experiment in which the object stopped the jaws before the target. Then recall *Stop at the Wall*: the wheels already told us when a wall blocked them. Predict what evidence the claw's motor could give the same way.
 
 Run closing until blocked. Ask what the motor is still being asked to do. Explain that the controller can detect a stall when movement is obstructed.
 :::
@@ -259,9 +257,9 @@ Run closing until blocked. Ask what the motor is still being asked to do. Explai
 :::
 
 ::: {.notes}
-Reveal claw.stalled() and its live indicator for the first time. It reports the controller stall detection, not what caused the blockage. Source: https://docs.pybricks.com/en/stable/pupdevices/motor.html#pybricks.pupdevices.Motor.stalled
+Students met `stalled()` at the wall in *Stop at the Wall* (`drive_to_wall`, `wall_square`); this is the same flag on the claw motor, so name it as a recap and don't re-teach it. What is new here is its live indicator, and the reading below. It reports the controller stall detection, not what caused the blockage. Source: https://docs.pybricks.com/en/stable/pupdevices/motor.html#pybricks.pupdevices.Motor.stalled
 
-Press once more for the reading this stage exists to establish: a stall reports blocked movement, not a held object. The object here caused it; the next slide shows the rigid open stop causing the same report with nothing to catch. Stage 9 builds a checking loop on exactly this reading, and stage 10 returns to what a stall leaves unknown.
+Press once more for the reading this stage exists to establish: a stall reports blocked movement, not a held object. The object here caused it; the next slide shows the rigid open stop causing the same report with nothing to catch. Stage 9 tries a checking loop on exactly this reading before trading it for a faster one, and stage 10 returns to what a finished loop leaves unknown.
 :::
 
 ## How did home() recognize the open stop? {#home-detection data-cue="home-detection" data-chapter="5 / Resistance and home()" data-phase="Predict"}
@@ -272,7 +270,7 @@ Press once more for the reading this stage exists to establish: a stall reports 
 ::: {.notes}
 Connect this to the function students already used. home() is still folded. Let them propose using the blockage at the open stop, then open the function and read it one line at a time. Each line answers a question, and every line is revealed just above the line it protects.
 
-Reveal claw.run_until_stalled and run it to the stall event at the rigid stop. This one instruction performs the running and the stall checking; students do not need to write a loop. It answers the slide question. Source: https://docs.pybricks.com/en/stable/pupdevices/motor.html#pybricks.pupdevices.Motor.run_until_stalled
+Reveal claw.run_until_stalled and run it to the stall event at the rigid stop. It is the instruction inside their own `drive_to_wall` from *Stop at the Wall*, now pushing jaws into a stop instead of wheels into a wall. This one instruction performs the running and the stall checking; students do not need to write a loop. It answers the slide question. Source: https://docs.pybricks.com/en/stable/pupdevices/motor.html#pybricks.pupdevices.Motor.run_until_stalled
 
 Ask how hard the motor should push into the stop before pressing. The effort limit appears above the run, because a setting has to be chosen before the instruction that uses it. The supplied homing limit is 220 mNm, which caps how hard the motor may try. The last reveal compares the effort limits here, where the function uses them.
 
@@ -282,7 +280,7 @@ Ask why a line that does nothing sits above the zeroing. After the coast the mot
 
 Ask whether the raised limit should stay raised. Limits persist, so home() explicitly restores the gripping limit before returning; watch the torque reading change. The jaws remain fully open at zero, and there is no further movement in home(). Open Home code to read the finished function.
 
-Both limit lines are marked together with their values. Ask what controls how hard the motor may try, and compare HOME_TORQUE 220 mNm with GRIP_TORQUE 180 mNm: reaching the rigid stop is allowed more effort than gripping an object. A setting stays in effect until it is changed, which is why each action selects its own. The torque limit is a motor setting in mNm; this model does not measure jaw-tip force.
+Both limit lines are marked together with their values. Ask what controls how hard the motor may try, and compare the homing limit 220 mNm with the gripping limit 180 mNm: reaching the rigid stop is allowed more effort than gripping an object. A setting stays in effect until it is changed, which is why each action selects its own. The torque limit is a motor setting in mNm; this model does not measure jaw-tip force.
 :::
 
 ## When will “Continue” appear? {#empty data-cue="empty" data-chapter="7 / Default waiting" data-phase="Predict"}
@@ -291,11 +289,11 @@ Both limit lines are marked together with their values. Ask what controls how ha
 :::
 
 ::: {.notes}
-Stage 7 follows the reference, experiment, and resistance lessons. The empty claw starts homed at the rigid open stop. Positive motor rotation closes this build. The runner supplies GRIP_TORQUE = 180 mNm. Keep stalled() visible as a familiar indicator from stage 5; done() will be introduced in stage 9. Ask when the second message will print, and take predictions aloud. Next runs the scene. Geometry and contact angles are illustrative, not calibrated robot measurements.
+Stage 7 follows the reference, experiment, and resistance lessons. The empty claw starts homed at the rigid open stop. Positive motor rotation closes this build. The runner supplies a gripping limit of 180 mNm. Keep stalled() visible as a familiar indicator from stage 5; done() will be introduced in stage 9. Ask when the second message will print, and take predictions aloud. Next runs the scene. Geometry and contact angles are illustrative, not calibrated robot measurements.
 
 Let the animation finish. Follow the jaws, the pending call, and the target readout. It freezes after the second print. Playback is slowed without changing the speed constants. A presentation pause freezes model time; it does not send a motor stop command.
 
-Ask students to explain the order: closing starts, 130° is reached, then the second print executes. Stop.HOLD maintains the reached target. Reference: https://docs.pybricks.com/en/stable/pupdevices/motor.html#pybricks.pupdevices.Motor.run_target
+Ask students to explain the order: closing starts, 72° at the output is reached, then the second print executes. Stop.HOLD maintains the reached target. Reference: https://docs.pybricks.com/en/stable/pupdevices/motor.html#pybricks.pupdevices.Motor.run_target
 :::
 
 ## What changes when we add an object? {#blocked data-cue="blocked" data-chapter="7 / Default waiting" data-phase="Predict"}
@@ -308,7 +306,7 @@ The starting angle, target, speed, and Python code are unchanged. Only the objec
 
 The presentation freezes after blockage is detected. The Python call remains pending: we have not made it time out or return. Navigating to a fresh trial resets the scene.
 
-Ask: We reached the object. What is the program still waiting for? Compare actual angle near 70° with target 130°. The second message has not printed. Contact does not satisfy target arrival.
+Ask: We reached the object. What is the program still waiting for? Compare actual output angle near 52° with target 72°. The second message has not printed. Contact does not satisfy target arrival.
 :::
 
 ## The default is wait=True {#default-argument data-cue="default-argument" data-chapter="7 / Default waiting" data-phase="Code"}
@@ -317,7 +315,7 @@ Ask: We reached the object. What is the program still waiting for? Compare actua
 :::
 
 ::: {.notes}
-Make the implicit default visible. Adding wait=True here states the same behavior as omitting it.
+Make the implicit default visible. Adding wait=True here states the same behavior as omitting it. This is *Name Your Moves*' "knob with a default" from the other side: they wrote defaults into their own verbs, and Pybricks wrote this one into `run_target`. Ask them to say it in D5's words ("a factory setting you can override for one call") rather than explaining it again.
 :::
 
 ## What will wait=False change? {#async data-cue="async" data-chapter="8 / Let the program continue" data-phase="Predict"}
@@ -330,7 +328,7 @@ The trial resets and only the waiting argument changes. The program is now three
 
 The second message appears immediately, while the jaws are barely open. wait=False let the program continue instead of waiting for arrival.
 
-Press again. There is nothing left to run, so the program ends. Ending a program releases the motors, and the jaws stop at about 2° with 130° still the requested angle. Ask what the program achieved: it issued a closing command and then took it away. The motor was never given time to work. The simulator's instruction ticks are illustrative, not firmware timing.
+Press again. There is nothing left to run, so the program ends. Ending a program releases the motors, and the jaws stop at about 2° with 72° still the requested angle. Ask what the program achieved: it issued a closing command and then took it away. The motor was never given time to work. The simulator's instruction ticks are illustrative, not firmware timing.
 :::
 
 ## How long should the program wait? {#fixed-wait data-cue="fixed-wait" data-chapter="8 / Let the program continue" data-phase="Predict"}
@@ -341,12 +339,12 @@ Press again. There is nothing left to run, so the program ends. Ending a program
 ::: {.notes}
 The program needs to stay alive while the motor works, so we add a wait. Someone has to choose the number, and 200 ms sounds reasonable. Ask how far the jaws will get, and take a show of hands before running it.
 
-The countdown beside the line runs out and the program ends with the jaws at about 42°. The object sits at 70°, so this trial ended before the claw touched anything. Nobody measured how long the closing takes; the number was a guess and the guess was short.
+The countdown beside the line runs out and the program ends with the output near 25°. The wide object would stop it near 52°, so this trial ended before the claw touched anything. Nobody measured how long the closing takes; the number was a guess and the guess was short.
 
 Ask the obvious follow-up: how much longer should it be? Any answer is another guess, and it changes with the object, the speed, and how far the jaws start from the target. Worse, a wait that is long enough still tells us nothing, because it measures time and never looks at the motor. We need to wait for the motor instead.
 :::
 
-## What could tell us the closing is over? {#stall-loop data-cue="stall-loop" data-chapter="9 / The checking loop" data-phase="Predict"}
+## What could tell us the closing is over? {#load-loop data-cue="load-loop" data-chapter="9 / The checking loop" data-phase="Predict"}
 
 ::: {.lab-slot}
 :::
@@ -356,32 +354,38 @@ Take answers before revealing any code. Recall stalled() from stage 5: it report
 
 The next press replaces the fixed wait with a loop: keep waiting while the motor is not stalled. Read it aloud. wait(100) gives the movement time to begin before the first check, and wait(10) spaces the checks; neither cancels the motor task. These supplied intervals are not guarantees for every physical build. The observation wait that keeps the scene alive is left out of this excerpt.
 
-Run it. The loop checks while the jaws close, and stalled() ends it the moment the object blocks them. The second message now appears because the closing attempt is over, not because a chosen number of milliseconds elapsed.
+Run it, and watch the jaws and the check counter together. The jaws stop at the object, but the loop keeps checking for a while before stalled() turns True. stalled() only reports once the motor has pushed at its full 180 mNm limit for a moment, and the last part of that push builds slowly. The loop works: the second message appears because the closing attempt is over, not because a chosen number of milliseconds elapsed. But grab() would sit still with the jaws already on the object. Ask what the motor could tell us sooner.
+
+Press again. The loop now reads claw.load(): how hard the motor is pushing, in mNm. Closing on air it reads a small number, the gear friction. Pressing on the object it climbs toward the 180 limit, and the loop leaves as it passes 100, on the way up. The closing command is still running, so the squeeze keeps rising to 180 after the loop ends. load() reads negative while closing, which is why the code wraps it in abs(). The 100 must sit above the closing-on-air reading and below the 180 limit: the load can never exceed the limit, so a limit at or below 100 would never end the loop on an object. Tune it by printing abs(claw.load()) while closing empty and on an object. The length of the pause in this model is illustrative.
+
+stalled() is still the right tool in home(): there the full push into the rigid stop is exactly what we want to find.
 :::
 
-## What if there is no object? {#done-check data-cue="done-check" data-chapter="9 / The checking loop" data-phase="Predict"}
+## Where will empty jaws stop? {#done-check data-cue="done-check" data-chapter="9 / The checking loop" data-phase="Predict"}
 
 ::: {.lab-slot}
 :::
 
 ::: {.notes}
-The same program with an empty claw. The requested target stays at 130°. Ask what stalled() will report when the motor settles slightly beyond that target.
+The same program with an empty claw. The requested output target stays at 72°, which is deliberately short of the angle where empty jaws would meet. Ask two questions before running: where will the jaws stop, and what will end the loop?
 
-The actual motor angle settles at 132°, above the requested 130°. There is no object blocking the jaws, so stalled() remains False and the loop keeps checking. Draw attention to both readings: the movement can finish with a small position error. An exact check such as claw.angle() == GRIP_TARGET would also keep waiting on this settled reading.
+The jaws reach the requested 72° and stop there, with a visible gap still between them. Nothing is between the jaws, so nothing ever pushes back: the load stays at the small closing-on-air value, then drops once the jaws arrive, while the check counter keeps climbing against a motor that has already finished moving. Point at the gap. The movement succeeded and the claw is holding nothing.
 
-Reveal claw.done(): it reports that the commanded movement has completed. Pybricks uses both position and speed tolerances to decide completion. This illustrative preset has a +2° settled error within a 3° position tolerance. The motor has stopped before done() becomes True. Merely passing the requested angle while still moving does not prove completion. The preset illustrates tolerances without simulating a real controller, and these numbers are not universal Pybricks defaults.
+Reveal claw.done(): it reports that the commanded movement has completed. It is the only ending available in this trial, because an unobstructed movement never builds load. On real hardware Pybricks decides completion using both position and speed tolerances, so a finished movement can rest a fraction of a degree from the requested angle; this model lands on the target exactly and does not simulate a controller.
 
-With both checks, the loop ends on done() in this empty trial and still ends on stalled() when an object blocks the jaws. Ask the last question: the loop ended, so is an object held? Here done() is True at 132° for a 130° request, with nothing between the jaws. Completion alone does not confirm a catch.
+With both checks, the loop ends on done() in this empty trial and still ends on the load when an object blocks the jaws. Ask the last question: the loop ended, so is an object held? Here done() is True at the requested 72°, with a gap between the jaws. Completion alone does not confirm a catch.
+
+If a student proposes raising the 72° close target until the empty jaws do meet, follow it through. The trial would then end on the load instead, but every empty grab would end by grinding the jaws into each other at the torque limit, and done() could never become True because the movement never completes. The target is kept short of that on purpose. The cost is the other half of the trade: an object narrower than the remaining gap is never gripped at all, which is the same tuning question stage 4 raised.
 
 References: https://docs.pybricks.com/en/stable/pupdevices/motor.html#pybricks.pupdevices.Motor.done and https://docs.pybricks.com/en/stable/pupdevices/motor.html#pybricks.pupdevices.Motor.control.target_tolerances
 :::
 
 ## Either True ends the loop {#truth-table data-cue="truth-table" data-chapter="9 / The checking loop" data-phase="Explain"}
 
-<div class="truth-layout"><pre class="condition"><code>while not claw.stalled() and not claw.done():</code></pre><table class="truth-table"><thead><tr><th>stalled()</th><th>done()</th><th>Our checking loop</th></tr></thead><tbody><tr class="keep step"><td>False</td><td>False</td><td>Keep waiting</td></tr><tr class="step"><td>True</td><td>False</td><td>Leave the loop</td></tr><tr class="step"><td>False</td><td>True</td><td>Leave the loop</td></tr><tr class="step"><td>True</td><td>True</td><td>Leave the loop</td></tr></tbody></table></div>
+<div class="truth-layout"><pre class="condition"><code>while abs(claw.load()) &lt; 100 and not claw.done():</code></pre><table class="truth-table"><thead><tr><th>abs(load()) &gt;= 100</th><th>done()</th><th>Our checking loop</th></tr></thead><tbody><tr class="keep step"><td>False</td><td>False</td><td>Keep waiting</td></tr><tr class="step"><td>True</td><td>False</td><td>Leave the loop</td></tr><tr class="step"><td>False</td><td>True</td><td>Leave the loop</td></tr><tr class="step"><td>True</td><td>True</td><td>Leave the loop</td></tr></tbody></table></div>
 
 ::: {.notes}
-Work through each row. Only False/False continues, which is exactly the two trials just run: the blocked object left on row two, the empty claw on row three. This table explains the Boolean expression; it does not claim all four combinations necessarily occur in this model.
+This is the *Line King* truth table on a claw, so let students read the rows before you do. `abs(load) < 100` is the same as `not (abs(load) >= 100)`, so the condition is still `not A and not B`, which reads "neither has happened yet". That is why **either** True ends the loop: the `or` card from that session. Work through each row. Only False/False continues, which is exactly the two trials just run: the blocked object left on row two, the empty claw on row three. This table explains the Boolean expression; it does not claim all four combinations necessarily occur in this model.
 :::
 
 ## What will an opening command change? {#release data-cue="release" data-chapter="10 / The three functions" data-phase="Predict"}
@@ -390,7 +394,7 @@ Work through each row. Only False/False continues, which is exactly the two tria
 :::
 
 ::: {.notes}
-The object is held after the checking loop: the jaws are at 70°, the closing command is still active, and the effort limit is 180 mNm. Read the displayed command aloud and take predictions before running it.
+The object is held after the checking loop: the output is near 52° from home, the closing command is still active, and the effort limit is 180 mNm. Read the displayed command aloud and take predictions before running it.
 
 The jaws open to 0° and the object is free. Point out that the opening command replaced the closing task; nothing had to cancel the earlier instruction first.
 
@@ -401,28 +405,30 @@ This sequence is release(). It has the same shape as the closing sequence: choos
 
 <div class="function-trio"><div class="step"><h3>home()</h3><pre><code>def home():
     claw.control.limits(
-        torque=HOME_TORQUE)
+        torque=220)
     claw.run_until_stalled(
-        -CLOSE_SPEED,
+        speed=-120,
         then=Stop.COAST)
     wait(200)
-    claw.reset_angle(0)
+    claw.reset_angle(angle=0)
     claw.control.limits(
-        torque=GRIP_TORQUE)</code></pre><p class="detail">The built-in operation ends, then coasts.</p></div><div class="step"><h3>grab()</h3><pre><code>def grab():
+        torque=180)</code></pre><p class="detail">The built-in operation ends, then coasts.</p></div><div class="step"><h3>grab()</h3><pre><code>def grab():
     claw.control.limits(
-        torque=GRIP_TORQUE)
+        torque=180)
     claw.run_target(
-        CLOSE_SPEED, GRIP_TARGET,
+        speed=120,
+        target_angle=72,
         then=Stop.HOLD,
         wait=False)
     wait(100)
-    while (not claw.stalled()
+    while (abs(claw.load()) &lt; 100
            and not claw.done()):
-        wait(10)</code></pre><p class="detail">Our loop ends. The closing task stays active.</p></div><div class="step"><h3>release()</h3><pre><code>def release(angle=OPEN_TARGET):
+        wait(10)</code></pre><p class="detail">Our loop ends. The closing task keeps squeezing.</p></div><div class="step"><h3>release()</h3><pre><code>def release(angle=0):
     claw.control.limits(
-        torque=GRIP_TORQUE)
+        torque=180)
     claw.run_target(
-        OPEN_SPEED, angle,
+        speed=180,
+        target_angle=angle,
         then=Stop.COAST)</code></pre><p class="detail">The opening reaches its target, then coasts.</p></div></div>
 
 ::: {.notes}
@@ -430,7 +436,7 @@ Package everything the class has built. Reveal the three in order and read what 
 
 home() and release() both wait for their own movement to finish. grab() cannot, because the movement it starts may never reach its target, so it starts the command with wait=False and watches for either outcome.
 
-That difference has a consequence worth saying aloud: leaving our checking loop does not cancel the motor instruction. The closing command is still active while grab() returns, which is what keeps the object squeezed, and then=Stop.HOLD is what maintains the position if the target is actually reached. Demonstration prints and observation waits stay outside the functions. A return means one of the two conditions occurred; it does not certify a catch. This ends the excerpt covering stages 7-10.
+That difference has a consequence worth saying aloud: leaving our checking loop does not cancel the motor instruction. The closing command is still active while grab() returns, which is what keeps the object squeezed and lets the push keep rising from 100 to the 180 limit while the robot drives, and then=Stop.HOLD is what maintains the position if the target is actually reached. Demonstration prints and observation waits stay outside the functions. A return means one of the two conditions occurred; it does not certify a catch. This ends the excerpt covering stages 7-10.
 :::
 
 ## Can you explain both trials? {#challenge data-cue="challenge" data-chapter="10 / The three functions" data-phase="Try it"}
@@ -449,7 +455,7 @@ That difference has a consequence worth saying aloud: leaving our checking loop 
 <p>The starter contains <code>home()</code>. Complete <code>grab()</code> and <code>release()</code>, then compare with the finished module.</p>
 <button type="button" data-claw-download="starter">Download starter</button>
 <button type="button" data-claw-download="completed">Download completed program</button>
-<p class="challenge-note">Both use Port E, an open zero at 0°, and a closing target of 130°.</p>
+<p class="challenge-note">Both use Port E, gears=[12, 20], an open zero at 0°, and a 72° output target that stops short of empty-jaw contact.</p>
 <a class="course-link" href="../index.html">← Back to the course</a>
 </div>
 </div>
@@ -458,7 +464,7 @@ That difference has a consequence worth saying aloud: leaving our checking loop 
 ::: {.notes}
 Students work independently before discussing answers. Run both trials on the bench build: home with the jaws empty, then place the object before grabbing, and repeat with nothing between the jaws.
 
-home() finishes its built-in stalled movement, coasts, settles, sets zero, and restores the gripping limit. grab() returns when either stalled() or done() becomes True. release() returns after its opening movement completes. An empty grab may finish on done() with no object held. Students should use the observed readings to explain both trials.
+home() finishes its built-in stalled movement, coasts, settles, sets zero, and restores the gripping limit. grab() returns when the load passes 100 mNm or done() becomes True. release() returns after its opening movement completes. An empty grab may finish on done() with no object held. Students should use the observed readings to explain both trials.
 
-For a bench extension, use the same module on the supplied Port E build. Keep the homing path empty and adapt the marked TUNE settings to the physical mechanism. The completed download defines functions without starting a motion sequence. Run the operations under the instructor's guidance, placing the object after homing. The readings and tolerance example in the lesson are illustrative.
+For a bench extension, use the same module on the supplied Port E build. Keep the homing path empty and adapt the marked TUNE settings to the physical mechanism. The completed download defines functions without starting a motion sequence. Run the operations under the instructor's guidance, placing the object after homing. The readings in the lesson are illustrative.
 :::

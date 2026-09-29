@@ -1,6 +1,6 @@
 ---
 title: "Line King"
-subtitle: "Day 6 · Robot Rockstars · SPIKE Prime + Pybricks"
+subtitle: "Session 11 · Lesson D6 · Robot Rockstars · SPIKE Prime + Pybricks"
 date: today
 format: revealjs
 ---
@@ -20,14 +20,14 @@ format: revealjs
 ::: {.fragment .fade-up}
 ::: {.callout-note}
 ## One thing up front
-A script is **blind**. Today: **see → decide → steer.** Brightness only, colour names come in **Week 4**.
+A script is **blind**. Today: **see → decide → steer.** Brightness only, colour names are a preview; colour-based missions are an optional extension.
 :::
 :::
 
 ⏱️ **Time: 5 minutes, then a bug hunt**
 
 ::: {.notes}
-Anchor today in what they already own, or it feels like a brand-new mountain (it isn't — the plan flags the line day as the longest precisely because the *old* material was video-paced; live, it's one formula applied a third time). Recap `error × KP` from the gyro out loud. Today the robot opens its eyes — three new powers land: the color eye (reflection = the echo of its own light), the per-surface threshold, and `if` (the first real decision). Flag the reflection-vs-color point early and firmly — kids will want to "detect the green line"; stop that now, it's brightness only until Week 4. The day is eye → threshold → `if` → bang-bang → P on the line, then junction squaring — **the P follower + squaring pair is the gate** (it's what the anchor run actually uses); the PD upgrade is the stretch for squads that tune P early. If the cohort is still behind on programming, the afternoon flexes to library-consolidation practice instead of pushing PD. Keep this slide to five minutes: per the W2 delivery rhythm (decision #22), robots are out by minute 15.
+Anchor today in what they already own, or it feels like a brand-new mountain (it isn't — the plan flags the line day as the longest precisely because the *old* material was video-paced; live, it's one formula applied a third time). Recap `error × KP` from the gyro out loud. Today the robot opens its eyes — three new powers land: the color eye (reflection = the echo of its own light), the per-surface threshold, and `elif` (D5's `if`, now with more than two roads). Flag the reflection-vs-color point early and firmly — kids will want to "detect the green line"; stop that now, it's reflection for navigation; the red beeper is only a small colour preview. The day is eye → threshold → `if` → bang-bang → P on the line, then junction squaring — **the P follower + squaring pair is the gate** (it's what the anchor run actually uses); the PD upgrade is the stretch for squads that tune P early. If the cohort is still behind on programming, the afternoon flexes to library-consolidation practice instead of pushing PD. Keep this slide to five minutes: per the W2 delivery rhythm (decision #22), robots are out by minute 15.
 :::
 
 ## 🔎 Bug hunt: the tune that didn't stick
@@ -51,17 +51,54 @@ Inside a `def` you made a **local**, and it died the moment the function returne
 :::
 
 ::: {.notes}
-This closes Day 5's leftover (globals/shadowing), delivered as a live hunt instead of slides — decision #22. Run the planted bug on the coach robot and let squads diagnose for ~5 minutes before any reveal; the 😤 must be theirs. Two live moments: (1) the fix — move `KP = 12` to the constants block, rerun, the straight sharpens; (2) `print(error)` after a run → NameError, proof that locals evaporate (and that's a *feature*: every verb gets private scratch names). Close with the D5 verbal pass, squad by squad, in their own words: *default = factory setting · keyword = one-call override · top of file = global · inside a def = local*. Do NOT teach the `global` keyword — the constants-block discipline is strictly better. Coach's radar for W2–3: "I tuned it and it didn't stick" → first question is *where did you assign it?*
+This is the course's one home for globals/shadowing (decision #65; delivered as a live hunt per decision #22), with the rescue on the next slide. Run the planted bug on the coach robot and let squads diagnose for ~5 minutes before any reveal; the 😤 must be theirs. Two live moments: (1) the fix — move `KP = 12` to the constants block, rerun, the straight sharpens; (2) `print(error)` after a run → NameError, proof that locals evaporate (and that's a *feature*: every verb gets private scratch names). Do NOT teach the `global` keyword — the constants-block discipline is strictly better. Coach's radar for W2–3: "I tuned it and it didn't stick" → first question is *where did you assign it?*
+:::
+
+## Two homes for a name 🗺️ {.smaller}
+
+```{.python code-line-numbers="|1-3|5-7"}
+# Top of movements.py (GLOBAL)
+hub = PrimeHub()
+KP = 4
+
+def drive_straight(distance_mm, speed=400):
+    start = hub.imu.heading()                # LOCAL: created during the call
+    error = hub.imu.heading() - start        # LOCAL: gone when the call ends
+```
+
+:::: {.columns}
+::: {.column width="50%"}
+::: {.cardbox .coral}
+<h3>Local</h3>
+
+- Made inside a function
+- Gone the moment it returns
+- `print(error)` outside → `NameError`
+:::
+:::
+::: {.column width="50%"}
+::: {.cardbox .teal}
+<h3>Global</h3>
+
+- Made at the top of the file
+- Every function can **read** it
+- Change it there once, and the whole robot is retuned
+:::
+:::
+::::
+
+::: {.notes}
+The rescue slide for the hunt above; it moved here from *Name Your Moves* (decision #65) so the scope idea lands once, on the day the bug is felt, instead of being taught on D5 and re-hunted on D6. Show the `print(error)` → NameError live if the hunt didn't already. Then the D5 verbal pass, squad by squad: *default = factory setting · keyword = one-call override · top of file = global · inside a def = local*.
 :::
 
 ## 🤖 Robots out: Bullseye on the real mat 🎯
 
-- 🎯 `drive_straight(1000)` on the **real mat**: one attempt, **±2 cm** passes
-- 📦 `drive_square(300)`: watch it snap shut where it started
+- 🎯 `move.drive_straight(1000)` on the **real mat**: one attempt, **±2 cm** passes
+- 📦 **Stretch recap:** `drive_square(300)`, if you completed the square extension
 - ⏱️ **15 minutes**, then the robot opens its **eyes**
 
 ::: {.notes}
-Pure energy burner with a hidden agenda: it closes the remaining D5 gate legs (`drive_straight` 1.0 m ±2 cm, square closed) on the real surface, and it front-loads the session with driving instead of sitting — the drill-first rhythm (decision #22). Logistics: mat on the ground, no table yet (decision #23) — the printed staff lines are today's territory; nothing today needs borders at true positions. Watch for surprises vs the tape field: the print's friction and colour differ — if someone's 1 m lands long/short vs last week, that's the calibration-transfer checkpoint doing its job (re-measure, don't panic). Keep it to 15 minutes; the leaderboard can wait for Line King.
+Repeat the required straight-driving benchmark (`drive_straight` 1.0 m ±2 cm) on the real surface. Students who completed the optional square can replay it; everyone else gets another measured straight. This keeps an optional extension from becoming a hidden prerequisite. Logistics: mat on the ground, no table yet — the printed staff lines are today's territory. If a run lands differently on the mat, re-measure and tune for the new surface. Keep it to 15 minutes before the sensor work.
 :::
 
 # B. One Eye, One Edge {.sdaia-dark background-gradient="linear-gradient(135deg, #1C355E, #FF7A5C)"}
@@ -111,12 +148,13 @@ A **flashlight + light meter** in one brick. It measures its own echo.
 
 ```{.python}
 from pybricks.pupdevices import ColorSensor
+from pybricks.parameters import Color   # the colour names, for the beeper test
 
 left_eye = ColorSensor(Port.D)    # yours
 right_eye = ColorSensor(Port.A)   # yours -- only if you fitted a second eye
 
 left_eye.reflection()   # 0-100: % of its OWN light echoing back
-left_eye.color()        # a name: Color.RED... (Week 4's tool)
+left_eye.color()        # a name: Color.RED... (optional colour extension)
 ```
 
 ::: {.fragment .fade-up}
@@ -126,7 +164,7 @@ Anything that changes the **echo** changes the number: ✨ gloss · 💡 light �
 :::
 
 ::: {.notes}
-The live demo beats the diagram: run a `print(left_eye.reflection())` loop, hold the robot, and let students slide surfaces under the eye, tilt it, lift it — the number dances. Establish the active-sensor idea: it brings its own LED, so it mostly ignores the room, but gloss, sensor height, and strong ambient light still shift the echo — which is exactly why every surface gets its own calibration (next slide). `reflection()` vs `color()`: today reflection does all the work; `color()` names colors and gets a cameo here — its real job is Week 4's notes. The eye lives on port **D** on the coach's robot — check yours. Following needs only **one** eye; `square_on_line` at the end of today is the job that wants a second, on the spare port **A**.
+The live demo beats the diagram: run a `print(left_eye.reflection())` loop, hold the robot, and let students slide surfaces under the eye, tilt it, lift it — the number dances. Establish the active-sensor idea: it brings its own LED, so it mostly ignores the room, but gloss, sensor height, and strong ambient light still shift the echo — which is exactly why every surface gets its own calibration (next slide). `reflection()` vs `color()`: today reflection does all the work; `color()` names colors and gets a cameo here — its real job is the optional notes extension. The eye lives on port **D** on the coach's robot — check yours. Following needs only **one** eye; `square_on_line` at the end of today is the job that wants a second, on the spare port **A**.
 :::
 
 ## Break it: the threshold you guessed 🔥
@@ -147,15 +185,15 @@ A threshold is a fact about a **surface**: read white · read black · **split t
 Let each squad predict *before* measuring — commitments make the surprise land. The printed mat just arrived (decision #23), so this is also the real calibration-transfer checkpoint from the plan: the numbers they log here ARE the re-logged thresholds. Expected outcome: the mat's white and the tape-field's white read differently (print ink vs paper, matte tarp vs tape), the split point moves, and the habit lands — look first, then split what you actually see. The glossy-table failure (black reading 60, `< 50` calling the line "clear" and driving over it) is the venue-day version of the same lesson; it lives as an interactive sim in the 🏠 appendix since we don't have a glossy table in the room — mention it, don't show it. The takeaway is a habit, not a number: re-read and re-split, every surface.
 :::
 
-## Fix it: calibrate, then decide with `if / else` 🎚️
+## Fix it: calibrate, then decide with `if / elif` 🎚️
 
 ```{.python code-line-numbers="|1-2|3|4|5-6"}
 # Calibrate FIRST -- measure, never guess
-REFLECT_THRESHOLD = 50              # for THIS surface
+THRESHOLD = 50                      # for THIS surface
 while True:
     if left_eye.color() == Color.RED:
         hub.speaker.beep(frequency=880)     # high beep on red
-    elif left_eye.reflection() < REFLECT_THRESHOLD:
+    elif left_eye.reflection() < THRESHOLD:
         hub.speaker.beep(frequency=220)     # low beep on a line
     wait(50)
 ```
@@ -164,12 +202,12 @@ while True:
 
 ::: {.fragment .fade-up}
 ::: {.cardbox .teal}
-`if … elif` is the robot **choosing**. New surface → **re-calibrate the threshold, never the code.**
+`elif` adds a road: *otherwise, check this next.* New surface → **re-calibrate the threshold, never the code.**
 :::
 :::
 
 ::: {.notes}
-This is the just-in-time concept for the day: `if/elif` + booleans. Keep it concrete — a boolean is the answer to a yes/no question the robot asks the world (`color() == RED`, `reflection() < 50`). `elif` = "otherwise, check this next." Tie it straight back to the three-surface ritual: the threshold is data you recalibrate per surface; the `if/elif` structure never changes. The mat's printed staff lines make the beeper test real mission geography — they're the same lines we follow and square on later today. If a squad is flying, mention `else` for the catch-all case, but don't gate on it.
+D5 gave them `if/else` for the one fork inside `turn`; today's just-in-time concept is `elif` (more than two roads) + comparisons as booleans. Keep it concrete — a boolean is the answer to a yes/no question the robot asks the world (`color() == RED`, `reflection() < 50`). `elif` = "otherwise, check this next." Tie it straight back to the three-surface ritual: the threshold is data you recalibrate per surface; the `if/elif` structure never changes. The mat's printed staff lines make the beeper test real mission geography — they're the same lines we follow and square on later today. If a squad is flying, mention `else` for the catch-all case, but don't gate on it.
 :::
 
 ## Ride the edge 👁️
@@ -405,6 +443,35 @@ The P loop, **bottled**. A finish line in degrees makes it a *segment*, and **`k
 Same promotion ritual as every day this week: the loose P loop gets a name and moves into `movements.py` (its `KP` becomes `KP_LINE` — the library's constants block already owns `KP` for the gyro). Map every part back to what they own: `error` = P on the eye, the `finish` line = `drive_straight`'s DEG_PER_MM trick (follow *for a distance* — that's how missions call it), `kd * (error - last_error)` = the D from the library-day gyro turn, with `last_error` the one-line memory that makes D possible. The gate is the P version — `follow_line(600)` with kd=0; the stretch is sliding kd up until the fast curve stops overshooting, which is what wins Speed Demon. State the I-policy plainly and move on: integral fixes a *steady* offset over a *long* run; our segments are short, so I is a demo they can watch but never something the gate depends on.
 :::
 
+## Two eyes, one question: `not`, `and`, `or` 🧠 {.smaller}
+
+::: {.qbox}
+[Each wheel parks when **its own** eye hits the line. The loop must run until **both** have parked. What goes at the top of the `while`?]{.qtitle}
+:::
+
+| Check | True when… |
+|:--|:--|
+| `not left_done` | the left wheel is **still driving** |
+| `left_done and right_done` | **both** wheels have parked |
+| `left_done or right_done` | **at least one** has parked |
+
+::: {.fragment .fade-up}
+| `left_done` | `right_done` | `left_done and right_done` | the loop |
+|:-:|:-:|:-:|:--|
+| False | False | False | keeps going |
+| True | False | False | keeps going |
+| False | True | False | keeps going |
+| True | True | **True** | **leaves** |
+
+::: {.cardbox .teal}
+`while not (left_done and right_done):` keep going while it is **not** true that both are done.
+:::
+:::
+
+::: {.notes}
+The course's one lesson on `not` / `and` / `or` (decision #65), placed on the first verb that genuinely needs two conditions. Predict each row aloud before the fragment. The argument worth having: someone will propose `while not left_done or not right_done:`. It is also correct; say so, and say the `not (… and …)` version reads closer to the English. `or` is not used in this verb, but it is on the card on purpose: *Stop at the Wall*'s `wall_square` reuses this exact `and`, and the claw lesson's checking loop ends when the jaw is stalled **or** done.
+:::
+
 ## The two-eye job: square up 📐 {.code-shrink}
 
 The **second** eye's moment: you hit a junction **crooked**, so sit square before the next move.
@@ -441,7 +508,7 @@ So a one-eye robot squares on a **wall** instead. Both wheels press the same fla
 :::
 
 ::: {.notes}
-Answer the port question head-on, and answer it with **our** robot, not the kit: the eye is on **D**, the two grippers take **E** and **C**, the drive motors **F** and **B** — which leaves exactly **one** spare port, **A**. Following needs one eye; this verb wants two. So the second eye is a *purchase*, and A is the money. Say what it costs: spend A on an eye and you can never add a third mechanism — though the 4-motor cap (§5.2.8) was going to stop you anyway. On the real mat this kills accumulated drift in a fraction of a second, gold going into the chained runs of Week 3. (The same second eye later reads note colours in Week 4 — but never steers.)
+Answer the port question head-on, and answer it with **our** robot, not the kit: the eye is on **D**, the two grippers take **E** and **C**, the drive motors **F** and **B** — which leaves exactly **one** spare port, **A**. Following needs one eye; this verb wants two. So the second eye is a *purchase*, and A is the money. Say what it costs: spend A on an eye and you can never add a third mechanism — though the 4-motor cap (§5.2.8) was going to stop you anyway. On the real mat this kills accumulated drift in a fraction of a second, gold going into the later integrated runs. (The same second eye later reads note colours in the optional extension — but never steers.)
 :::
 
 ## Watch it snap square 📐
@@ -510,7 +577,7 @@ Leading wheel parks first · trailing wheel swings square · **drift gone.** �
 :::
 
 ::: {.notes}
-Run it live: the bot arrives crooked, one wheel stops on the line first, the other pivots the body until its eye lands too — square. This is exactly `square_on_line()` from the previous slide. On the mat it erases accumulated drift in a fraction of a second, right before the next move — cheap, automatic insurance the chained runs of Week 3 lean on.
+Run it live: the bot arrives crooked, one wheel stops on the line first, the other pivots the body until its eye lands too — square. This is exactly `square_on_line()` from the previous slide. On the mat it erases accumulated drift in a fraction of a second, right before the next move — cheap, automatic insurance the later integrated runs lean on.
 :::
 
 # D. Compete & Gate {.sdaia-dark background-gradient="linear-gradient(135deg, #1C355E, #00C9A7)"}
@@ -566,7 +633,7 @@ Next: *Stop at the Wall*. The motor becomes a **sensor**, and the wall **resets 
 :::
 
 ::: {.notes}
-The gate is the plan's line-day outcome: build, tune, and *explain* a P follower + reliable junction squaring — what the anchor run actually uses. Split the squaring half by build, because our competition robot runs **one** eye and `square_on_line` genuinely needs two: a two-eye squad demonstrates the verb, a one-eye squad demonstrates the *failure* (park it crooked on the line, read the number, park it square, read the same number) and carries the job to tomorrow, where `wall_square` solves it on the border. Do not fail a one-eye squad for a sensor it was never given. The `heading=` argument is tomorrow's idea too — declaring a heading is D7's "the wall never lies", so name it, don't teach it today; PD is explicitly the stretch, never the gate. A student who can narrate why each term is there owns the concept and can debug it in Week 3 when the follower serves the run. Two eyes, one job each: one follows, both square. Close by pointing forward: tomorrow the motor itself becomes a sensor — the robot feels walls, patrols between them, and resets its heading truth against them — and the scoresheet gets read the anchor-first way: everything those color-free verbs score comes first.
+The gate is the plan's line-day outcome: build, tune, and *explain* a P follower + reliable junction squaring — what the anchor run actually uses. Split the squaring half by build, because our competition robot runs **one** eye and `square_on_line` genuinely needs two: a two-eye squad demonstrates the verb, a one-eye squad demonstrates the *failure* (park it crooked on the line, read the number, park it square, read the same number) and carries the job to tomorrow, where `wall_square` solves it on the border. Do not fail a one-eye squad for a sensor it was never given. The `heading=` argument is tomorrow's idea too — declaring a heading is D7's "the wall never lies", so name it, don't teach it today; PD is explicitly the stretch, never the gate. A student who can narrate why each term is there owns the concept and can debug it during integration when the follower serves the run. Two eyes, one job each: one follows, both square. Close by pointing forward: tomorrow the motor itself becomes a sensor — the robot feels walls, patrols between them, and resets its heading truth against them — and the scoresheet gets read the anchor-first way: everything those color-free verbs score comes first.
 :::
 
 # 🏠 Explore at Home {.sdaia-dark background-gradient="linear-gradient(135deg, #1C355E, #9B8EC0)"}

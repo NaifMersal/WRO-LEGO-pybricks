@@ -1,0 +1,682 @@
+---
+title: "Until It's True"
+subtitle: "Session 5 · Lesson D3, part 1 · Robot Rockstars · SPIKE Prime + Pybricks"
+date: today
+format: revealjs
+---
+
+# A. The Question {.sdaia-dark background-gradient="linear-gradient(135deg, #1C355E, #00C9A7)"}
+
+Some jobs have no fixed time. Only a **finish line**. 🏁
+
+## Drive until the black line
+
+```{.python}
+left.run(300)
+wait(????)     # how long??
+left.stop()
+```
+
+::: {.qbox}
+[How long do you wait before `stop()`?]{.qtitle}
+:::
+
+::: {.fragment .fade-up}
+::: {.cardbox .teal}
+Nobody knows. So don't guess: **keep checking.** Keep driving *while* the line is not there yet.
+:::
+:::
+
+::: {.fragment .fade-up}
+The robot's eye comes later. Today the finish line is a **wheel angle**.
+:::
+
+::: {.notes}
+Let them answer with a number first. Someone will say "2000", someone "3500". Ask: what if the robot starts further back? What if the battery is low? The time changes every run, so no number is right. That is the whole reason `while` exists: it repeats until something becomes true, however long that takes. Keep this slide to two minutes. This session assumes only D2 (imports, `Motor`, `run_angle`, variables). The next slide hands them the five motor words the loops need, and no `for` loop is needed anywhere; `for` arrives in *Drive a Square*.
+:::
+
+## Five new words 🔤
+
+| Code | What it does |
+|:--|:--|
+| `left.run(300)` | start turning at 300 °/s, **and keep going** |
+| `left.stop()` | stop turning |
+| `left.reset_angle(0)` | call this spot **0°** |
+| `left.angle()` | how far it has turned since 0° |
+| `print(x)` | show `x` in the console |
+
+::: {.fragment .fade-up}
+::: {.cardbox .purple}
+`run_angle` stops by itself. `run` **never** does. Something else has to call `stop()`, at the right moment.
+:::
+:::
+
+::: {.notes}
+Two minutes, no robots yet. `run_angle` from D2 is "go this far, then stop"; `run` is "go, and I will tell you when to stop". That missing "when" is the whole session. `print` is new too: point at the console pane in the Pybricks editor so they know where the numbers will appear. If someone asks how `run_angle` knows when to stop: "it runs a loop just like the one you are about to write". That is true, and it is a good hook.
+:::
+
+# B. Watch a Loop Think {.sdaia-dark background-gradient="linear-gradient(135deg, #1C355E, #625D9C)"}
+
+Step through it **one line at a time**. 👣
+
+## Meet `while`
+
+Predict: **how many lines will it print?** Then press Step.
+
+```{=html}
+<style>
+.reveal .wl-code{background:var(--sim-ground);border:1px solid var(--sim-line);border-radius:12px;padding:10px 12px;font-family:var(--sim-mono);font-size:25px;line-height:1.5;color:var(--sdaia-navy);min-width:470px;}
+.reveal .wl-ln{white-space:pre;padding:0 10px;border-left:5px solid transparent;border-radius:6px;opacity:.75;}
+.reveal .wl-ln.on{opacity:1;border-left-color:var(--sdaia-coral);background:rgba(255,213,0,.30);font-weight:700;}
+.reveal .wl-ln.gone{opacity:.45;text-decoration:line-through;color:var(--sdaia-coral);}
+.reveal .wl-side{display:flex;flex-direction:column;gap:12px;width:440px;}
+.reveal .wl-lamp{font-family:var(--sim-mono);font-size:23px;font-weight:700;padding:8px 12px;border-radius:10px;border:2px solid var(--sim-line);background:#fff;color:var(--sdaia-navy);text-align:center;}
+.reveal .wl-lamp.t{border-color:var(--sdaia-teal);background:rgba(0,201,167,.12);color:#00866f;}
+.reveal .wl-lamp.f{border-color:var(--sdaia-coral);background:rgba(233,104,82,.12);color:var(--sdaia-coral);}
+.reveal .wl-stats{display:flex;justify-content:space-between;font-size:22px;color:var(--sdaia-navy);}
+.reveal .wl-stats b{font-family:var(--sim-mono);font-size:26px;}
+.reveal .wl-con{background:#1C355E;color:#e8f0fa;font-family:var(--sim-mono);font-size:21px;line-height:1.35;border-radius:10px;padding:8px 14px;height:190px;overflow:hidden;white-space:pre;}
+.reveal .wl-con::before{content:"console";display:block;font-size:16px;color:#9fb3cc;margin-bottom:2px;}
+.reveal .wl-wheel{display:flex;align-items:center;gap:12px;}
+.reveal .wl-track{position:relative;height:34px;background:var(--sim-ground);border:1px solid var(--sim-line);border-radius:8px;margin-top:4px;}
+.reveal .wl-fill{position:absolute;left:0;top:0;bottom:0;width:0;background:rgba(0,201,167,.25);border-radius:8px 0 0 8px;}
+.reveal .wl-finish{position:absolute;top:-6px;bottom:-6px;width:4px;background:var(--sdaia-coral);border-radius:2px;}
+.reveal .wl-dot{position:absolute;top:12px;width:9px;height:9px;margin-left:-4px;border-radius:50%;background:var(--sdaia-teal);}
+.reveal .wl-dot.f{background:var(--sdaia-coral);width:13px;height:13px;margin-left:-6px;top:10px;}
+.reveal .wl-scale{display:flex;justify-content:space-between;font-size:17px;color:#55627a;font-family:var(--sim-mono);}
+.reveal .wl-mono{font-family:var(--sim-mono);}
+</style>
+<div class="sim">
+  <div class="sim-controls">
+    <button class="sim-btn teal" data-sim="wlStep" data-sim-arg="s1">⏭ Step</button>
+    <button class="sim-btn" data-sim="wlRun" data-sim-arg="s1">▶ Run</button>
+    <button class="sim-btn ghost" data-sim="wlReset" data-sim-arg="s1">↺ Reset</button>
+  </div>
+  <div class="sim-stage">
+    <div class="wl-code">
+      <div class="wl-ln" id="s1L0">count = 0</div>
+      <div class="wl-ln" id="s1L1">while count &lt; <span id="s1N">3</span>:</div>
+      <div class="wl-ln" id="s1L2">    print(count)</div>
+      <div class="wl-ln" id="s1L3">    count = count + 1</div>
+      <div class="wl-ln" id="s1L4">print("done")</div>
+    </div>
+    <div class="wl-side">
+      <div class="wl-lamp" id="s1Lamp">check: not yet</div>
+      <div class="wl-stats"><span>count <b id="s1Count">?</b></span><span>body ran <b id="s1Runs">0</b> times</span></div>
+      <div class="wl-con" id="s1Con"></div>
+    </div>
+  </div>
+  <div class="sim-msg" id="s1Msg"></div>
+</div>
+```
+
+::: {.fragment .fade-up}
+::: {.cardbox .purple}
+**Check → body → jump back → check again.** It leaves the moment the check says False.
+:::
+:::
+
+::: {.notes}
+Collect predictions on the board before anyone presses anything: "3", "4", "2" are all common. Then Step slowly and have the room say each line out loud before you press. The lamp on the right is the heart of it: every time the highlight lands on the `while` line, the check is asked again and the lamp shows the answer. Point out the jump back up after `count = count + 1`, which is the only thing that makes a loop a loop. It prints 0, 1, 2, then "done": four lines, and the body ran 3 times. The fourth check is the one people forget: it is the False that lets the program leave.
+:::
+
+## How many times?
+
+Change the number. **Predict the prints first.**
+
+```{=html}
+<div class="sim">
+  <div class="sim-controls">
+    <button class="sim-btn small on" data-sim="wlSet" data-sim-arg="s2:lt3"><span class="wl-mono">&lt; 3</span></button>
+    <button class="sim-btn small ghost" data-sim="wlSet" data-sim-arg="s2:lt5"><span class="wl-mono">&lt; 5</span></button>
+    <button class="sim-btn small ghost" data-sim="wlSet" data-sim-arg="s2:lt0"><span class="wl-mono">&lt; 0</span></button>
+    <span class="sim-tag">·</span>
+    <button class="sim-btn teal small" data-sim="wlStep" data-sim-arg="s2">⏭ Step</button>
+    <button class="sim-btn small" data-sim="wlRun" data-sim-arg="s2">▶ Run</button>
+    <button class="sim-btn ghost small" data-sim="wlReset" data-sim-arg="s2">↺ Reset</button>
+  </div>
+  <div class="sim-stage">
+    <div class="wl-code">
+      <div class="wl-ln" id="s2L0">count = 0</div>
+      <div class="wl-ln" id="s2L1">while count &lt; <span id="s2N">3</span>:</div>
+      <div class="wl-ln" id="s2L2">    print(count)</div>
+      <div class="wl-ln" id="s2L3">    count = count + 1</div>
+      <div class="wl-ln" id="s2L4">print("done")</div>
+    </div>
+    <div class="wl-side">
+      <div class="wl-lamp" id="s2Lamp">check: not yet</div>
+      <div class="wl-stats"><span>count <b id="s2Count">?</b></span><span>body ran <b id="s2Runs">0</b> times</span></div>
+      <div class="wl-con" id="s2Con"></div>
+    </div>
+  </div>
+  <div class="sim-msg" id="s2Msg"></div>
+</div>
+```
+
+::: {.fragment .fade-up}
+::: {.cardbox .teal}
+With `< 0` the body runs **zero** times. The check always comes **first**.
+:::
+:::
+
+::: {.notes}
+Go `< 5` first (easy win: five prints), then `< 0`. Most students predict one print for `< 0` because "the loop runs at least once". It does not: the very first check is `0 < 0`, which is False, so Python skips the body and goes straight to "done". Say the rule: a `while` asks before it acts. This matters on the robot: if the wheel is already past the finish line, a `while` drive does nothing at all, which is correct.
+:::
+
+## 🐛 Bug hunt: the missing colon
+
+::: {.qbox}
+[This loop won't even start. Pybricks flags the **first line** in red. What's missing?]{.qtitle}
+:::
+
+```python
+count = 0
+while count < 3
+    print(count)
+    count = count + 1
+```
+
+::: {.fragment .fade-up}
+::: {.cardbox .coral}
+`SyntaxError`: no **colon**. Every loop header ends in `:`, which says *"the block starts here."* Fix: `while count < 3:`
+:::
+:::
+
+::: {.notes}
+The colon is invisible until it's missing. Type it live so the red SyntaxError lands on the `while` line. Make the habit loud: say "colon" out loud every time anyone types a loop header this week. It is the number-one typo of the session, and `for` will have exactly the same rule in *Drive a Square*.
+:::
+
+## 🐛 Bug hunt: the runaway line
+
+::: {.qbox}
+[The colon is back, and it *still* won't run. The error points at **line 3**.]{.qtitle}
+:::
+
+```python
+count = 0
+while count < 3:
+print(count)
+count = count + 1
+```
+
+::: {.fragment .fade-up}
+::: {.cardbox .coral}
+`IndentationError`: lines inside a loop must be **pushed in** (one Tab). The spaces tell Python what repeats.
+:::
+:::
+
+::: {.notes}
+Indentation-as-meaning is the single biggest beginner hurdle, so spend a beat. Show flush-left (crashes) next to indented (runs). Then the sneaky version: indent **only** `print(count)`. No crash, but `count = count + 1` now sits outside the loop, so the body never changes what the check reads. That is exactly the next slide, so let the frozen console land and go straight on.
+:::
+
+## Break it: the loop that never ends 🥶
+
+Delete one line. **Predict, then Run.**
+
+```{=html}
+<div class="sim">
+  <div class="sim-controls">
+    <button class="sim-btn small on" data-sim="wlSet" data-sim-arg="s3:inc"><span class="wl-mono">count = count + 1</span> ✓</button>
+    <button class="sim-btn small ghost" data-sim="wlSet" data-sim-arg="s3:noinc">delete it ✂️</button>
+    <span class="sim-tag">·</span>
+    <button class="sim-btn small" data-sim="wlRun" data-sim-arg="s3">▶ Run</button>
+    <button class="sim-btn coral small" data-sim="wlHalt" data-sim-arg="s3">⏹ Stop</button>
+    <button class="sim-btn ghost small" data-sim="wlReset" data-sim-arg="s3">↺ Reset</button>
+  </div>
+  <div class="sim-stage">
+    <div class="wl-code">
+      <div class="wl-ln" id="s3L0">count = 0</div>
+      <div class="wl-ln" id="s3L1">while count &lt; <span id="s3N">3</span>:</div>
+      <div class="wl-ln" id="s3L2">    print(count)</div>
+      <div class="wl-ln" id="s3L3">    count = count + 1</div>
+      <div class="wl-ln" id="s3L4">print("done")</div>
+    </div>
+    <div class="wl-side">
+      <div class="wl-lamp" id="s3Lamp">check: not yet</div>
+      <div class="wl-stats"><span>count <b id="s3Count">?</b></span><span>body ran <b id="s3Runs">0</b> times</span></div>
+      <div class="wl-con" id="s3Con"></div>
+    </div>
+  </div>
+  <div class="sim-msg" id="s3Msg"></div>
+</div>
+```
+
+::: {.fragment .fade-up}
+::: {.cardbox .coral}
+The check reads `count`. Nothing changes `count`. **The body must change what the check reads.**
+:::
+:::
+
+::: {.notes}
+Run it once with the line in place (it ends), then delete it and run again. Let it spin: the counter races, the console floods with 0s, and the check number climbs into the hundreds. Ask: "when will it stop?" (Never.) Press Stop and tie it to the hub: on the robot, the centre button is your Stop. Then the rule on the card. Every frozen loop they will ever write breaks this rule: the check is waiting for a change that nothing in the body makes. On the robot, the "change" usually comes from the world: a wheel turning, a gyro moving. That is the next section.
+:::
+
+# C. Now With a Wheel {.sdaia-dark background-gradient="linear-gradient(135deg, #1C355E, #FF7A5C)"}
+
+Same loop. Now the check reads a **motor**. ⚙️
+
+## Drive to the finish line 🏁
+
+Two full turns = **720°**. Where will the wheel stop?
+
+```{=html}
+<div class="sim">
+  <div class="sim-controls">
+    <button class="sim-btn" data-sim="wlWheel" data-sim-arg="w1">▶ Run</button>
+    <button class="sim-btn ghost" data-sim="wlWheelReset" data-sim-arg="w1">↺ Reset</button>
+  </div>
+  <div class="sim-stage">
+    <div class="wl-code">
+      <div class="wl-ln" id="w1L0">left.reset_angle(0)</div>
+      <div class="wl-ln" id="w1L1">left.run(300)</div>
+      <div class="wl-ln" id="w1L2">while left.angle() &lt; 720:</div>
+      <div class="wl-ln" id="w1L3">    wait(<span id="w1W">10</span>)</div>
+      <div class="wl-ln" id="w1L4">left.stop()</div>
+    </div>
+    <div class="wl-side">
+      <div class="wl-wheel">
+        <svg width="120" height="120" viewBox="-50 -50 100 100">
+          <circle r="44" fill="#1C355E"/><circle r="30" fill="#eef3f8"/>
+          <g id="w1Spin"><rect x="-4" y="-30" width="8" height="60" fill="#625D9C"/><rect x="-30" y="-4" width="60" height="8" fill="#625D9C"/><circle cy="-37" r="5" fill="#FFD500"/></g>
+        </svg>
+        <div class="wl-stats" style="flex-direction:column;gap:4px;"><span>angle <b id="w1Ang">0</b>°</span><span>checks <b id="w1Chk">0</b></span></div>
+      </div>
+      <div class="wl-lamp" id="w1Lamp">check: not yet</div>
+      <div>
+        <div class="wl-track"><div class="wl-fill" id="w1Fill"></div><div class="wl-finish" style="left:72%"></div><div id="w1Dots"></div></div>
+        <div class="wl-scale"><span>0°</span><span>720° 🏁</span><span>1000°</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="sim-msg" id="w1Msg"></div>
+</div>
+```
+
+::: {.notes}
+Same four ideas as the counter: something to read (`left.angle()`), a check (`< 720`), a body (`wait(10)`), and a change. The difference is who makes the change: not a line of code, but the motor, which keeps turning on its own because `left.run(300)` started it before the loop. The body only waits. Each dot on the track is one check, and at `wait(10)` they are so close together they look like a solid line. It stops at 720 exactly. Keep that number in mind: slide 3 of this section breaks it.
+:::
+
+## Break it: the wheel that never moves 😴
+
+Someone deleted a line. **What happens now?**
+
+```{=html}
+<div class="sim">
+  <div class="sim-controls">
+    <button class="sim-btn small on" data-sim="wlWheelSet" data-sim-arg="w2:run"><span class="wl-mono">left.run(300)</span> ✓</button>
+    <button class="sim-btn small ghost" data-sim="wlWheelSet" data-sim-arg="w2:norun">delete it ✂️</button>
+    <span class="sim-tag">·</span>
+    <button class="sim-btn small" data-sim="wlWheel" data-sim-arg="w2">▶ Run</button>
+    <button class="sim-btn coral small" data-sim="wlWheelHalt" data-sim-arg="w2">⏹ Stop</button>
+    <button class="sim-btn ghost small" data-sim="wlWheelReset" data-sim-arg="w2">↺ Reset</button>
+  </div>
+  <div class="sim-stage">
+    <div class="wl-code">
+      <div class="wl-ln" id="w2L0">left.reset_angle(0)</div>
+      <div class="wl-ln" id="w2L1">left.run(300)</div>
+      <div class="wl-ln" id="w2L2">while left.angle() &lt; 720:</div>
+      <div class="wl-ln" id="w2L3">    wait(<span id="w2W">10</span>)</div>
+      <div class="wl-ln" id="w2L4">left.stop()</div>
+    </div>
+    <div class="wl-side">
+      <div class="wl-wheel">
+        <svg width="120" height="120" viewBox="-50 -50 100 100">
+          <circle r="44" fill="#1C355E"/><circle r="30" fill="#eef3f8"/>
+          <g id="w2Spin"><rect x="-4" y="-30" width="8" height="60" fill="#625D9C"/><rect x="-30" y="-4" width="60" height="8" fill="#625D9C"/><circle cy="-37" r="5" fill="#FFD500"/></g>
+        </svg>
+        <div class="wl-stats" style="flex-direction:column;gap:4px;"><span>angle <b id="w2Ang">0</b>°</span><span>checks <b id="w2Chk">0</b></span></div>
+      </div>
+      <div class="wl-lamp" id="w2Lamp">check: not yet</div>
+      <div>
+        <div class="wl-track"><div class="wl-fill" id="w2Fill"></div><div class="wl-finish" style="left:72%"></div><div id="w2Dots"></div></div>
+        <div class="wl-scale"><span>0°</span><span>720° 🏁</span><span>1000°</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="sim-msg" id="w2Msg"></div>
+</div>
+```
+
+::: {.fragment .fade-up}
+::: {.cardbox .coral}
+No `run`, no turning. `left.angle()` stays 0, so the check stays True **forever**. Same bug as the counter.
+:::
+:::
+
+::: {.notes}
+This is the robot version of the frozen counter, and it is the most common real bug of the week: the program "hangs", the robot sits still, and students think the hub crashed. It did not crash; it is checking hundreds of times a second, and the answer never changes. Ask "what should change the angle?" and let them find the missing `run`. On the real hub, the centre button stops it.
+:::
+
+## Break it: the check only happens at the top ⏱️
+
+Make the wait longer. **Predict where it stops.**
+
+```{=html}
+<div class="sim">
+  <div class="sim-controls">
+    <button class="sim-btn small on" data-sim="wlWheelSet" data-sim-arg="w3:w10"><span class="wl-mono">wait(10)</span></button>
+    <button class="sim-btn small ghost" data-sim="wlWheelSet" data-sim-arg="w3:w250"><span class="wl-mono">wait(250)</span></button>
+    <button class="sim-btn small ghost" data-sim="wlWheelSet" data-sim-arg="w3:w1000"><span class="wl-mono">wait(1000)</span></button>
+    <span class="sim-tag">·</span>
+    <button class="sim-btn small" data-sim="wlWheel" data-sim-arg="w3">▶ Run</button>
+    <button class="sim-btn ghost small" data-sim="wlWheelReset" data-sim-arg="w3">↺ Reset</button>
+  </div>
+  <div class="sim-stage">
+    <div class="wl-code">
+      <div class="wl-ln" id="w3L0">left.reset_angle(0)</div>
+      <div class="wl-ln" id="w3L1">left.run(300)</div>
+      <div class="wl-ln" id="w3L2">while left.angle() &lt; 720:</div>
+      <div class="wl-ln" id="w3L3">    wait(<span id="w3W">10</span>)</div>
+      <div class="wl-ln" id="w3L4">left.stop()</div>
+    </div>
+    <div class="wl-side">
+      <div class="wl-wheel">
+        <svg width="120" height="120" viewBox="-50 -50 100 100">
+          <circle r="44" fill="#1C355E"/><circle r="30" fill="#eef3f8"/>
+          <g id="w3Spin"><rect x="-4" y="-30" width="8" height="60" fill="#625D9C"/><rect x="-30" y="-4" width="60" height="8" fill="#625D9C"/><circle cy="-37" r="5" fill="#FFD500"/></g>
+        </svg>
+        <div class="wl-stats" style="flex-direction:column;gap:4px;"><span>angle <b id="w3Ang">0</b>°</span><span>checks <b id="w3Chk">0</b></span></div>
+      </div>
+      <div class="wl-lamp" id="w3Lamp">check: not yet</div>
+      <div>
+        <div class="wl-track"><div class="wl-fill" id="w3Fill"></div><div class="wl-finish" style="left:72%"></div><div id="w3Dots"></div></div>
+        <div class="wl-scale"><span>0°</span><span>720° 🏁</span><span>1000°</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="sim-msg" id="w3Msg"></div>
+</div>
+```
+
+::: {.fragment .fade-up}
+::: {.cardbox .purple}
+The loop only looks at the top. Between checks the wheel keeps going. **Short wait, sharp stop.**
+:::
+:::
+
+::: {.notes}
+Take a prediction for each wait before running it. Most students expect every version to stop at 720, because "the code says 720". Run 10 ms (720), then 250 ms (750, 30° late), then 1000 ms (900, a full 180° late). The dots on the track are the only moments the loop was looking: at `wait(1000)` it checks at 0, 300, 600 and 900, and it cannot notice the finish line in between. The check only happens at the top of the loop, and a long body means long blind spots. That is why every robot loop in this course keeps its body short, `wait(10)` or less. The sim ignores momentum on purpose; the bench slide brings it back.
+:::
+
+# D. On Purpose {.sdaia-dark background-gradient="linear-gradient(135deg, #1C355E, #00C9A7)"}
+
+One loop that never ends **on purpose**, then your own wheel. ♾️
+
+## Forever, on purpose ♾️
+
+```{.python}
+while True:
+    print(left.angle())
+    wait(100)
+```
+
+`True` is a check that can never be False. The hub's **centre button** ends it.
+
+::: {.fragment .fade-up}
+::: {.cardbox .teal}
+Patrols and line followers work this way: **keep going until a human says stop.**
+:::
+:::
+
+::: {.notes}
+Short slide. The frozen loops earlier were accidents; this one is a choice. It is also the best debugging tool they have: run it, turn the wheel by hand and watch the angle stream. Have one student try it on a robot now if time allows. Later decks (line following, patrol) put real work inside `while True`.
+:::
+
+## Bench: stop at one turn 🤖
+
+:::: {.columns}
+::: {.column width="64%"}
+```{.python code-line-numbers="|5|6-9|10-11"}
+from pybricks.pupdevices import Motor
+from pybricks.parameters import Port
+from pybricks.tools import wait
+left = Motor(Port.F)     # yours
+left.reset_angle(0)
+left.run(300)
+while left.angle() < 360:
+    wait(10)
+left.stop()
+wait(500)
+print(left.angle())
+```
+:::
+::: {.column width="36%"}
+1. Run it. **What does it print?**
+2. Make it **3 turns**.
+3. **Halve the speed.** Does the extra shrink?
+
+::: {.fragment .fade-up}
+::: {.cardbox .coral}
+The sim stopped right on the line. Yours went **past**. The loop caught 360 on time, so who stole the extra degrees? **Hold that thought** for *Drive a Square*.
+:::
+:::
+:::
+::::
+
+::: {.notes}
+Robots out, one wheel lifted off the table or the robot on its back so it does not drive away. Expect prints like 370 to 390 at speed 300: the loop caught the finish line within a few degrees, then the wheel coasted. The `wait(500)` before the print lets the coast finish, otherwise they read the angle mid-coast. Halving the speed should shrink the extra, which proves it is not the loop. Coach knowledge only: it is momentum. **Do not name it today.** *Drive a Square* names it on the gyro ("it printed 94, who's guilty?"), and that reveal only works if the room has not heard the word yet. If a team gets a frozen program, send them back to the two "break it" slides: is the check reading something that changes? Port F follows the course robot; students change it to match their own build. `Direction` is left out on purpose: a lone wheel counts positive degrees for `run(300)` whichever way it is mounted.
+:::
+
+## You're done when…
+
+::: {.callout-important}
+## Done when
+- You can **predict** how many times any `while` body runs (zero counts)
+- You can **fix** a loop that never ends, and say what never changed
+- You can **fix** a missing colon or a runaway line
+- Your wheel **stops at one turn**, and you can say the extra is **not** the loop's fault
+:::
+
+::: {.notes}
+Check each leg orally at the bench. For leg one, write `while count < 4:` with `count = 1` on the board and ask for the number of prints (3). For leg two, show a `while left.angle() < 360: wait(10)` with no `run` above it and ask what is wrong. For leg three, hand them a header with no colon and a body typed flush-left. For leg four, ask why the printed angle is bigger than 360: "the wheel kept going after `stop()`" is a pass; the word *momentum* waits for *Drive a Square*.
+:::
+
+```{=html}
+<script>
+(function(){
+  /* ---------- The counter stepper (s1, s2, s3) ---------- */
+  var S = {
+    s1: {n:3, inc:true},
+    s2: {n:3, inc:true},
+    s3: {n:3, inc:true}
+  };
+  function fresh(k){
+    var s = S[k];
+    s.pc = 0; s.count = null; s.runs = 0; s.checks = 0; s.out = []; s.done = false; s.last = -1;
+  }
+  function hi(k, line){
+    for(var i=0;i<5;i++){ var e = SIM.el(k+'L'+i); if(e) e.classList.toggle('on', i===line); }
+  }
+  function draw(k){
+    var s = S[k];
+    hi(k, s.last);
+    SIM.text(k+'Count', s.count===null ? '?' : String(s.count));
+    SIM.text(k+'Runs', String(s.runs));
+    SIM.text(k+'Con', s.out.slice(-6).join('\n'));
+  }
+  function lamp(k, text, val){
+    var e = SIM.el(k+'Lamp'); if(!e) return;
+    e.textContent = text;
+    e.classList.remove('t','f');
+    if(val===true) e.classList.add('t');
+    if(val===false) e.classList.add('f');
+  }
+  function reset(k){
+    SIM.stop(k);
+    fresh(k);
+    var s = S[k];
+    SIM.text(k+'N', String(s.n));
+    var l3 = SIM.el(k+'L3');
+    if(l3){
+      l3.textContent = s.inc ? '    count = count + 1' : '    # count = count + 1';
+      l3.classList.toggle('gone', !s.inc);
+    }
+    lamp(k, 'check: not yet', null);
+    SIM.msg(k+'Msg', '', null);
+    draw(k);
+  }
+  /* One line of the program. Returns true when the program has ended. */
+  function step(k){
+    var s = S[k];
+    if(s.done) return true;
+    var line = s.pc;
+    if(line===0){ s.count = 0; s.pc = 1; }
+    else if(line===1){
+      s.checks++;
+      var ok = s.count < s.n;
+      lamp(k, 'check #'+s.checks+':  '+s.count+' < '+s.n+'  →  '+(ok?'True':'False'), ok);
+      s.pc = ok ? 2 : 4;
+      if(!s.inc && s.checks > 4) SIM.msg(k+'Msg', 'Still True. Check #'+s.checks+'. Nothing in the body changes <code>count</code>.', 'bad');
+    }
+    else if(line===2){ s.out.push(String(s.count)); s.runs++; s.pc = s.inc ? 3 : 1; }
+    else if(line===3){ s.count = s.count + 1; s.pc = 1; }
+    else if(line===4){
+      s.out.push('done'); s.done = true;
+      if(s.runs===0) SIM.msg(k+'Msg', 'The first check was False, so the body ran 0 times.', 'note');
+      else SIM.msg(k+'Msg', 'The body ran '+s.runs+' times. Check #'+s.checks+' said False, so the loop ended.', 'good');
+    }
+    s.last = line;
+    draw(k);
+    return s.done;
+  }
+  SIM.def('wlStep', function(k){ SIM.stop(k); step(k); });   // after "done", Reset starts over
+  SIM.def('wlReset', function(k){ reset(k); });
+  SIM.def('wlHalt', function(k){
+    if(!S[k].done && S[k].pc!==0){
+      SIM.stop(k);
+      SIM.msg(k+'Msg', 'You stopped it at check #'+S[k].checks+'. On the hub, the centre button does this.', 'note');
+    }
+  });
+  SIM.def('wlRun', function(k){
+    reset(k);
+    var s = S[k], acc = 0, rate = 4;
+    SIM.loop(k, {
+      dt: 0.01,
+      step: function(dt){
+        acc += dt * rate;
+        if(!s.inc) rate = Math.min(rate * 1.004, 60);   // the runaway speeds up
+        while(acc >= 1){
+          acc -= 1;
+          if(step(k)) return true;
+          if(s.checks >= 999){
+            SIM.msg(k+'Msg', 'We stopped it at check #999. The robot never would have.', 'bad');
+            return true;
+          }
+        }
+        return false;
+      }
+    });
+  });
+  SIM.def('wlSet', function(arg, btn){
+    var p = String(arg).split(':'), k = p[0], v = p[1], s = S[k];
+    if(v.slice(0,2)==='lt') s.n = Number(v.slice(2));
+    if(v==='inc') s.inc = true;
+    if(v==='noinc') s.inc = false;
+    if(btn && btn.parentNode){
+      btn.parentNode.querySelectorAll('[data-sim="wlSet"]').forEach(function(b){
+        b.classList.toggle('on', b===btn); b.classList.toggle('ghost', b!==btn);
+      });
+    }
+    reset(k);
+  });
+  ['s1','s2','s3'].forEach(reset);
+
+  /* ---------- The wheel (w1, w2, w3) ---------- */
+  var SPEED = 300, FINISH = 720, SCALE = 1000;
+  var W = {
+    w1: {w:10, run:true},
+    w2: {w:10, run:true},
+    w3: {w:10, run:true}
+  };
+  function pct(a){ return Math.min(a, SCALE) / SCALE * 100; }
+  function wheelDraw(k, ang, checks){
+    SIM.tf(k+'Spin', 'rotate('+(ang % 360).toFixed(1)+')');
+    SIM.text(k+'Ang', String(Math.round(ang)));
+    SIM.text(k+'Chk', String(checks));
+    var f = SIM.el(k+'Fill'); if(f) f.style.width = pct(ang)+'%';
+  }
+  function dot(k, a, ok){
+    var box = SIM.el(k+'Dots'); if(!box) return;
+    var d = document.createElement('div');
+    d.className = ok ? 'wl-dot' : 'wl-dot f';
+    d.style.left = pct(a)+'%';
+    box.appendChild(d);
+  }
+  function wheelReset(k){
+    SIM.stop(k);
+    var s = W[k];
+    SIM.text(k+'W', String(s.w));
+    var l1 = SIM.el(k+'L1');
+    if(l1){
+      l1.textContent = s.run ? 'left.run(300)' : '# left.run(300)';
+      l1.classList.toggle('gone', !s.run);
+    }
+    for(var i=0;i<5;i++){ var e = SIM.el(k+'L'+i); if(e) e.classList.remove('on'); }
+    var box = SIM.el(k+'Dots'); if(box) box.innerHTML = '';
+    lamp(k, 'check: not yet', null);
+    SIM.msg(k+'Msg', '', null);
+    wheelDraw(k, 0, 0);
+  }
+  SIM.def('wlWheelReset', function(k){ wheelReset(k); });
+  SIM.def('wlWheelHalt', function(k){
+    if(W[k].live){
+      SIM.stop(k); W[k].live = false;
+      SIM.msg(k+'Msg', 'You stopped it. The angle never moved, so the check was always True.', 'note');
+    }
+  });
+  SIM.def('wlWheelSet', function(arg, btn){
+    var p = String(arg).split(':'), k = p[0], v = p[1], s = W[k];
+    if(v==='run') s.run = true;
+    if(v==='norun') s.run = false;
+    if(v.charAt(0)==='w') s.w = Number(v.slice(1));
+    if(btn && btn.parentNode){
+      btn.parentNode.querySelectorAll('[data-sim="wlWheelSet"]').forEach(function(b){
+        b.classList.toggle('on', b===btn); b.classList.toggle('ghost', b!==btn);
+      });
+    }
+    wheelReset(k);
+  });
+  SIM.def('wlWheel', function(k){
+    wheelReset(k);
+    var s = W[k], t = 0, n = 0, ang = 0, checks = 0, stopAt = null;
+    s.live = true;
+    var speed = s.run ? SPEED : 0;
+    SIM.loop(k, {
+      dt: 0.005,
+      step: function(dt){
+        // Checks happen at t = n * wait. Integer maths keeps 720 exactly 720.
+        if(t >= n * s.w / 1000){
+          var a = speed * n * s.w / 1000;
+          checks++;
+          var ok = a < FINISH;
+          dot(k, a, ok);
+          lamp(k, 'check #'+checks+':  '+Math.round(a)+' < '+FINISH+'  →  '+(ok?'True':'False'), ok);
+          if(!ok){ stopAt = a; ang = a; return true; }
+          n++;
+          if(!s.run && t > 6){ return true; }
+        }
+        t += dt;
+        ang = speed * t;
+        return false;
+      },
+      draw: function(){
+        wheelDraw(k, ang, checks);
+        hi(k, stopAt===null ? 3 : 4);
+        if(!s.run && checks > 5 && stopAt===null) SIM.msg(k+'Msg', 'Still True. The wheel is not turning, so the angle never changes.', 'bad');
+      },
+      done: function(){
+        s.live = false;
+        if(stopAt===null){
+          SIM.msg(k+'Msg', 'We stopped it after '+checks+' checks. The robot never would have.', 'bad');
+          return;
+        }
+        var over = Math.round(stopAt - FINISH), gap = SPEED * s.w / 1000;
+        if(over===0) SIM.msg(k+'Msg', 'Stopped at '+Math.round(stopAt)+'°, right on the line. Checks were '+gap+'° apart.', 'good');
+        else SIM.msg(k+'Msg', 'Stopped at '+Math.round(stopAt)+'°: '+over+'° past the line. Checks were '+gap+'° apart.', 'bad');
+      }
+    });
+  });
+  ['w1','w2','w3'].forEach(wheelReset);
+})();
+</script>
+```

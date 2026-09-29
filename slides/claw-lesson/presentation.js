@@ -27,7 +27,7 @@ function stopPlayback(){playing=false;pausedByUser=false;lastFrame=0;accumulator
 function finishPlayback(){playing=false;pausedByUser=false;accumulator=0;const done=onPlaybackEnd;onPlaybackEnd=null;if(done)done();}
 function runEarly(s,stop='complete',more={}){stopPlayback();state=s;cue={...cue,...more,stop};createCode();playing=true;render();}
 function controlSelect(label,values,selected){const wrap=element('label',{},label+' '),select=element('select');for(const [v,t] of values)select.append(element('option',{value:String(v)},t));select.value=String(selected);wrap.append(select);earlyControls.append(wrap);return select;}
-function controlNumber(label,value,min,max){const wrap=element('label',{},label+' '),input=element('input',{type:'number',value:String(value),min:String(min),max:String(max),step:'10'});wrap.append(input);earlyControls.append(wrap);return input;}
+function controlNumber(label,value,min,max){const wrap=element('label',{},label+' '),input=element('input',{type:'number',value:String(value),min:String(min),max:String(max),step:'5'});wrap.append(input);earlyControls.append(wrap);return input;}
 function num(input){return Math.min(Number(input.max),Math.max(Number(input.min),Number(input.value)||0));}
 function earlyCode(){
  if(!cue?.early)return false;
@@ -61,6 +61,8 @@ function visibleParts(){
  on('torque',!scene&&!!cue.showTorque);
  on('stalled',!scene&&status>=1&&!(early&&cue.stage<5));
  on('done',!scene&&status>=2&&!(early&&cue.stage<5));
+ /* grab()'s loop reads load(); a cue opts in with showLoad, usually hiding stalled. */
+ on('load',!scene&&!!cue.showLoad);
  on('code',!scene||message);
  on('heading',!scene&&!message);
  on('context',!scene&&!message&&!inert);
@@ -87,8 +89,8 @@ function applyVisibility(){
  const columns=[has('angle')&&'1fr',has('target')&&'1fr',has('torque')&&'1.05fr'].filter(Boolean);
  show(el('.readings'),columns.length>0);
  el('.readings').style.gridTemplateColumns=columns.join(' ');
- show($('stalled-row'),has('stalled'));show($('done-row'),has('done'));
- show(el('.status-flags'),has('stalled')||has('done'));
+ show($('stalled-row'),has('stalled'));show($('load-row'),has('load'));show($('done-row'),has('done'));
+ show(el('.status-flags'),has('stalled')||has('load')||has('done'));
  show(el('.program-heading'),has('heading'));
  show($('program-context'),has('context'));
  show($('program-code'),has('code'));
@@ -106,7 +108,7 @@ function tagSteps(){
  if(cue?.stepControls)tag(earlyControls,7);
  if(cue?.stepTarget)tag($('target-reading'),9);
  /* The flags are read before any phase message replaces the code panel. */
- if(cue?.stepFlags){tag($('stalled-row'),6);tag($('done-row'),6);}
+ if(cue?.stepFlags){tag($('stalled-row'),6);tag($('load-row'),6);tag($('done-row'),6);}
  stepMarks.replaceChildren();
  (cue?.phases||[]).forEach((phase,i)=>{const mark=element('span');mark.dataset.phaseIndex=String(i);stepMarks.append(mark);tag(mark,8+i/100);});
 }
@@ -213,7 +215,7 @@ function setupEarly(){
   const d=controlSelect('Direction',[['open','Open'],['close','Close']],'close');
   earlyControls.append(button('Run',()=>runEarly(A.direction(state.physical,d.value==='close'),'complete')),button('Stop motor',()=>{stopPlayback();E.coast(state);state.running=false;state.finished=true;render();}),button('Reset scene',()=>changeSlide({currentSlide:activeSlide,keepSteps:true})));
  }else if(kind==='relative'){
-  const start=controlSelect('Starting pose',[[20,'First start'],[80,'Second start']],80),amount=controlNumber('Movement (°)',-20,-130,130);
+  const start=controlSelect('Starting pose',[[15,'First start'],[60,'Second start']],60),amount=controlNumber('Movement (°)',-15,-105,105);
   const prepare=()=>{stopPlayback();state=A.relative(Number(start.value),num(amount));createCode();render();};start.onchange=prepare;amount.onchange=prepare;
   earlyControls.append(button('Run',()=>runEarly(A.relative(Number(start.value),num(amount)))),button('Reset scene',()=>changeSlide({currentSlide:activeSlide,keepSteps:true})));
  }else if(kind==='zero'){
@@ -228,12 +230,12 @@ function setupEarly(){
   /* The stage 4 experiment runs as one scripted comparison: a fixed trial order,
      and every completed trial stays in the table beside the claw. */
   const script=[
+   {label:'Target 45° on the wide object',cell:'45° · wide',run:()=>A.grip('wide',45),outlineAngle:45,
+    after:'The jaws reached the requested 45° and stopped short of the object.'},
    {label:'Target 60° on the wide object',cell:'60° · wide',run:()=>A.grip('wide',60),outlineAngle:60,
-    after:'The jaws reached the requested 60° and stopped short of the object.'},
-   {label:'Target 80° on the wide object',cell:'80° · wide',run:()=>A.grip('wide',80),outlineAngle:80,
-    after:'The object stopped the jaws near 70°, before the requested 80°.'},
-   {label:'Target 80° on the narrower object',cell:'80° · narrow',run:()=>A.grip('narrow',80),outlineAngle:80,
-    after:'The same request reached 80° and left a gap. Each object has its own contact angle.'}
+    after:'The object stopped the jaws near 52°, before the requested 60°.'},
+   {label:'Target 60° on the narrower object',cell:'60° · narrow',run:()=>A.grip('narrow',60),outlineAngle:60,
+    after:'The same request reached 60° and left a gap. Each object has its own contact angle.'}
   ];
   const columns=['Trial','Stopped at','Contact'];
   const intro='Three trials, each homed at the zero reference. Only the requested target and the object change.';
@@ -272,7 +274,7 @@ function renderEarly(){
  if(!state)return;
  const unknown=state.reference==='unknown',arbitrary=state.reference==='arbitrary';
  const actual=$('actual-angle'),label=actual.closest('.reading').querySelector('.reading-label');
- label.textContent=unknown?'Reference not established':arbitrary?'Angle (arbitrary zero)':'Actual motor angle';
+ label.textContent=unknown?'Reference not established':arbitrary?'Angle (arbitrary zero)':'Output angle from home';
  actual.textContent=unknown?'—':E.angle(state).toFixed(0);actual.nextElementSibling.hidden=unknown;
  $('approach-speed').textContent=cue.showTorque?'Speed: '+(state.motor?.speed||state.program.find(p=>p.speed)?.speed||E.FACTS.closeSpeed)+'°/s':'';
  $('ready-outline').style.display=cue.outline?'':'none';
@@ -298,10 +300,11 @@ function createCode() {
     /* The condition grows one check at a time, so it is written from the checks
        the op actually makes. */
     if (op.type === 'check') {
-      const conds = op.conds || ['stalled', 'done'];
+      const conds = op.conds || E.LOOP_CONDS;
+      const keepWaiting = c => c === 'load' ? 'abs(claw.load()) < ' + E.FACTS.contactLoad : 'not claw.' + c + '()';
       txt = conds.length > 1
-        ? 'while (\n' + conds.map((c, n) => '    ' + (n ? 'and ' : '') + 'not claw.' + c + '()').join('\n') + '\n):'
-        : 'while not claw.' + conds[0] + '():';
+        ? 'while (\n' + conds.map((c, n) => '    ' + (n ? 'and ' : '') + keepWaiting(c)).join('\n') + '\n):'
+        : 'while ' + keepWaiting(conds[0]) + ':';
     }
     if (cue.explicitWait && op.type === 'move') txt = txt.replace('then=Stop.HOLD', 'then=Stop.HOLD, wait=True');
     const lines = txt.split('\n').map(line => {
@@ -331,6 +334,15 @@ function render() {
   if (!state) return;
   const a = E.angle(state), m = state.motor;
   $('actual-angle').textContent = a.toFixed(0);
+  const homed = state.reference === 'home';
+  $('output-angle-indicator').style.display = homed ? '' : 'none';
+  $('output-angle-label').textContent = homed ? a.toFixed(0)+'° from home' :
+    state.reference === 'arbitrary' ? 'Zero set here' : 'Home not set';
+  const arc = $('output-angle-arc');
+  if (homed && a > 0.1) {
+    const radians = a * Math.PI / 180;
+    arc.setAttribute('d',`M407 215 A52 52 0 ${a > 180 ? 1 : 0} 1 ${355 + 52*Math.cos(radians)} ${215 + 52*Math.sin(radians)}`);
+  } else arc.setAttribute('d','');
   const upcoming = state.program.find(p => p.type === 'move');
   /* Ending the program releases the motor, but the angle it asked for is still
      what the run has to be judged against. */
@@ -341,9 +353,8 @@ function render() {
   $('target-reading').querySelector('small').hidden = $('target-angle').textContent === '—';
   $('torque-value').textContent = state.torque;
   $('task-description').textContent = !m ? (state.cutOff ? 'Program ended · motor released' : state.active < 0 ? 'Ready to start' : 'Drive effort released · COAST') :
-    m.reached ? (m.settleOffset ? 'Holding near the target · within tolerance' : 'Holding the reached target') :
+    m.reached ? 'Holding the reached target' :
     m.blockedBy ? 'Blocked · still trying toward target' :
-    m.settleOffset && Math.abs(m.target + state.offset - state.physical) <= m.positionTolerance ? 'Settling near the target' :
     m.target + state.offset > state.physical ? 'Closing toward the target' : 'Opening toward the target';
   $('task-description').classList.toggle('blocked', !!m?.blockedBy);
   const rotations = E.gearAngles(state.physical);
@@ -374,6 +385,11 @@ function render() {
     $(name+'-value').classList.toggle('is-true', !notStarted && state[name]);
     $(name+'-row').classList.toggle('focused', cue.focus === name);
   }
+  /* load() as the loop reads it: abs() of a filtered push, in mNm. */
+  const load = Math.round(Math.abs(state.load));
+  $('load-value').innerHTML = notStarted ? '—' : load + '<small>mNm</small>';
+  $('load-value').classList.toggle('is-true', !notStarted && Math.abs(state.load) >= E.FACTS.contactLoad);
+  $('load-row').classList.toggle('focused', cue.focus === 'load');
   $('target-reading').classList.toggle('focused', cue.focus === 'target');
   let index = state.active;
   if (state.program[index]?.type === 'jump') index = state.program[index].to;

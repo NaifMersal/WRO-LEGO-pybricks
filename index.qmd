@@ -130,7 +130,7 @@ format:
 <div class="rr-hero">
   <div class="rr-emoji">🤖🎸</div>
   <h1>Robot Rockstars</h1>
-  <p>From a box of LEGO to a competition robot in <strong>5 weeks</strong>. Pick a day and start building. 🚀</p>
+  <p>From a box of LEGO to a competition robot in <strong>5 weeks</strong>. Follow the sessions and start building. 🚀</p>
   <div class="rr-pills">
     <span class="rr-pill">🧱 LEGO SPIKE Prime</span>
     <span class="rr-pill">🐍 Python + Pybricks</span>
@@ -139,51 +139,39 @@ format:
 </div>
 
 <div class="rr-wrap">
+  <p class="rr-note">The course has 25 sessions. Each S badge shows its place in the schedule; a session can cross a week boundary when more practice is needed.</p>
 
   <!-- ============ WEEK 1 ============ -->
   <section class="rr-week">
-    <div class="rr-week-head w-teal"><span class="num">Week 1</span> Build, Drive, Sense 🛠️</div>
+    <div class="rr-week-head w-teal"><span class="num">Week 1</span> Build, Move, Repeat 🛠️</div>
+    <p class="rr-note">Sessions 1–5. Take two sessions to build, then learn movement, wheel maths, and while loops.</p>
     <div class="rr-grid">
 
       <a class="rr-card" href="slides/build-and-test.html">
-        <span class="rr-badge b-teal">D1</span><span class="rr-card-emoji">🧱</span>
+        <span class="rr-badge b-teal">S1–2</span><span class="rr-card-emoji">🧱</span>
         <h3>Build Your Robot</h3>
         <p>Meet the WRO, tour the bench, build a rock-solid driving base, then switch it on.</p>
         <span class="rr-play">▶ Open slides</span>
       </a>
 
       <a class="rr-card" href="slides/make-it-move.html">
-        <span class="rr-badge b-teal">D2</span><span class="rr-card-emoji">🏎️</span>
+        <span class="rr-badge b-teal">S3</span><span class="rr-card-emoji">🏎️</span>
         <h3>Make It Move</h3>
         <p>Your first program. Speed = distance ÷ time, and wheel spins become real centimetres.</p>
         <span class="rr-play">▶ Open slides</span>
       </a>
 
       <a class="rr-card" href="slides/beam-balance.html">
-        <span class="rr-badge b-teal">D2</span><span class="rr-card-emoji">⚖️</span>
+        <span class="rr-badge b-teal">S4</span><span class="rr-card-emoji">⚖️</span>
         <h3>The Beam Balance</h3>
         <p>Six oranges, three bananas, and the rule that lied. Work out the degrees yourself, for any distance.</p>
         <span class="rr-play">▶ Open slides</span>
       </a>
 
-      <a class="rr-card" href="slides/drive-a-square.html">
-        <span class="rr-badge b-teal">D3</span><span class="rr-card-emoji">⬛</span>
-        <h3>Drive a Square</h3>
-        <p>Loops that repeat, colon and indent bugs, and why the gyro fixes drifty turns.</p>
-        <span class="rr-play">▶ Open slides</span>
-      </a>
-
-      <a class="rr-card" href="slides/pid-on-the-gyro.html">
-        <span class="rr-badge b-teal">D4</span><span class="rr-card-emoji">🧭</span>
-        <h3>Straighten Up!</h3>
-        <p>Teach the robot to self-correct: gentle turns, your first <code>def</code>, and the P-term.</p>
-        <span class="rr-play">▶ Open slides</span>
-      </a>
-
-      <a class="rr-card" href="slides/name-your-moves.html">
-        <span class="rr-badge b-teal">D5</span><span class="rr-card-emoji">📦</span>
-        <h3>Name Your Moves</h3>
-        <p>Finish PID with D and I, start your own move library, and win Bullseye with code <em>you</em> wrote.</p>
+      <a class="rr-card" href="slides/while-loops.html">
+        <span class="rr-badge b-teal">S5</span><span class="rr-card-emoji">🔁</span>
+        <h3>Until It's True</h3>
+        <p>Step through a <code>while</code> loop line by line, hunt the colon and indent bugs, then stop a real wheel at one turn.</p>
         <span class="rr-play">▶ Open slides</span>
       </a>
 
@@ -192,77 +180,114 @@ format:
 
   <!-- ============ WEEK 2 ============ -->
   <section class="rr-week">
-    <div class="rr-week-head w-coral"><span class="num">Week 2</span> Program the Robot, Build the Library, Form the Teams 📦</div>
+    <div class="rr-week-head w-coral"><span class="num">Week 2</span> Turns, Functions, Control 🧭</div>
+    <p class="rr-note">Sessions 6–10. Give function writing its own practice session before adding P control and the motion library.</p>
+    <div class="rr-grid">
+
+      <a class="rr-card" href="slides/drive-a-square.html">
+        <span class="rr-badge b-coral">S6</span><span class="rr-card-emoji">⬛</span>
+        <h3>Drive a Square</h3>
+        <p>Loops that repeat, plus and minus on the gyro, and why a watched turn still lands at 94.</p>
+        <span class="rr-play">▶ Open slides</span>
+      </a>
+
+      <a class="rr-card" href="slides/cure-the-coast.html">
+        <span class="rr-badge b-coral">S7</span><span class="rr-card-emoji">🩹</span>
+        <h3>Cure the Coast</h3>
+        <p>Arrive slowly to beat momentum, and wrap the cure in your first <code>def</code>.</p>
+        <span class="rr-play">▶ Open slides</span>
+      </a>
+
+      <a class="rr-card" href="slides/write-it-yourself.html">
+        <span class="rr-badge b-coral">S8</span><span class="rr-card-emoji">⌨️</span>
+        <h3>Write It Yourself</h3>
+        <p>Nothing new: three fresh problems, three <code>def</code>s you write on your own.</p>
+        <span class="rr-play">▶ Open slides</span>
+      </a>
+
+      <a class="rr-card" href="slides/pid-on-the-gyro.html">
+        <span class="rr-badge b-coral">S9</span><span class="rr-card-emoji">🧭</span>
+        <h3>The Drive That Heals Itself</h3>
+        <p>Race your own turn, then give the cure a brain: the P-term, on turns and on the straight.</p>
+        <span class="rr-play">▶ Open slides</span>
+      </a>
+
+      <a class="rr-card" href="slides/name-your-moves.html">
+        <span class="rr-badge b-coral">S10</span><span class="rr-card-emoji">📦</span>
+        <h3>Name Your Moves</h3>
+        <p>Add derivative braking, build your move library, and win Bullseye with code <em>you</em> wrote.</p>
+        <span class="rr-play">▶ Open slides</span>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ============ WEEK 3 ============ -->
+  <section class="rr-week">
+    <div class="rr-week-head w-purple"><span class="num">Week 3</span> Sense, Consolidate, Build 🧰</div>
+    <p class="rr-note">Sessions 11–15. Use the sensors, consolidate your library, form teams, and build a working mechanism.</p>
     <div class="rr-grid">
 
       <a class="rr-card" href="slides/pd-line-following.html">
-        <span class="rr-badge b-coral">D6</span><span class="rr-card-emoji">🛣️</span>
+        <span class="rr-badge b-purple">S11</span><span class="rr-card-emoji">🛣️</span>
         <h3>Line King</h3>
-        <p>Read the line, choose with <code>if</code>, ride the edge with P, then square up at junctions.</p>
+        <p>Read the line, choose with <code>elif</code>, ride the edge with P, then square up with <code>not</code> and <code>and</code>.</p>
         <span class="rr-play">▶ Open slides</span>
       </a>
 
       <a class="rr-card" href="slides/stop-patrol-react.html">
-        <span class="rr-badge b-coral">D7</span><span class="rr-card-emoji">🚦</span>
+        <span class="rr-badge b-purple">S12</span><span class="rr-card-emoji">🚦</span>
         <h3>Stop at the Wall</h3>
         <p>Use a motor as a sensor, back off on a bump, and patrol wall to wall.</p>
         <span class="rr-play">▶ Open slides</span>
       </a>
 
       <a class="rr-card" href="slides/drivebase-shortcut.html">
-        <span class="rr-badge b-coral">D8</span><span class="rr-card-emoji">🧰</span>
+        <span class="rr-badge b-purple">S13</span><span class="rr-card-emoji">🧰</span>
         <h3>The Earned Shortcut</h3>
-        <p>Scattered files become <code>movements.py</code> plus your own gripper file, a constants block holds your robot's facts, and <code>DriveBase</code> joins the team. Then the Gauntlet.</p>
+        <p>Put your robot's measured facts in one place, move your driving library onto <code>DriveBase</code>, then run the Gauntlet.</p>
         <span class="rr-play">▶ Open slides</span>
       </a>
 
-    </div>
-
-    <p class="rr-soon"><span class="tag">🔒 Coming soon</span><b>Draft Day (D10):</b> teams form, one robot is chosen, the configs merge, and the first mechanism build begins.</p>
-  </section>
-
-  <!-- ============ WEEK 3 ============ -->
-  <section class="rr-week">
-    <div class="rr-week-head w-purple"><span class="num">Week 3</span> Build the Mechanisms, Chain the Anchor Run ⛓️</div>
-    <div class="rr-grid">
+      <a class="rr-card" href="slides/draft-day.html">
+        <span class="rr-badge b-purple">S14</span><span class="rr-card-emoji">🤝</span>
+        <h3>Draft Day</h3>
+        <p>The last solo showdown, then teams form and the first mechanism build begins.</p>
+        <span class="rr-play">▶ Open slides</span>
+      </a>
 
       <a class="rr-card" href="slides/gears.html">
-        <span class="rr-badge b-purple">D11</span><span class="rr-card-emoji">⚙️</span>
+        <span class="rr-badge b-purple">S15</span><span class="rr-card-emoji">⚙️</span>
         <h3>Gears</h3>
         <p>Explore gear direction, ratio, and the trade-off between speed and torque.</p>
         <span class="rr-play">▶ Open slides</span>
       </a>
 
+    </div>
+  </section>
+
+  <!-- ============ WEEK 4 ============ -->
+  <section class="rr-week">
+    <div class="rr-week-head w-teal"><span class="num">Week 4</span> Program the Mechanism, Chain the Run ⛓️</div>
+    <p class="rr-note">Sessions 16–20. Program your mechanism, test each task, and join the calls into a complete run.</p>
+    <div class="rr-grid">
+
       <a class="rr-card" href="slides/programming-the-claw.html">
-        <span class="rr-badge b-purple">D11</span><span class="rr-card-emoji">🦾</span>
+        <span class="rr-badge b-teal">S16</span><span class="rr-card-emoji">🦾</span>
         <h3>Programming the Claw</h3>
         <p>Explore motor targets, find home, and build <code>home()</code>, <code>grab()</code>, and <code>release()</code>.</p>
         <span class="rr-play">▶ Open the interactive lesson</span>
       </a>
 
     </div>
-
-    <p class="rr-soon"><span class="tag">🔒 Coming soon</span><b>Still to come (D12–D15):</b> mechanism #2 places the instruments (45 pts) and grabs the avoidance bonus (+40), the first scoring segments drop into your mission runner, and every piece chains into the whole ~135-point anchor run.</p>
-  </section>
-
-  <!-- ============ WEEK 4 ============ -->
-  <section class="rr-week">
-    <div class="rr-week-head w-teal"><span class="num">Week 4</span> Make It Reliable 🎯</div>
-    <div class="rr-grid">
-
-    </div>
-
-    <p class="rr-soon"><span class="tag">🔒 Coming soon</span>Log the failures and hunt the root cause, plan the route on a map of the mat, harden the robot for a strange room, and add the green and red notes as a <em>stretch</em>. Then the gate: the <b>~135 anchor run, 20 tries, 90%+ of the time.</b></p>
+    <p class="rr-soon"><span class="tag">🔒 Coming soon</span><b>Bench and integration sessions (S17–S20):</b> finish and test each mechanism, choose the team robot, plan the first route, and chain cables, microphone, instruments, and avoidance into the ~135-point anchor. Write movement and gripper calls in order, using named task functions when useful. Start a five-run log as soon as tasks are chained.</p>
   </section>
 
   <!-- ============ WEEK 5 ============ -->
   <section class="rr-week">
-    <div class="rr-week-head w-coral"><span class="num">Week 5</span> Color, Notes &amp; the Mock Qualifier 🏆</div>
-    <div class="rr-grid">
-
-    </div>
-
-    <p class="rr-soon"><span class="tag">🔒 Coming soon</span>Map colours to targets and chase the four surprise notes, finish the Technical Summary until both teammates can talk about the robot, run a mock qualifier with check-in and the Surprise Rule, push for the full 255, and show it off.</p>
+    <div class="rr-week-head w-coral"><span class="num">Week 5</span> Make It Reliable, Then Compete 🏆</div>
+    <p class="rr-note">Sessions 21–25. Use your run log to improve the robot, test changed conditions, and prepare for the mock qualifier.</p>
+    <p class="rr-soon"><span class="tag">🔒 Coming soon</span><b>Reliability and handoff (S21–S25):</b> tune from logged failures, test different starts and lighting, finish the Technical Summary, and run the mock qualifier. The final gate is the <b>~135-point anchor succeeding in at least 18 of 20 runs</b>. Fixed notes are an optional extension after that gate. Randomized notes and the full-255 programme belong to the continuation season.</p>
   </section>
 
   <!-- ============ REFERENCE & PRACTICE ============ -->
@@ -271,21 +296,21 @@ format:
     <div class="rr-grid">
 
       <a class="rr-card" href="library-cheatsheet.html">
-        <span class="rr-badge b-teal">D5+</span><span class="rr-card-emoji">📄</span>
+        <span class="rr-badge b-teal">S10+</span><span class="rr-card-emoji">📄</span>
         <h3>Library Cheat Sheet</h3>
         <p>Every verb you own on one page. The gripper half fills in once you build one. Keep it open on the bench.</p>
         <span class="rr-play">▶ Open the cheat sheet</span>
       </a>
 
       <a class="rr-card" href="interactives/recap-part1-days2-5.html">
-        <span class="rr-badge b-teal">D2–D5</span><span class="rr-card-emoji">🕹️</span>
+        <span class="rr-badge b-teal">S3–S10</span><span class="rr-card-emoji">🕹️</span>
         <h3>Recap Arcade · Part 1</h3>
-        <p>Days 2–5 as short levels: watch the demo, answer one question. Ends with a miss list to bring to the coach.</p>
+        <p>Movement, loops, functions, and control as short levels: watch the demo, answer one question. Ends with a miss list to bring to the coach.</p>
         <span class="rr-play">▶ Play the recap</span>
       </a>
 
       <a class="rr-card" href="interactives/recap-part2-days5-8.html">
-        <span class="rr-badge b-coral">D5–D8</span><span class="rr-card-emoji">🕹️</span>
+        <span class="rr-badge b-coral">S10–S13</span><span class="rr-card-emoji">🕹️</span>
         <h3>Recap Arcade · Part 2</h3>
         <p>Six more levels: where a room lives, the eye, the line, two eyes, the wall, the library. Demo first, question last, miss list at the end.</p>
         <span class="rr-play">▶ Play the recap</span>
@@ -302,7 +327,7 @@ format:
       <a class="rr-card" href="tools/odommap/OdomMap.html">
         <span class="rr-badge b-purple">🗺️</span><span class="rr-card-emoji">📐</span>
         <h3>OdomMap</h3>
-        <p>Click two points on the real mat to read the distance in mm and the wheel rotations to drive it. Set <strong>Wheel = 88 mm</strong>, pick <em>2026 / Elementary</em>. Handy on D9, D15 and D21.</p>
+        <p>Click two points on the real mat to read the distance in mm and the wheel rotations to drive it. Set <strong>Wheel = 88 mm</strong>, pick <em>2026 / Elementary</em>. Use it when planning and testing your route.</p>
         <span class="rr-play">▶ Open the tool</span>
       </a>
 
