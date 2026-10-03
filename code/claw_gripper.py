@@ -6,6 +6,7 @@
     claw.grab()          # move toward 72 output deg; keep pressing if blocked
     claw.release()       # return to the 0 deg opening
     claw.release(50)     # target 50 deg: less open than the default 0 deg
+    claw.release(wait=False)  # start opening, then continue with driving
 
 ZERO IS AT THE OPEN END STOP. Positive rotation closes this claw; negative
 rotation opens it. home() finds that stop with the jaws empty and calls it 0.
@@ -83,13 +84,14 @@ def grab():
     # Keep the command active: press toward a blocked target, or hold a reached one.
 
 
-def release(angle=OPEN_TARGET):
+def release(angle=OPEN_TARGET, wait=True):
     """Move to a release position, then let the motor coast.
 
     The target is output-axle degrees from the open end stop. The default
     is 0 deg; release(50) leaves the jaws less open than that default.
     A larger target can reduce the opening sweep, but must still let the
     object go. run_target moves to the requested angle from either direction.
+    wait=False returns immediately while the motor keeps opening.
     """
     claw.control.limits(torque=SQUEEZE_TORQUE)
-    claw.run_target(OPEN_SPEED, angle, then=Stop.COAST)
+    claw.run_target(OPEN_SPEED, angle, then=Stop.COAST, wait=wait)

@@ -7,6 +7,7 @@
     lift.grab()                       # squeeze, then raise
     lift.release()                    # set down and open all the way
     lift.release(50)                  # ...or set down and open only THIS far
+    lift.release(wait=False)          # set down, then open while driving
 
 ONE MOTOR, ONE CONTINUOUS MOVE, TWO OUTCOMES. The jaws close until the object
 stops them. Keep turning the same way and the jaws can't move any more -- so
@@ -100,15 +101,17 @@ def grab():
     lift.run_target(LIFT_SPEED, contact - LIFT_TRAVEL, then=Stop.HOLD)
 
 
-def release(angle=READY_ANGLE):
+def release(angle=READY_ANGLE, wait=True):
     """Set the object down and open the jaws. A smaller angle opens less.
 
     Zero is where the jaws meet, so the number is how far open you want
     them when the object is on the mat.
+    Lowering always finishes first. wait=False returns once opening starts,
+    so only the final opening overlaps with the next robot movement.
     """
     # +LIFT_TRAVEL walks the lift back off, landing near the contact point
     # whatever it was -- so this never needs to remember where the grip
     # stopped. "Near" is fine: the next move is an absolute one, so any slop
     # from the hold is wiped out rather than accumulated.
     lift.run_target(LIFT_SPEED, lift.angle() + LIFT_TRAVEL, then=Stop.HOLD)
-    lift.run_target(OPEN_SPEED, angle, then=Stop.COAST)
+    lift.run_target(OPEN_SPEED, angle, then=Stop.COAST, wait=wait)

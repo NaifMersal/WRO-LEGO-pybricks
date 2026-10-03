@@ -398,7 +398,7 @@ The object is held after the checking loop: the output is near 52° from home, t
 
 The jaws open to 0° and the object is free. Point out that the opening command replaced the closing task; nothing had to cancel the earlier instruction first.
 
-This sequence is release(). It has the same shape as the closing sequence: choose the effort limit, then run to a target. Default waiting is right here, because the next mission action follows arrival. Stage 11 asks how far it should actually open.
+This sequence is release(). It has the same shape as the closing sequence: choose the effort limit, then run to a target. The default waits for opening to finish. With release(wait=False), the function returns as soon as opening starts, so the next drive can overlap it. Check that the departure path lets the jaws clear the object. Stage 11 asks how far it should actually open.
 :::
 
 ## The three functions {#functions data-cue="functions" data-chapter="10 / The three functions" data-phase="Code"}
@@ -423,18 +423,19 @@ This sequence is release(). It has the same shape as the closing sequence: choos
     wait(100)
     while (abs(claw.load()) &lt; 100
            and not claw.done()):
-        wait(10)</code></pre><p class="detail">Our loop ends. The closing task keeps squeezing.</p></div><div class="step"><h3>release()</h3><pre><code>def release(angle=0):
+        wait(10)</code></pre><p class="detail">Our loop ends. The closing task keeps squeezing.</p></div><div class="step"><h3>release()</h3><pre><code>def release(angle=0, wait=True):
     claw.control.limits(
         torque=180)
     claw.run_target(
         speed=180,
         target_angle=angle,
-        then=Stop.COAST)</code></pre><p class="detail">The opening reaches its target, then coasts.</p></div></div>
+        then=Stop.COAST,
+        wait=wait)</code></pre><p class="detail">release(wait=False) opens while the next drive runs.</p></div></div>
 
 ::: {.notes}
 Package everything the class has built. Reveal the three in order and read what ends each one, which is the line under each function.
 
-home() and release() both wait for their own movement to finish. grab() cannot, because the movement it starts may never reach its target, so it starts the command with wait=False and watches for either outcome.
+home() and the default release() both wait for their own movement to finish. release(wait=False) starts opening and returns immediately; the motor coasts when it reaches the target. The wait parameter passes the chosen Boolean to run_target. It does not call the imported wait() delay function. Homing keeps its existing blocking sequence. grab() cannot wait for target arrival, because the movement it starts may never reach its target, so it starts the command with wait=False and watches for either outcome.
 
 That difference has a consequence worth saying aloud: leaving our checking loop does not cancel the motor instruction. The closing command is still active while grab() returns, which is what keeps the object squeezed and lets the push keep rising from 100 to the 180 limit while the robot drives, and then=Stop.HOLD is what maintains the position if the target is actually reached. Demonstration prints and observation waits stay outside the functions. A return means one of the two conditions occurred; it does not certify a catch. This ends the excerpt covering stages 7-10.
 :::
@@ -448,6 +449,7 @@ That difference has a consequence worth saying aloud: leaving our checking loop 
 <li>Predict what ends <code>home()</code>, <code>grab()</code>, and <code>release()</code>.</li>
 <li>Run each trial. Compare the actual angle, target, and status flags.</li>
 <li>Explain why returning from <code>grab()</code> does not prove a catch.</li>
+<li>Compare <code>claw.release()</code> with <code>claw.release(wait=False)</code> followed by a drive.</li>
 </ol>
 </div>
 <div class="challenge-resources">
@@ -464,7 +466,7 @@ That difference has a consequence worth saying aloud: leaving our checking loop 
 ::: {.notes}
 Students work independently before discussing answers. Run both trials on the bench build: home with the jaws empty, then place the object before grabbing, and repeat with nothing between the jaws.
 
-home() finishes its built-in stalled movement, coasts, settles, sets zero, and restores the gripping limit. grab() returns when the load passes 100 mNm or done() becomes True. release() returns after its opening movement completes. An empty grab may finish on done() with no object held. Students should use the observed readings to explain both trials.
+home() finishes its built-in stalled movement, coasts, settles, sets zero, and restores the gripping limit. grab() returns when the load passes 100 mNm or done() becomes True. release() returns after its opening movement completes by default. release(wait=False) returns when opening starts. For the extension, call claw.release(wait=False), then move.drive_straight(distance_mm=-100, speed=100) using the movements module. Compare the elapsed time and object placement against the default release. Confirm the jaws clear the object during departure. Keep the program running while the motor opens; do not end the program or issue another claw command before opening finishes. An empty grab may finish on done() with no object held. Students should use the observed readings to explain both trials.
 
 For a bench extension, use the same module on the supplied Port E build. Keep the homing path empty and adapt the marked TUNE settings to the physical mechanism. The completed download defines functions without starting a motion sequence. Run the operations under the instructor's guidance, placing the object after homing. The readings in the lesson are illustrative.
 :::

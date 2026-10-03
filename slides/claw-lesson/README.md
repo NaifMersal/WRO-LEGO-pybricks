@@ -129,7 +129,11 @@ controller. The same slide closes on the empty result: `done()` is True with not
 between the jaws, so returning does not confirm a catch. `truth-table`
 then reads the finished condition, `release` opens from the grip the loop left
 behind, and `functions` sets `home()`, `grab()` and `release()` side by side
-under what ends each one.
+under what ends each one. The release function accepts `wait=True` by default;
+`claw.release(wait=False)` starts opening and returns so the next drive can
+overlap it. The bench challenge compares timing and object placement with both
+options. Homing remains blocking. The release simulation still demonstrates
+the default waiting behavior.
 
 The loop condition is built up rather than shown finished, so a `check` op
 carries the checks it makes in `conds` (the default is `LOOP_CONDS`, load and
